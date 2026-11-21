@@ -1,0 +1,30 @@
+{
+  "name": "kaitianming",
+  "private": true,
+  "version": "0.4.0",
+  "description": "Kaitianming 开天命 — star and number destiny reading from your date and place of birth",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "deploy": "vite build && wrangler deploy"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.1.0",
+    "typescript": "~6.0.3",
+    "vite": "^8.1.0",
+    "vite-plugin-pwa": "^1.3.0",
+    "wrangler": "^4.0.0"
+  }
+}
