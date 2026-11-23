@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CONTACT_EMAIL } from '../config'
 import { credits } from '../i18n/credits'
 import type { Dict } from '../i18n/dict'
 import { LANGS, type Lang } from '../i18n/types'
@@ -15,7 +16,7 @@ export function Footer({ t, lang, onNav, onLang }: Props) {
         <div className="foot-cols">
           <div className="stack gap-8">
             <h2 className="foot-h">{t.footContact}</h2>
-            <span className="muted">{t.contactEmail}</span>
+            <a className="link-btn" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
           </div>
           <div className="stack gap-8">
             <h2 className="foot-h">{t.footInfo}</h2>

@@ -51,7 +51,7 @@ const en = {
   skipToContent: 'Skip to content',
   dayPh: 'DD', monthPh: 'MM', yearPh: 'YYYY', locationPh: 'Place of birth — type a city',
   login: 'Log in', loginTitle: 'Log in', loginBody: 'Accounts arrive with Premium membership. You do not need one to use Kaitianming: every analysis is free and runs on your device.', loginSoon: 'Sign-in — coming soon', backHome: 'Back to home',
-  footContact: 'Contact', footInfo: 'Information', footMore: 'More', contactEmail: '[CONTACT EMAIL]', privacyLink: 'Privacy'
+  footContact: 'Contact', footInfo: 'Information', footMore: 'More',privacyLink: 'Privacy'
 }
 
 export type Dict = typeof en
@@ -105,7 +105,7 @@ const th: Dict = {
   skipToContent: 'ข้ามไปยังเนื้อหา',
   dayPh: 'วัน', monthPh: 'เดือน', yearPh: 'ปี (พ.ศ.)', locationPh: 'สถานที่เกิด — พิมพ์ชื่อเมือง',
   login: 'เข้าสู่ระบบ', loginTitle: 'เข้าสู่ระบบ', loginBody: 'บัญชีผู้ใช้จะเปิดพร้อมสมาชิกพรีเมียม ตอนนี้ใช้งานได้เลยโดยไม่ต้องมีบัญชี ทุกการวิเคราะห์ใช้ฟรีและคำนวณในเครื่องของคุณ', loginSoon: 'เข้าสู่ระบบ — เร็ว ๆ นี้', backHome: 'กลับหน้าแรก',
-  footContact: 'ติดต่อ', footInfo: 'ข้อมูล', footMore: 'เพิ่มเติม', contactEmail: '[อีเมลติดต่อ]', privacyLink: 'ความเป็นส่วนตัว'
+  footContact: 'ติดต่อ', footInfo: 'ข้อมูล', footMore: 'เพิ่มเติม',privacyLink: 'ความเป็นส่วนตัว'
 }
 
 export const dict = (lang: Lang): Dict => (lang === 'th' ? th : en)
