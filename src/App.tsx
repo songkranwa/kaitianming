@@ -93,7 +93,10 @@ export default function App() {
       <Header t={t} view={shown} onNav={navTo} />
       <main id="main">
         {shown === 'home' && <HomeView t={t} lang={lang} form={form} setForm={setForm} cities={cities} ready={ready} onSubmit={() => { setCalcTab('time'); go('result') }} />}
-        {shown === 'result' && res && <ResultView t={t} lang={lang} res={res} catalogError={catalog.status === 'error'} onBack={() => go('home')} onCalc={() => go('calc')} />}
+        {shown === 'result' && res && (
+          <ResultView t={t} lang={lang} res={res} catalogError={catalog.status === 'error'} tier="guest"
+            onBack={() => go('home')} onCalc={() => go('calc')} onUnlock={(level) => go(level === 'member' ? 'login' : 'premium')} />
+        )}
         {shown === 'calc' && res && <CalcView t={t} lang={lang} res={res} catalogError={catalog.status === 'error'} tab={calcTab} setTab={setCalcTab} onBack={() => go('result')} />}
         {shown === 'premium' && <PremiumView t={t} />}
         {shown === 'login' && <LoginView t={t} onHome={() => navTo('home')} onPremium={() => go('premium')} />}
