@@ -48,7 +48,10 @@ const en = {
   trDate: 'Date entered', trPlace: 'Birthplace', trCoords: 'Coordinates (GeoNames)', trTz: 'IANA time zone', trLocal: 'Local time used (birth time not asked)', trOffset: 'UTC offset on that date (historical)', trUT: 'Universal Time (UT)', trJD: 'Julian Day (UT)', trLST: 'Local sidereal time', trZenith: 'Overhead point (RA, Dec)', trAya: 'Lahiri ayanamsa', trEngine: 'Engine version',
   timeNote: (city: string, offset: string, tz: string) => `Using the sky at 00:00 local time in ${city}, which was ${offset} on that date (${tz}).`,
   updateReady: 'A new version is ready.', updateNow: 'Update', offlineReady: 'Ready to work offline.', dismiss: 'Dismiss',
-  skipToContent: 'Skip to content'
+  skipToContent: 'Skip to content',
+  dayPh: 'DD', monthPh: 'MM', yearPh: 'YYYY', locationPh: 'Place of birth — type a city',
+  login: 'Log in', loginTitle: 'Log in', loginBody: 'Accounts arrive with Premium membership. You do not need one to use Kaitianming: every analysis is free and runs on your device.', loginSoon: 'Sign-in — coming soon', backHome: 'Back to home',
+  footContact: 'Contact', footInfo: 'Information', footMore: 'More', contactEmail: '[CONTACT EMAIL]', privacyLink: 'Privacy'
 }
 
 export type Dict = typeof en
@@ -99,7 +102,10 @@ const th: Dict = {
   trDate: 'วันเกิดที่กรอก', trPlace: 'เมืองเกิด', trCoords: 'พิกัด (GeoNames)', trTz: 'เขตเวลา IANA', trLocal: 'เวลาที่ใช้ (ไม่ถามเวลาเกิด)', trOffset: 'ส่วนต่างจาก UTC ในวันนั้น (ย้อนหลัง)', trUT: 'เวลาสากล (UT)', trJD: 'วันจูเลียน (UT)', trLST: 'เวลาดาราคติท้องถิ่น', trZenith: 'จุดเหนือศีรษะ (RA, Dec)', trAya: 'อายนางศ์ลาหิรี', trEngine: 'เวอร์ชันเครื่องคำนวณ',
   timeNote: (city: string, offset: string, tz: string) => `ใช้ท้องฟ้าเวลา 00:00 น. ตามเวลาท้องถิ่นของ${city} ซึ่งวันนั้นใช้ ${offset} (${tz})`,
   updateReady: 'มีเวอร์ชันใหม่พร้อมใช้งาน', updateNow: 'อัปเดต', offlineReady: 'พร้อมใช้งานแบบออฟไลน์แล้ว', dismiss: 'ปิด',
-  skipToContent: 'ข้ามไปยังเนื้อหา'
+  skipToContent: 'ข้ามไปยังเนื้อหา',
+  dayPh: 'วัน', monthPh: 'เดือน', yearPh: 'ปี (พ.ศ.)', locationPh: 'สถานที่เกิด — พิมพ์ชื่อเมือง',
+  login: 'เข้าสู่ระบบ', loginTitle: 'เข้าสู่ระบบ', loginBody: 'บัญชีผู้ใช้จะเปิดพร้อมสมาชิกพรีเมียม ตอนนี้ใช้งานได้เลยโดยไม่ต้องมีบัญชี ทุกการวิเคราะห์ใช้ฟรีและคำนวณในเครื่องของคุณ', loginSoon: 'เข้าสู่ระบบ — เร็ว ๆ นี้', backHome: 'กลับหน้าแรก',
+  footContact: 'ติดต่อ', footInfo: 'ข้อมูล', footMore: 'เพิ่มเติม', contactEmail: '[อีเมลติดต่อ]', privacyLink: 'ความเป็นส่วนตัว'
 }
 
 export const dict = (lang: Lang): Dict => (lang === 'th' ? th : en)

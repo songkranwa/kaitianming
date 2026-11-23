@@ -3,6 +3,7 @@ import { CalcView, type CalcTab } from './components/CalcView'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { HomeView } from './components/HomeView'
+import { LoginView } from './components/LoginView'
 import { PremiumView } from './components/PremiumView'
 import { PwaToast } from './components/PwaToast'
 import { ResultView } from './components/ResultView'
@@ -13,13 +14,16 @@ import { useCatalog, useCities } from './hooks/useData'
 import { dict } from './i18n/dict'
 import { detectLang, type Lang } from './i18n/types'
 
-export type View = 'home' | 'result' | 'calc' | 'premium' | 'settings'
+export type View = 'home' | 'result' | 'calc' | 'premium' | 'settings' | 'login'
 
 /** Birth details live only in memory: never in the URL, storage, or any request. */
 export interface BirthForm { day: string; month: string; year: string; cityQuery: string; cityIdx: number }
 
-const PATHS: Partial<Record<View, string>> = { premium: '/premium', settings: '/settings' }
-const viewFromPath = (): View => (location.pathname.startsWith('/premium') ? 'premium' : location.pathname.startsWith('/settings') ? 'settings' : 'home')
+const PATHS: Partial<Record<View, string>> = { premium: '/premium', settings: '/settings', login: '/login' }
+const viewFromPath = (): View => {
+  const p = location.pathname
+  return p.startsWith('/premium') ? 'premium' : p.startsWith('/settings') ? 'settings' : p.startsWith('/login') ? 'login' : 'home'
+}
 
 interface InstallEvent extends Event { prompt: () => Promise<void> }
 
@@ -68,7 +72,7 @@ export default function App() {
 
   const ready = !!(form.day && form.month && form.year) && form.cityIdx >= 0 && cities.status === 'ready'
   const showResult = (view === 'result' || view === 'calc') && ready
-  const shown: View = showResult ? view : view === 'premium' || view === 'settings' ? view : 'home'
+  const shown: View = showResult ? view : view === 'premium' || view === 'settings' || view === 'login' ? view : 'home'
 
   const cat = catalog.status === 'ready' ? catalog.data : null
   const res = useMemo(() => {
@@ -77,7 +81,7 @@ export default function App() {
   }, [showResult, cities, form.year, form.month, form.day, form.cityIdx, lang, cat])
 
   useEffect(() => {
-    const titles: Record<View, string> = { home: '', result: t.resultTitle, calc: t.calcTitle, premium: t.premiumTitle, settings: t.settingsTitle }
+    const titles: Record<View, string> = { home: '', result: t.resultTitle, calc: t.calcTitle, premium: t.premiumTitle, settings: t.settingsTitle, login: t.loginTitle }
     document.title = (titles[shown] ? titles[shown] + ' · ' : '') + 'Kaitianming 开天命'
   }, [shown, t])
 
@@ -86,19 +90,20 @@ export default function App() {
   return (
     <>
       <a className="skip-link" href="#main">{t.skipToContent}</a>
-      <Header t={t} lang={lang} view={shown} onNav={navTo} onLang={setLang} />
+      <Header t={t} view={shown} onNav={navTo} />
       <main id="main">
         {shown === 'home' && <HomeView t={t} lang={lang} form={form} setForm={setForm} cities={cities} ready={ready} onSubmit={() => { setCalcTab('time'); go('result') }} />}
         {shown === 'result' && res && <ResultView t={t} lang={lang} res={res} catalogError={catalog.status === 'error'} onBack={() => go('home')} onCalc={() => go('calc')} />}
         {shown === 'calc' && res && <CalcView t={t} lang={lang} res={res} catalogError={catalog.status === 'error'} tab={calcTab} setTab={setCalcTab} onBack={() => go('result')} />}
         {shown === 'premium' && <PremiumView t={t} />}
+        {shown === 'login' && <LoginView t={t} onHome={() => navTo('home')} onPremium={() => go('premium')} />}
         {shown === 'settings' && (
           <SettingsView t={t} lang={lang} onLang={setLang}
             adsPersonal={adsPersonal} onAdsPersonal={(v) => { setAdsPersonal(v); writeSetting('ktm.adsPersonal', v ? '1' : '0') }}
             canInstall={!!installEvt} onInstall={() => { installEvt?.prompt(); setInstallEvt(null) }} />
         )}
       </main>
-      <Footer t={t} lang={lang} />
+      <Footer t={t} lang={lang} onNav={navTo} onLang={setLang} />
       <PwaToast t={t} />
     </>
   )
