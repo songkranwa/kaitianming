@@ -2,11 +2,9 @@ import { useMemo } from 'react'
 import { cityLabel, coordText, norm, type CityIndex } from '../engine/cities'
 import type { LoadState } from '../hooks/useData'
 import type { Dict } from '../i18n/dict'
-import { readings } from '../i18n/readings'
 import type { Lang } from '../i18n/types'
 import type { BirthForm } from '../App'
-import { AdSlot } from './AdSlot'
-import { Icon } from './Icons'
+import { LogoMark } from './Icons'
 
 interface Props {
   t: Dict; lang: Lang; form: BirthForm; setForm: (f: Partial<BirthForm>) => void
@@ -16,6 +14,7 @@ interface Props {
 const daysInMonth = (m: string, y: string) => new Date(y ? Number(y) : 2000, Number(m), 0).getDate()
 const clampDay = (day: string, m: string, y: string) => (day && m && Number(day) > daysInMonth(m, y) ? '' : day)
 
+/** Home: only what must be entered — logo, DD / MM / YYYY, place of birth, submit. */
 export function HomeView({ t, lang, form, setForm, cities, ready, onSubmit }: Props) {
   const curCE = new Date().getFullYear()
   const months = useMemo(() => {
@@ -33,129 +32,81 @@ export function HomeView({ t, lang, form, setForm, cities, ready, onSubmit }: Pr
   const picked = index && form.cityIdx >= 0 ? index.get(form.cityIdx) : null
   const suggestions = useMemo(() => (index && !picked ? index.search(form.cityQuery).map((i) => index.get(i)) : []), [index, picked, form.cityQuery])
   const noMatch = !!index && !picked && norm(form.cityQuery).length >= 2 && suggestions.length === 0
-  const cityPlaceholder = cities.status === 'ready' ? t.cityPlaceholder : cities.status === 'error' ? t.cityError : t.cityLoading
+  const cityPlaceholder = cities.status === 'ready' ? t.locationPh : cities.status === 'error' ? t.cityError : t.cityLoading
 
   return (
-    <>
-      <section id="top" className="container hero" aria-labelledby="hero-title">
-        <div className="stack" style={{ gap: 22 }}>
-          <p className="eyebrow">{t.eyebrow}</p>
-          <h1 id="hero-title"><span>{t.h1a}</span><span>{t.h1b}</span></h1>
-          <p className="lead">{t.sub}</p>
-          <div className="row-wrap muted gap-12" style={{ gap: 12, fontSize: 15 }}>
-            <span className="chip">{t.chip1}</span><span className="chip">{t.chip2}</span><span className="chip">{t.chip3}</span>
-          </div>
-        </div>
+    <section className="container home" aria-labelledby="home-title">
+      <h1 id="home-title" className="home-logo">
+        <LogoMark size={72} />
+        <span className="home-brand">{t.brand}</span>
+        <span className="home-zh" lang="zh">{t.brandZh}</span>
+      </h1>
 
-        <form className="form-card" onSubmit={(e) => { e.preventDefault(); if (ready) onSubmit() }} noValidate>
-          <div className="stack gap-2">
-            <h2>{t.formTitle}</h2>
-            <p className="muted-2" style={{ fontSize: 15 }}>{t.formSub}</p>
-          </div>
-
-          <fieldset>
-            <legend>{t.step1}</legend>
-            <div className="date-grid">
-              <div className="field">
-                <label htmlFor="f-day">{t.day}</label>
-                <select id="f-day" className="control" value={form.day} onChange={(e) => setForm({ day: e.target.value })}>
-                  <option value="">{t.choose}</option>
-                  {Array.from({ length: dim }, (_, i) => String(i + 1)).map((d) => <option key={d} value={d}>{d}</option>)}
-                </select>
-              </div>
-              <div className="field">
-                <label htmlFor="f-month">{t.month}</label>
-                <select id="f-month" className="control" value={form.month} onChange={(e) => setForm({ month: e.target.value, day: clampDay(form.day, e.target.value, form.year) })}>
-                  <option value="">{t.choose}</option>
-                  {months.map((m) => <option key={m.v} value={m.v}>{m.label}</option>)}
-                </select>
-              </div>
-              <div className="field">
-                <label htmlFor="f-year">{t.year}</label>
-                <select id="f-year" className="control" value={form.year} onChange={(e) => setForm({ year: e.target.value, day: clampDay(form.day, form.month, e.target.value) })}>
-                  <option value="">{t.choose}</option>
-                  {years.map((y) => <option key={y.v} value={y.v}>{y.label}</option>)}
-                </select>
-              </div>
+      <form className="home-form" onSubmit={(e) => { e.preventDefault(); if (ready) onSubmit() }} noValidate>
+        <fieldset>
+          <legend className="sr-only">{t.step1}</legend>
+          <div className="dmy">
+            <div className="field">
+              <label htmlFor="f-day" className="sr-only">{t.day}</label>
+              <select id="f-day" className="control" value={form.day} onChange={(e) => setForm({ day: e.target.value })}>
+                <option value="">{t.dayPh}</option>
+                {Array.from({ length: dim }, (_, i) => String(i + 1)).map((d) => <option key={d} value={d}>{d}</option>)}
+              </select>
             </div>
-          </fieldset>
+            <div className="field">
+              <label htmlFor="f-month" className="sr-only">{t.month}</label>
+              <select id="f-month" className="control" value={form.month} onChange={(e) => setForm({ month: e.target.value, day: clampDay(form.day, e.target.value, form.year) })}>
+                <option value="">{t.monthPh}</option>
+                {months.map((m) => <option key={m.v} value={m.v}>{m.label}</option>)}
+              </select>
+            </div>
+            <div className="field">
+              <label htmlFor="f-year" className="sr-only">{t.year}</label>
+              <select id="f-year" className="control" value={form.year} onChange={(e) => setForm({ year: e.target.value, day: clampDay(form.day, form.month, e.target.value) })}>
+                <option value="">{t.yearPh}</option>
+                {years.map((y) => <option key={y.v} value={y.v}>{y.label}</option>)}
+              </select>
+            </div>
+          </div>
+        </fieldset>
 
+        {picked ? (
+          <div className="picked">
+            <div className="stack" style={{ minWidth: 0 }}>
+              <span style={{ fontWeight: 600 }}>{cityLabel(picked, lang)}</span>
+              <span className="muted-2 small">{picked.tz}</span>
+            </div>
+            <button type="button" className="btn-ghost" onClick={() => setForm({ cityQuery: '', cityIdx: -1 })}>{t.cityChange}</button>
+          </div>
+        ) : (
           <div className="stack gap-8">
-            <span style={{ fontWeight: 600, fontSize: 16 }}>{t.step2}</span>
-            {picked ? (
-              <div className="picked">
-                <div className="stack" style={{ minWidth: 0 }}>
-                  <span style={{ fontWeight: 600 }}>{cityLabel(picked, lang)}</span>
-                  <span className="muted-2 small">{t.cityPicked} · {picked.tz}</span>
-                </div>
-                <button type="button" className="btn-ghost" onClick={() => setForm({ cityQuery: '', cityIdx: -1 })}>{t.cityChange}</button>
-              </div>
-            ) : (
-              <>
-                {cities.status !== 'ready' && <p role="status" className="muted" style={{ fontSize: 15 }}>{cityPlaceholder}</p>}
-                <div className="field">
-                  <label htmlFor="f-city">{t.cityLabel}</label>
-                  <input
-                    id="f-city" className="control" type="text" autoComplete="off" spellCheck={false}
-                    value={form.cityQuery} placeholder={cityPlaceholder} disabled={!index}
-                    aria-controls="city-suggestions" aria-describedby={noMatch ? 'city-none' : undefined}
-                    onChange={(e) => setForm({ cityQuery: e.target.value, cityIdx: -1 })}
-                  />
-                </div>
-                {suggestions.length > 0 && (
-                  <ul id="city-suggestions" className="suggest" aria-label={t.citySuggestions}>
-                    {suggestions.map((c) => (
-                      <li key={c.idx}>
-                        <button type="button" onClick={() => setForm({ cityIdx: c.idx, cityQuery: cityLabel(c, lang) })}>
-                          <span>{cityLabel(c, lang)}</span>
-                          <span className="muted-2" style={{ fontSize: 13 }}>{c.tz} · {coordText(c.lat, c.lon)}</span>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                {noMatch && <p id="city-none" className="muted" style={{ fontSize: 15 }}>{t.cityNone}</p>}
-              </>
-            )}
-          </div>
-
-          <button type="submit" className="btn-primary" disabled={!ready}>{t.analyze}</button>
-          {!ready && <p className="muted-2 small" style={{ textAlign: 'center' }}>{t.needAll}</p>}
-        </form>
-      </section>
-
-      <section id="readings" className="section-alt" aria-labelledby="readings-title">
-        <div className="container section-pad">
-          <div className="stack gap-10" style={{ maxWidth: 660 }}>
-            <h2 id="readings-title" className="section-title">{t.readingsTitle}</h2>
-            <p className="muted">{t.readingsSub}</p>
-          </div>
-          <div className="grid grid-280">
-            {readings(lang).map((r) => (
-              <article key={r.title} className="reading">
-                <div className="icon-box"><Icon d={r.icon} stroke="var(--accent)" /></div>
-                <h3>{r.title}</h3>
-                <p className="muted" style={{ fontSize: 16 }}>{r.body}</p>
-              </article>
-            ))}
-          </div>
-          <AdSlot label={t.adLabel} />
-        </div>
-      </section>
-
-      <section id="how" className="container section-pad" aria-labelledby="how-title">
-        <h2 id="how-title" className="section-title">{t.howTitle}</h2>
-        <div className="grid grid-240">
-          {([[t.how1t, t.how1b], [t.how2t, t.how2b], [t.how3t, t.how3b]] as const).map(([h, b], i) => (
-            <div key={h} className="stack gap-8 step">
-              <span className="step-num">{i + 1}</span>
-              <h3>{h}</h3>
-              <p className="muted" style={{ fontSize: 16 }}>{b}</p>
+            <div className="field">
+              <label htmlFor="f-city" className="sr-only">{t.step2}</label>
+              <input
+                id="f-city" className="control" type="text" autoComplete="off" spellCheck={false}
+                value={form.cityQuery} placeholder={cityPlaceholder} disabled={!index}
+                aria-controls="city-suggestions" aria-describedby={noMatch ? 'city-none' : undefined}
+                onChange={(e) => setForm({ cityQuery: e.target.value, cityIdx: -1 })}
+              />
             </div>
-          ))}
-        </div>
-        <a href="#top" className="btn-outline" style={{ alignSelf: 'flex-start' }}>{t.startNow}</a>
-      </section>
-    </>
+            {suggestions.length > 0 && (
+              <ul id="city-suggestions" className="suggest" aria-label={t.citySuggestions}>
+                {suggestions.map((c) => (
+                  <li key={c.idx}>
+                    <button type="button" onClick={() => setForm({ cityIdx: c.idx, cityQuery: cityLabel(c, lang) })}>
+                      <span>{cityLabel(c, lang)}</span>
+                      <span className="muted-2" style={{ fontSize: 13 }}>{c.tz} · {coordText(c.lat, c.lon)}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {noMatch && <p id="city-none" className="muted small">{t.cityNone}</p>}
+          </div>
+        )}
+
+        <button type="submit" className="btn-primary home-submit" disabled={!ready}>{t.analyze}</button>
+      </form>
+    </section>
   )
 }

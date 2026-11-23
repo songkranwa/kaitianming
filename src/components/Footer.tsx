@@ -1,21 +1,45 @@
 import { useState } from 'react'
+import { CONTACT_EMAIL } from '../config'
 import { credits } from '../i18n/credits'
 import type { Dict } from '../i18n/dict'
-import type { Lang } from '../i18n/types'
-import { ICON, Icon } from './Icons'
+import { LANGS, type Lang } from '../i18n/types'
+import type { View } from '../App'
 
-export function Footer({ t, lang }: { t: Dict; lang: Lang }) {
+interface Props { t: Dict; lang: Lang; onNav: (v: View) => void; onLang: (l: Lang) => void }
+
+/** Three columns (contact · information · more), then copyright and disclaimer. Credits open under them. */
+export function Footer({ t, lang, onNav, onLang }: Props) {
   const [open, setOpen] = useState(false)
   return (
     <footer className="site-footer">
       <div className="container">
-        <div className="row-wrap between gap-16 muted-2 small" style={{ gap: 16 }}>
+        <div className="foot-cols">
+          <div className="stack gap-8">
+            <h2 className="foot-h">{t.footContact}</h2>
+            <a className="link-btn" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+          </div>
+          <div className="stack gap-8">
+            <h2 className="foot-h">{t.footInfo}</h2>
+            <button type="button" className="link-btn" onClick={() => onNav('settings')}>{t.privacyLink}</button>
+            <button type="button" className="link-btn" aria-expanded={open} aria-controls="credits" onClick={() => setOpen(!open)}>{open ? t.creditsHide : t.creditsShow}</button>
+          </div>
+          <div className="stack gap-8">
+            <h2 className="foot-h">{t.footMore}</h2>
+            <button type="button" className="link-btn" onClick={() => onNav('premium')}>{t.navPremium}</button>
+            <button type="button" className="link-btn" onClick={() => onNav('settings')}>{t.navSettings}</button>
+            <div role="group" aria-label={t.navLang} className="seg" style={{ alignSelf: 'flex-start' }}>
+              {LANGS.map((l) => (
+                <button key={l.v} type="button" aria-pressed={lang === l.v} onClick={() => onLang(l.v)} lang={l.v}>{l.short}</button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="foot-bottom muted-2 small">
           <span>{t.copyright(new Date().getFullYear())}</span>
           <span>{t.disclaimer}</span>
-          <button type="button" className="btn-ghost" aria-expanded={open} aria-controls="credits" onClick={() => setOpen(!open)}>
-            <Icon d={ICON.book} size={16} width={1.8} />{open ? t.creditsHide : t.creditsShow}
-          </button>
         </div>
+
         {open && (
           <section id="credits" className="credits" aria-labelledby="credits-title">
             <div className="stack gap-6">
