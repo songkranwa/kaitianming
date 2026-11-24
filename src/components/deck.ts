@@ -8,6 +8,7 @@ import type { Result } from '../engine/compute'
 import type { AnimalRelation, Contact, Overall } from '../engine/forecast'
 import type { Lang } from '../i18n/types'
 import { starText } from './format'
+import { starValue } from '../engine/paper'
 
 export type LockLevel = 'free' | 'member' | 'premium'
 /** Who is looking. Accounts are not built yet, so everyone is a guest for now. */
@@ -131,6 +132,9 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
           rows: [{ k: th ? 'กลุ่มดาว' : 'Constellation', v: pp.personal.constellation_name }, { k: th ? 'โชติมาตร' : 'Magnitude', v: String(pp.personal.mag) },
             { k: th ? 'ห่างจากจุดเหนือศีรษะ' : 'From overhead', v: `${pp.personal.distance_from_zenith_deg}° · ${pp.personal.bearing}` }] },
         { kicker: th ? 'แผ่นฟากฟ้า ณ คืนวันเกิด' : 'Your sky on the night of birth', value: '', skyMap: true },
+        { kicker: th ? 'ค่าดวงดาวคืนเกิด (ความสูงจากขอบฟ้า)' : 'Star values on the night of birth (height above the horizon)', value: '',
+          rows: pp.bodies.map((b) => ({ k: b.name, v: b.p.alt >= 0 ? `${Math.round(b.p.alt)}° → ${starValue(b.p.alt)}` : (th ? `ใต้ขอบฟ้า (${Math.round(b.p.alt)}°)` : `below horizon (${Math.round(b.p.alt)}°)`) })),
+          body: th ? 'ขอบฟ้า 0° ถึงเหนือศีรษะ 90° แบ่งช่วงละ 10°: 0–10° = 1 … 80–90° = 9 ดูจากที่เกิด เวลา 00:00 น.' : 'Horizon 0° to overhead 90° in 10° steps: 0–10° = 1 … 80–90° = 9, seen from your birthplace at 00:00.' },
         { kicker: th ? 'สว่างหรือมืด' : 'Bright or dark', value: pp.brightness.birth_sign.state,
           body: pp.brightness.birth_sign.blockers.length ? (th ? 'ดาวที่บัง: ' : 'Covered by: ') + pp.brightness.birth_sign.blockers.join(', ') : (th ? 'ไม่มีดาวใหญ่บังราศีเกิด' : 'No major body covers your birth sign') },
         { kicker: th ? 'ดาวใหญ่และการทับซ้อน' : 'Planets and overlaps', value: pp.overlaps.length ? String(pp.overlaps.length) : (th ? 'ไม่มี' : 'None'),
