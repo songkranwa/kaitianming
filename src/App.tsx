@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { AdminView } from './components/AdminView'
 import { CalcView, type CalcTab } from './components/CalcView'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
@@ -8,21 +9,22 @@ import { PremiumView } from './components/PremiumView'
 import { PwaToast } from './components/PwaToast'
 import { ResultView } from './components/ResultView'
 import { SettingsView } from './components/SettingsView'
+import { usePredictionTexts } from './content/predictions'
 import { cityLabel } from './engine/cities'
 import { computeResult } from './engine/compute'
 import { useCatalog, useCities } from './hooks/useData'
 import { dict } from './i18n/dict'
 import { detectLang, type Lang } from './i18n/types'
 
-export type View = 'home' | 'result' | 'calc' | 'premium' | 'settings' | 'login'
+export type View = 'home' | 'result' | 'calc' | 'premium' | 'settings' | 'login' | 'admin'
 
 /** Birth details live only in memory: never in the URL, storage, or any request. */
 export interface BirthForm { day: string; month: string; year: string; cityQuery: string; cityIdx: number }
 
-const PATHS: Partial<Record<View, string>> = { premium: '/premium', settings: '/settings', login: '/login' }
+const PATHS: Partial<Record<View, string>> = { premium: '/premium', settings: '/settings', login: '/login', admin: '/admin' }
 const viewFromPath = (): View => {
   const p = location.pathname
-  return p.startsWith('/premium') ? 'premium' : p.startsWith('/settings') ? 'settings' : p.startsWith('/login') ? 'login' : 'home'
+  return p.startsWith('/premium') ? 'premium' : p.startsWith('/settings') ? 'settings' : p.startsWith('/login') ? 'login' : p.startsWith('/admin') ? 'admin' : 'home'
 }
 
 interface InstallEvent extends Event { prompt: () => Promise<void> }
@@ -43,6 +45,7 @@ export default function App() {
   const [installEvt, setInstallEvt] = useState<InstallEvent | null>(null)
   const cities = useCities()
   const catalog = useCatalog()
+  const texts = usePredictionTexts()
   const t = dict(lang)
 
   const setForm = useCallback((f: Partial<BirthForm>) => setFormState((s) => ({ ...s, ...f })), [])
@@ -72,16 +75,17 @@ export default function App() {
 
   const ready = !!(form.day && form.month && form.year) && form.cityIdx >= 0 && cities.status === 'ready'
   const showResult = (view === 'result' || view === 'calc') && ready
-  const shown: View = showResult ? view : view === 'premium' || view === 'settings' || view === 'login' ? view : 'home'
+  const shown: View = showResult ? view : view === 'premium' || view === 'settings' || view === 'login' || view === 'admin' ? view : 'home'
 
   const cat = catalog.status === 'ready' ? catalog.data : null
+  const cons = useMemo(() => (cat ? Object.fromEntries(Object.entries(cat.cons).map(([id, c]) => [id, c.th || c.la])) : {}), [cat])
   const res = useMemo(() => {
     if (!showResult || cities.status !== 'ready') return null
     return computeResult(Number(form.year), Number(form.month), Number(form.day), cities.data.get(form.cityIdx), lang, cat)
   }, [showResult, cities, form.year, form.month, form.day, form.cityIdx, lang, cat])
 
   useEffect(() => {
-    const titles: Record<View, string> = { home: '', result: t.resultTitle, calc: t.calcTitle, premium: t.premiumTitle, settings: t.settingsTitle, login: t.loginTitle }
+    const titles: Record<View, string> = { home: '', result: t.resultTitle, calc: t.calcTitle, premium: t.premiumTitle, settings: t.settingsTitle, login: t.loginTitle, admin: 'Admin' }
     document.title = (titles[shown] ? titles[shown] + ' · ' : '') + 'Kaitianming 开天命'
   }, [shown, t])
 
@@ -94,11 +98,12 @@ export default function App() {
       <main id="main">
         {shown === 'home' && <HomeView t={t} lang={lang} form={form} setForm={setForm} cities={cities} ready={ready} onSubmit={() => { setCalcTab('time'); go('result') }} />}
         {shown === 'result' && res && (
-          <ResultView t={t} lang={lang} res={res} catalogError={catalog.status === 'error'} tier="guest"
+          <ResultView t={t} lang={lang} res={res} texts={texts} catalogError={catalog.status === 'error'} tier="guest"
             onBack={() => go('home')} onCalc={() => go('calc')} onUnlock={(level) => go(level === 'member' ? 'login' : 'premium')} />
         )}
         {shown === 'calc' && res && <CalcView t={t} lang={lang} res={res} catalogError={catalog.status === 'error'} tab={calcTab} setTab={setCalcTab} onBack={() => go('result')} />}
         {shown === 'premium' && <PremiumView t={t} />}
+        {shown === 'admin' && <AdminView cons={cons} />}
         {shown === 'login' && <LoginView t={t} onHome={() => navTo('home')} onPremium={() => go('premium')} />}
         {shown === 'settings' && (
           <SettingsView t={t} lang={lang} onLang={setLang}

@@ -4,6 +4,7 @@ import { labels, type Labels } from '../i18n/labels'
 import type { Lang } from '../i18n/types'
 import { chart, type Chart } from './chart'
 import type { City } from './cities'
+import { forecast, type Forecast } from './forecast'
 import { numberPowers, type NumberPowers } from './numbers'
 import { paperCompute, type Paper, type SkyCatalog } from './paper'
 
@@ -11,7 +12,7 @@ export const ENGINE_VERSION = '0.4.0'
 
 export interface Result {
   L: Labels; city: City; inp: { y: number; m: number; d: number }
-  ch: Chart; np: NumberPowers; pp: Paper | null; animal: string
+  ch: Chart; np: NumberPowers; pp: Paper | null; animal: string; fc: Forecast
   json: Record<string, unknown>
 }
 
@@ -20,6 +21,7 @@ export function computeResult(y: number, m: number, d: number, city: City, lang:
   const ch = chart({ y, m, d, city }, L)
   const np = numberPowers(d, m, y, now, lang)
   const animal = L.animals[(((y - 4) % 12) + 12) % 12]
+  const fc = forecast(ch.ms, y, np, now)
   const pp = catalog ? paperCompute(catalog, { ms: ch.ms, lat: city.lat, lon: city.lon, tz: city.tz, offsetMin: ch.offsetMin }, L, lang) : null
   const json: Record<string, unknown> = {
     engine_version: ENGINE_VERSION,
@@ -35,8 +37,14 @@ export function computeResult(y: number, m: number, d: number, city: City, lang:
     sun: { rise_local: ch.rise, set_local: ch.set, day_length: ch.dayLen },
     basics: { chinese_zodiac: animal },
     number_powers: np.json,
+    forecast: {
+      computed_at: new Date(fc.now).toISOString(), natal_tropical_lon: fc.natal,
+      day_vs_year: fc.dayVsYear, day_vs_next_year: fc.dayVsNext,
+      transits_today: fc.today, transits_next_30_days: fc.month, transits_next_365_days: fc.year,
+      sign_tropical: fc.sign, chinese_zodiac: fc.animal
+    },
     caveats: ch.notes
   }
   if (pp) json.sky_paper = pp.json
-  return { L, city, inp: { y, m, d }, ch, np, pp, animal, json }
+  return { L, city, inp: { y, m, d }, ch, np, pp, animal, fc, json }
 }

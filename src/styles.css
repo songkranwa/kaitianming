@@ -154,7 +154,8 @@ legend { padding: 0; margin-bottom: 8px; font-weight: 600; font-size: 16px; }
 .deck-rows div { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); }
 .deck-rows dt { color: var(--muted); }
 .deck-rows dd { margin: 0; font-weight: 600; text-align: right; }
-.deck-body { font-size: 15px; }
+.deck-body { font-size: 16px; line-height: 1.75; white-space: pre-line; }
+.deck-pending { color: var(--muted-2); font-style: italic; font-size: 15px; }
 .deck-count { position: absolute; right: 20px; bottom: 14px; }
 .deck-nav { display: flex; align-items: center; justify-content: center; gap: 16px; }
 .deck-arrow { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line-3); background: transparent; display: inline-flex; align-items: center; justify-content: center; }
@@ -168,6 +169,25 @@ legend { padding: 0; margin-bottom: 8px; font-weight: 600; font-size: 16px; }
 .lock-badge { position: relative; width: 72px; height: 72px; border-radius: 50%; background: var(--bg); border: 1px solid var(--accent); display: flex; align-items: center; justify-content: center; }
 .deck-locked > *:not(.deck-cross) { position: relative; }
 .deck-locked .deck-kicker { color: var(--accent); font-size: 17px; }
+
+/* Admin */
+.admin { max-width: 1180px; gap: 20px; }
+.admin-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.admin-grid { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 860px) { .admin-grid { grid-template-columns: minmax(0, 1fr); } }
+.admin-list { gap: 12px; }
+.admin-slots { list-style: none; margin: 0; padding: 0; max-height: 60vh; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }
+.admin-slot { width: 100%; display: flex; align-items: center; gap: 10px; text-align: left; background: transparent; border: 1px solid transparent; border-radius: 10px; padding: 9px 10px; color: inherit; }
+.admin-slot:hover { background: var(--card-alt); }
+.admin-slot.on { border-color: var(--accent); background: var(--card-alt); }
+.admin-slot .dot { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--muted-2); flex: none; }
+.admin-slot .dot.ok { background: var(--accent); border-color: var(--accent); }
+.admin-slot-label { font-size: 15px; }
+.admin-edit { gap: 14px; position: sticky; top: 16px; }
+.admin textarea { width: 100%; resize: vertical; min-height: 140px; background: var(--bg); color: inherit; border: 1px solid var(--line-3); border-radius: 12px; padding: 12px 14px; font: inherit; line-height: 1.7; }
+.admin textarea:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+.admin-hist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
+.admin-hist p { white-space: pre-line; }
 
 /* Calculations */
 .tabs { display: flex; flex-wrap: wrap; gap: 8px; }

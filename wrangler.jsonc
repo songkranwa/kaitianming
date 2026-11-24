@@ -1,11 +1,25 @@
-// Cloudflare Workers (static assets only — no server code).
-// Every calculation runs in the visitor's browser, so birth details never reach a server.
+// Cloudflare Workers: the static site, plus a small API for prediction texts (worker/index.ts).
+// Every birth-date calculation runs in the visitor's browser; the API only serves and edits texts,
+// so birth details never reach a server.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "kaitianming",
+  "main": "worker/index.ts",
   "compatibility_date": "2026-11-01",
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "single-page-application"
-  }
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  // Prediction texts. Wrangler creates the database on the first deploy if it does not exist yet.
+  "d1_databases": [
+    { "binding": "DB", "database_name": "kaitianming-predictions" }
+  ],
+  // Cloudflare Access protects /admin and /api/admin. Until both are filled in, admin saving is refused.
+  "vars": {
+    "ACCESS_TEAM_DOMAIN": "tiny-waterfall-00ea.cloudflareaccess.com",
+    "ACCESS_AUD": "1716e34603c7b2fc8a3024e9f2dea03a9a73fa46e47b25d6087ec58052ff6077"
+  },
+  "observability": { "enabled": true }
 }
