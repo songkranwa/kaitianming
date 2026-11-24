@@ -2,6 +2,7 @@
 // Language-free: returns indices and keys; texts are looked up in src/content/predictions.ts.
 
 import { dayNum, lon, rev, type Planet } from './sky'
+import { animalOn, chineseNewYear, lunarEclipseNear } from './lunar'
 import { yearPower, type NumberPowers } from './numbers'
 
 export const PLANETS: Planet[] = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus']
@@ -65,15 +66,17 @@ export const animalOf = (yearCE: number) => (((yearCE - 4) % 12) + 12) % 12
  *  5. round up to the next whole number; if more than one digit, add the digits until one remains (0–9)
  */
 export const MOON_DIVISOR = [1, 10, 2, 3, 4, 4, 3, 2, 1]
-export interface Overall { age: number; ageGap: number; illum: number; moon: number; moonGap: number; divisor: number; quotient: number; value: number; working: string }
+export interface Overall { age: number; ageGap: number; illum: number; eclipsed: boolean; moon: number; moonGap: number; divisor: number; quotient: number; value: number; working: string }
 
-export function moonFifteenths(illumPct: number): number {
+/** Birth-night Moon in fifteenths (new 1 … full 15). During a lunar eclipse it counts as a dark moon (1). */
+export function moonFifteenths(illumPct: number, eclipsed = false): number {
+  if (eclipsed) return 1
   return Math.min(15, Math.max(1, Math.round((illumPct / 100) * 15)))
 }
 
-export function overall(age: number, illumPct: number): Overall {
+export function overall(age: number, illumPct: number, eclipsed = false): Overall {
   const ageGap = Math.abs(60 - age)
-  const moon = moonFifteenths(illumPct)
+  const moon = moonFifteenths(illumPct, eclipsed)
   const moonGap = Math.abs(9 - moon)
   const divisor = MOON_DIVISOR[moonGap]
   const quotient = Math.ceil(Math.round((ageGap / divisor) * 1e6) / 1e6) + 0
@@ -85,7 +88,7 @@ export function overall(age: number, illumPct: number): Overall {
     working += ` → ${ds.join(' + ')} = ${t}`
     value = t
   }
-  return { age, ageGap, illum: illumPct, moon, moonGap, divisor, quotient, value, working }
+  return { age, ageGap, illum: illumPct, eclipsed, moon, moonGap, divisor, quotient, value, working }
 }
 
 /** Completed years between the birth date and the given date (local calendar). */
@@ -106,11 +109,12 @@ export interface Forecast {
   today: Contact[]; month: Contact[]; year: Contact[]
   /** 7–8: tropical birth sign, today's Sun sign, and the distance between them (0–11 signs). */
   sign: { birth: number; current: number; distance: number }
-  /** 9–10, 12: animals for birth year, this year and next year (Gregorian year; see caveat). */
-  animal: { birth: number; current: number; next: number; relNow: AnimalRelation; relNext: AnimalRelation }
+  /** 9–10, 12: animals at birth, today and next year; the zodiac year changes on Chinese New Year. */
+  animal: { birthCny: { y: number; m: number; d: number }; birth: number; current: number; next: number; relNow: AnimalRelation; relNext: AnimalRelation }
 }
 
 export function forecast(birthMs: number, birth: { y: number; m: number; d: number }, illumPct: number, np: NumberPowers, now = new Date()): Forecast {
+  const eclipsed = lunarEclipseNear(birthMs)
   const birthYear = birth.y
   const ageNow = Math.max(0, ageOn(birth.y, birth.m, birth.d, now))
   const dB = dayNum(birthMs)
@@ -118,16 +122,16 @@ export function forecast(birthMs: number, birth: { y: number; m: number; d: numb
   const nowMs = now.getTime(), cur = now.getFullYear()
   const nextP = yearPower(cur + 1)
   const birthSign = tropSign(natal.Sun), curSign = tropSign(lon('Sun', dayNum(nowMs)))
-  const aB = animalOf(birthYear), aC = animalOf(cur), aN = animalOf(cur + 1)
+  const aB = animalOn(birth.y, birth.m, birth.d), aC = animalOn(cur, now.getMonth() + 1, now.getDate()), aN = animalOf(cur + 1)
   return {
     now: nowMs, natal,
-    overallNow: overall(ageNow, illumPct), overallNext: overall(ageNow + 1, illumPct),
+    overallNow: overall(ageNow, illumPct, eclipsed), overallNext: overall(ageNow + 1, illumPct, eclipsed),
     dayVsYear: { day: np.day.value, year: np.curYear.value, yearCE: cur, diff: Math.abs(np.day.value - np.curYear.value) },
     dayVsNext: { day: np.day.value, year: nextP.value, yearCE: cur + 1, diff: Math.abs(np.day.value - nextP.value) },
     today: transits(natal, nowMs, 0, PLANETS),
     month: transits(natal, nowMs, 30, ['Sun', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus']),
     year: transits(natal, nowMs, 365, ['Mars', 'Jupiter', 'Saturn', 'Uranus']),
     sign: { birth: birthSign, current: curSign, distance: (curSign - birthSign + 12) % 12 },
-    animal: { birth: aB, current: aC, next: aN, relNow: animalRelation(aB, aC), relNext: animalRelation(aB, aN) }
+    animal: { birthCny: chineseNewYear(birthYear), birth: aB, current: aC, next: aN, relNow: animalRelation(aB, aC), relNext: animalRelation(aB, aN) }
   }
 }

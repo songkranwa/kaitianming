@@ -5,6 +5,7 @@ import type { Lang } from '../i18n/types'
 import { chart, type Chart } from './chart'
 import type { City } from './cities'
 import { forecast, type Forecast } from './forecast'
+import { animalOn } from './lunar'
 import { numberPowers, type NumberPowers } from './numbers'
 import { paperCompute, type Paper, type SkyCatalog } from './paper'
 
@@ -20,7 +21,7 @@ export function computeResult(y: number, m: number, d: number, city: City, lang:
   const L = labels(lang)
   const ch = chart({ y, m, d, city }, L)
   const np = numberPowers(d, m, y, now, lang)
-  const animal = L.animals[(((y - 4) % 12) + 12) % 12]
+  const animal = L.animals[animalOn(y, m, d)]
   const fc = forecast(ch.ms, { y, m, d }, ch.illum, np, now)
   const pp = catalog ? paperCompute(catalog, { ms: ch.ms, lat: city.lat, lon: city.lon, tz: city.tz, offsetMin: ch.offsetMin }, L, lang) : null
   const json: Record<string, unknown> = {

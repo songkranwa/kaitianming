@@ -35,7 +35,7 @@ export function slotGroups(cons: Record<string, string>): SlotGroup[] {
     { id: '8', title: '8. ผลของจักรราศีในปัจจุบัน', note: 'ราศีที่ดวงอาทิตย์อยู่ตอนนี้เทียบราศีเกิด ใช้ข้อความของคู่ราศีก่อน ถ้าไม่มีใช้ตามระยะห่าง',
       slots: [...range(12).map((n) => ({ key: `signNow.dist.${n}`, label: n === 0 ? 'ห่าง 0 ราศี (ราศีเดียวกัน)' : `ห่าง ${n} ราศี` })),
         ...range(12).flatMap((a) => range(12).map((b) => ({ key: `signNow.${a}-${b}`, label: `เกิดราศี${SIGNS[a]} · ตอนนี้ราศี${SIGNS[b]}` })))] },
-    { id: '9', title: '9. ปีนักษัตรที่เกิด', note: '',
+    { id: '9', title: '9. ปีนักษัตรที่เกิด', note: 'ปีนักษัตรเปลี่ยนที่วันตรุษจีน',
       slots: ANIMALS.map((a, i) => ({ key: `animal.${i}`, label: `ปี${a}` })) },
     { id: '10', title: '10. ผลของปีนักษัตรปัจจุบัน (ใช้กับปีหน้าในหัวข้อ 12 ด้วย)', note: 'ใช้ข้อความของคู่ปีก่อน ถ้าไม่มีใช้ตามความสัมพันธ์',
       slots: [...REL.map(([k, l]) => ({ key: `animalNow.${k}`, label: l })),

@@ -77,6 +77,13 @@ export function lon(b: Body, d: number): number {
   return rev(Math.atan2(y, x) / RAD)
 }
 
+/** Moon's distance from the Earth's centre, in Earth radii (≈ 56–64). */
+export function moonDistance(d: number): number {
+  const sun = elems('Sun', d), o = elems('Moon', d)
+  const Ms = sun.M, Mm = o.M, D = Mm + o.w + o.N - (Ms + sun.w)
+  return orbit(o).r - 0.58 * cs(Mm - 2 * D) - 0.46 * cs(2 * D)
+}
+
 /** Geocentric ecliptic [longitude, latitude] in degrees. */
 export function ecl(b: Body, d: number): [number, number] {
   const sun = elems('Sun', d), so = orbit(sun)
