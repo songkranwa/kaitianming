@@ -1,7 +1,8 @@
 // Constellation areas (owner's rule, 24 Nov 2026).
-// Only the main constellations count: the 12 zodiac constellations plus every constellation that holds
-// a star of magnitude 1.5 or brighter. A constellation's area is the union of circles drawn around each
-// star of its figure; brighter stars reach further. A point (a planet, the zenith) is influenced by every
+// Only the main constellations count: the 12 zodiac constellations, every constellation that holds
+// a star of magnitude 1.5 or brighter, and the widely known ones regardless of brightness.
+// A constellation's area is the union of circles drawn around each star of its figure; brighter stars
+// reach further, and every star has at least the minimum radius however faint it is. A point (a planet, the zenith) is influenced by every
 // main constellation whose area it lies on — possibly several, possibly none.
 
 import { sep, type RaDec } from './skymap'
@@ -9,12 +10,16 @@ import { sep, type RaDec } from './skymap'
 export const ZODIAC = ['Ari', 'Tau', 'Gem', 'Cnc', 'Leo', 'Vir', 'Lib', 'Sco', 'Sgr', 'Cap', 'Aqr', 'Psc']
 /** Constellations holding a star of magnitude ≤ 1.5 (from the star catalogue). */
 export const BRIGHT_STAR = ['CMa', 'Car', 'Boo', 'Cen', 'Lyr', 'Aur', 'Ori', 'CMi', 'Eri', 'Aql', 'Cru', 'PsA', 'Cyg']
-export const MAIN = [...ZODIAC, ...BRIGHT_STAR]
+/** Widely known constellations kept regardless of brightness (owner, 24 Nov 2026). */
+export const WELL_KNOWN = ['UMa', 'UMi', 'Cas', 'Peg', 'And', 'Per', 'Oph', 'Her']
+export const MAIN = [...ZODIAC, ...BRIGHT_STAR, ...WELL_KNOWN]
 export const isMain = (id: string | null) => !!id && MAIN.includes(id)
 
+/** Smallest radius: a star is never treated as not bright at all. */
+export const MIN_RADIUS = 3
 /** Radius (degrees) that a figure star of this magnitude spreads around itself. */
-export const radiusFor = (mag: number): number => (mag <= 1 ? 8 : mag <= 2 ? 6 : mag <= 3 ? 4 : 3)
-export const RADIUS_RULE = 'magnitude ≤1 → 8°, ≤2 → 6°, ≤3 → 4°, fainter → 3°'
+export const radiusFor = (mag: number): number => (mag <= 1 ? 8 : mag <= 2 ? 6 : mag <= 3 ? 4 : MIN_RADIUS)
+export const RADIUS_RULE = 'magnitude ≤1 → 8°, ≤2 → 6°, ≤3 → 4°, any fainter star (minimum) → 3°'
 
 interface AreaStar { ra: number; dec: number; r: number }
 export interface AreaHit { id: string; /** degrees inside the nearest star's circle (bigger = deeper) */ depth: number }
