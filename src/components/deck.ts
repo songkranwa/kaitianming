@@ -65,6 +65,11 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
     const text = lookup(texts, keys, lang)
     return { kicker, value, body: text ?? d.pending, pending: !text }
   }
+  /** Like reading(), but shows every key that has text, one paragraph each. */
+  const readingAll = (value: string, keys: string[]): DeckCard => {
+    const parts = keys.map((k) => lookup(texts, [k], lang)).filter((x): x is string => !!x)
+    return { kicker: th ? 'คำทำนาย' : 'Reading', value, body: parts.length ? parts.join('\n\n') : d.pending, pending: !parts.length }
+  }
   const relText: Record<AnimalRelation, string> = th
     ? { same: 'ปีชง (ปีนักษัตรเดียวกับปีเกิด)', harmony: 'ปีที่เข้ากัน (หลักคู่มิตร)', trine: 'ปีที่หนุนกัน (สามประสาน)', clash: 'ปีที่ปะทะ (คู่ตรงข้าม)', harm: 'ปีที่ขัดกัน (คู่ทำร้าย)', neutral: 'ปีที่เป็นกลาง' }
     : { same: 'Your own animal year', harmony: 'A harmony year (six-harmony pair)', trine: 'A supporting year (trine)', clash: 'A clash year (opposite animal)', harm: 'A friction year (harm pair)', neutral: 'A neutral year' }
@@ -110,7 +115,7 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
     {
       id: 'sky', lock: 'free', title: th ? 'ดวงดาวบนฟากฟ้าตอนเกิด' : 'The sky when you were born',
       cards: pp ? [
-        reading(pp.zenName, [...(pp.zenCon ? [`sky.zenith.${pp.zenCon}`] : []), `sky.bright.${pp.brightness.birth_sign.state_index}`]),
+        readingAll(pp.zenName, [...(pp.zenCon ? [`sky.zenith.${pp.zenCon}`] : []), `sky.bright.${pp.brightness.birth_sign.state_index}`]),
         { kicker: th ? 'ดาวประจำตัว (ใกล้จุดเหนือศีรษะที่สุด)' : 'Your personal star (closest to overhead)', value: starText(pp.personal),
           rows: [{ k: th ? 'กลุ่มดาว' : 'Constellation', v: pp.personal.constellation_name }, { k: th ? 'โชติมาตร' : 'Magnitude', v: String(pp.personal.mag) },
             { k: th ? 'ห่างจากจุดเหนือศีรษะ' : 'From overhead', v: `${pp.personal.distance_from_zenith_deg}° · ${pp.personal.bearing}` }] },

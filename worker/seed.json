@@ -1,0 +1,721 @@
+{
+ "texts": {
+  "animal.0": {
+   "en": "People born in the Year of the Rat are clever, quick-witted, adaptable, persuasive, ambitious and thrifty, and often spot opportunities before anyone else.\n\nWatch out for: hiding feelings, jealousy, and sometimes trusting too easily.",
+   "th": "คนเกิดปีชวดฉลาด ไหวพริบดี ปรับตัวเก่ง ช่างพูดโน้มน้าวใจ มีความทะเยอทะยาน และรู้จักเก็บออม มักมองเห็นโอกาสก่อนคนอื่น\n\nข้อควรระวัง: เก็บความรู้สึก ขี้หึง และบางครั้งไว้ใจคนง่ายเกินไป"
+  },
+  "animal.1": {
+   "en": "People born in the Year of the Ox are calm, patient, steady, honest, responsible and devoted to family. You work hard without complaint, and success comes from steady perseverance.\n\nWatch out for: stubbornness, sticking to old ways, and a small circle of close friends.",
+   "th": "คนเกิดปีฉลูสุขุม อดทน มั่นคง ซื่อสัตย์ รับผิดชอบ และรักครอบครัว ทำงานหนักโดยไม่บ่น ความสำเร็จมาจากความพากเพียรอย่างต่อเนื่อง\n\nข้อควรระวัง: ดื้อ ยึดติดกับวิธีเดิม และเพื่อนสนิทไม่มาก"
+  },
+  "animal.10": {
+   "en": "People born in the Year of the Dog are loyal, sincere, observant and humorous, protective of those they love, and true friends you can rely on.\n\nWatch out for: suspicion, nagging, and a quick (but short-lived) temper.",
+   "th": "คนเกิดปีจอซื่อสัตย์ จริงใจ ช่างสังเกต มีอารมณ์ขัน และปกป้องคนที่รัก เป็นเพื่อนแท้ที่ไว้ใจได้\n\nข้อควรระวัง: ระแวง ขี้บ่น และโกรธง่ายแต่หายเร็ว"
+  },
+  "animal.11": {
+   "en": "People born in the Year of the Pig are warm, sincere, kind, patient, forgiving, family-loving and fun-loving, artistic and easy to get along with.\n\nWatch out for: low ambition, being too soft-hearted, and stubbornness about some things.",
+   "th": "คนเกิดปีกุนอบอุ่น จริงใจ ใจดี อดทน ให้อภัยง่าย รักครอบครัว และรักความสนุก มีความเป็นศิลปินและเข้ากับคนได้ง่าย\n\nข้อควรระวัง: ไม่ค่อยทะเยอทะยาน ใจอ่อนเกินไป และดื้อในบางเรื่อง"
+  },
+  "animal.2": {
+   "en": "People born in the Year of the Tiger are confident, brave, independent, adventurous and competitive, quick to decide, generous and creative.\n\nWatch out for: impatience, a quick temper (though you forgive quickly), and possessiveness.",
+   "th": "คนเกิดปีขาลมั่นใจ กล้าหาญ รักอิสระ ชอบผจญภัยและการแข่งขัน ตัดสินใจเร็ว ใจกว้าง และมีความคิดสร้างสรรค์\n\nข้อควรระวัง: ใจร้อน โมโหง่ายแต่ก็ให้อภัยเร็ว และหวงของหรือคนที่รัก"
+  },
+  "animal.3": {
+   "en": "People born in the Year of the Rabbit are smart, well-spoken, gentle, refined, peace-loving and empathetic, observant and careful.\n\nWatch out for: fussing over details and avoiding confrontation to the point of missing chances.",
+   "th": "คนเกิดปีเถาะฉลาด พูดจาดี อ่อนโยน มีรสนิยม รักสงบ และเข้าใจความรู้สึกผู้อื่น ช่างสังเกตและรอบคอบ\n\nข้อควรระวัง: จุกจิกในรายละเอียดและหลีกเลี่ยงการเผชิญหน้าจนเสียโอกาส"
+  },
+  "animal.4": {
+   "en": "People born in the Year of the Dragon are charismatic, confident, ambitious, intelligent natural leaders, well known and well liked, who aim to do everything as well as possible.\n\nWatch out for: being controlling, self-centred, and always wanting attention.",
+   "th": "คนเกิดปีมะโรงมีเสน่ห์ มั่นใจ ทะเยอทะยาน ฉลาด และเป็นผู้นำโดยธรรมชาติ เป็นที่รู้จักและชื่นชอบของคนรอบข้าง ทำอะไรมักทำให้ดีที่สุด\n\nข้อควรระวัง: ชอบควบคุม ยึดตัวเองเป็นศูนย์กลาง และอยากได้รับความสนใจตลอดเวลา"
+  },
+  "animal.5": {
+   "en": "People born in the Year of the Snake are quietly alluring, sharp, realistic, determined and intuitive; you learn fast and stay calm under pressure.\n\nWatch out for: withdrawing, holding grudges, and moodiness when pushed.",
+   "th": "คนเกิดปีมะเส็งมีเสน่ห์ลึกลับ เฉียบแหลม มองโลกตามความจริง มุ่งมั่น และสัญชาตญาณดี เรียนรู้เร็ว และนิ่งในสถานการณ์คับขัน\n\nข้อควรระวัง: เก็บตัว จำความแค้นนาน และอารมณ์แปรปรวนเมื่อถูกกดดัน"
+  },
+  "animal.6": {
+   "en": "People born in the Year of the Horse are cheerful, open, freedom-loving, energetic, sociable and good at earning money, and love travel and new things.\n\nWatch out for: a quick temper, boredom and lack of follow-through.",
+   "th": "คนเกิดปีมะเมียร่าเริง เปิดเผย รักอิสระ กระตือรือร้น เข้าสังคมเก่ง และหาเงินเก่ง ชอบการเดินทางและสิ่งใหม่\n\nข้อควรระวัง: ใจร้อน เบื่อง่าย และขาดความต่อเนื่อง"
+  },
+  "animal.7": {
+   "en": "People born in the Year of the Goat are gentle, kind, patient, empathetic, romantic, artistic and forgiving, with an interest in the spiritual.\n\nWatch out for: indecision, worry, and avoiding conflict so much that you can't decide.",
+   "th": "คนเกิดปีมะแมอ่อนโยน ใจดี อดทน เห็นอกเห็นใจผู้อื่น โรแมนติก มีศิลปะ และให้อภัยง่าย สนใจเรื่องจิตใจและความเชื่อ\n\nข้อควรระวัง: ลังเล กังวลมาก และหลีกเลี่ยงความขัดแย้งจนไม่กล้าตัดสินใจ"
+  },
+  "animal.8": {
+   "en": "People born in the Year of the Monkey are clever, witty, funny, charming, adaptable and creative, superb at solving problems on the spot and easy to get along with.\n\nWatch out for: impulsiveness, thrill-seeking, and dislike of heavy, repetitive work.",
+   "th": "คนเกิดปีวอกฉลาด มีไหวพริบ ตลก มีเสน่ห์ ปรับตัวเก่ง และคิดสร้างสรรค์ แก้ปัญหาเฉพาะหน้าได้ดีเยี่ยม เข้ากับคนง่าย\n\nข้อควรระวัง: หุนหันพลันแล่น ชอบความตื่นเต้น และไม่ชอบงานหนักที่จำเจ"
+  },
+  "animal.9": {
+   "en": "People born in the Year of the Rooster are hardworking, punctual, outspoken, proud and detail-minded, loyal to friends and artistic.\n\nWatch out for: criticism, argumentativeness, and perfectionism that brings stress.",
+   "th": "คนเกิดปีระกาขยัน ตรงต่อเวลา กล้าพูด กล้าแสดงออก ภูมิใจในตัวเอง และใส่ใจรายละเอียด ซื่อสัตย์ต่อเพื่อนและมีความเป็นศิลปิน\n\nข้อควรระวัง: ชอบวิจารณ์ ช่างเถียง และสมบูรณ์แบบจนเครียด"
+  },
+  "animalNow.clash": {
+   "en": "This year's animal clashes (liu chong) with yours, sitting opposite on the zodiac wheel. Expect sudden changes, travel or conflict.\n\nAdvice: stay calm, take care with accidents and risky investments, and use change as a chance to adapt rather than resist.",
+   "th": "ปีนักษัตรของปีนี้เป็น 'คู่ปะทะ' (หลิวชง) กับปีเกิดของคุณ อยู่ตรงข้ามกันในวงนักษัตร ปีนี้อาจมีการเปลี่ยนแปลงกะทันหัน การเดินทาง หรือความขัดแย้ง\n\nคำแนะนำ: ใจเย็น ระวังอุบัติเหตุและการลงทุนเสี่ยง ใช้ความเปลี่ยนแปลงเป็นโอกาสในการปรับตัวแทนการต่อต้าน"
+  },
+  "animalNow.harm": {
+   "en": "This year's animal forms a harm pair (liu hai) with yours. Misunderstandings, hurtful words or insincere people may come close.\n\nAdvice: mind your words, check contracts and agreements carefully, and choose carefully whom you trust.",
+   "th": "ปีนักษัตรของปีนี้เป็น 'คู่ขัด' (หลิวไห่) กับปีเกิดของคุณ อาจมีเรื่องเข้าใจผิด คำพูดที่ทำให้เสียใจ หรือคนที่ไม่จริงใจเข้ามาใกล้\n\nคำแนะนำ: ระวังคำพูด ตรวจสอบสัญญาและข้อตกลงให้รอบคอบ และเลือกคนที่จะไว้ใจ"
+  },
+  "animalNow.harmony": {
+   "en": "This year's animal forms a six-harmony pair (liu he) with yours. Helpful people and mentors appear at key moments; a good year for partnerships, negotiation and new relationships.",
+   "th": "ปีนักษัตรของปีนี้เป็น 'คู่มิตร' (หลิวเหอ) กับปีเกิดของคุณ เป็นปีที่มีผู้ใหญ่และคนรอบข้างคอยช่วยเหลือในจังหวะสำคัญ เหมาะกับการร่วมมือ เจรจา และสร้างความสัมพันธ์ใหม่"
+  },
+  "animalNow.neutral": {
+   "en": "This year's animal is neutral towards yours, with no special support or friction. The year's results depend mainly on your own effort and choices.",
+   "th": "ปีนักษัตรของปีนี้เป็นกลางกับปีเกิดของคุณ ไม่มีแรงหนุนหรือแรงขัดเป็นพิเศษ ผลลัพธ์ของปีนี้จึงขึ้นอยู่กับความตั้งใจและการลงมือของคุณเองเป็นหลัก"
+  },
+  "animalNow.same": {
+   "en": "This year shares your birth animal: in Chinese belief, your Ben Ming Nian. Luck is considered unsettled, with possible obstacles or unexpected changes.\n\nAdvice: keep a low profile and be careful with big decisions such as moving, changing jobs or large investments. Traditionally people wear red and pay respects to Tai Sui for protection.",
+   "th": "ปีนี้เป็นปีนักษัตรเดียวกับปีเกิดของคุณ ตามความเชื่อจีนเรียกว่า 'ปีชง' (เปิ่นมิ่งเหนียน) ถือว่าดวงไม่ค่อยนิ่ง อาจมีอุปสรรคหรือการเปลี่ยนแปลงที่ไม่คาดคิด\n\nคำแนะนำ: ทำตัวให้เรียบง่าย ระวังการตัดสินใจเรื่องใหญ่ เช่น ย้ายบ้าน เปลี่ยนงาน หรือลงทุนก้อนใหญ่ ตามความเชื่อนิยมใส่สีแดงและไหว้ไท้ส่วยเอี๊ยเพื่อเสริมดวง"
+  },
+  "animalNow.trine": {
+   "en": "This year's animal is in the same three-harmony group (san he) as yours. Your ideas and goals run with the year's energy; work and relationships flow, making it a good year to start and expand.",
+   "th": "ปีนักษัตรของปีนี้อยู่ใน 'สามประสาน' (ซานเหอ) เดียวกับปีเกิดของคุณ ความคิดและเป้าหมายของคุณไปในทางเดียวกับพลังของปี งานและความสัมพันธ์ไหลลื่น เป็นปีที่ดีสำหรับการเริ่มต้นและขยายงาน"
+  },
+  "day.0": {
+   "en": "Zero is an empty space ready to be filled. You are not bound by old patterns, you see possibilities others miss, and you adapt well to new situations. Life tends to bring turning points that make you start again, and each time you come back stronger.\n\nWatch out for: periods of self-doubt or not knowing which way to go. One clear goal keeps your energy from scattering.",
+   "th": "เลข 0 คือความว่างที่พร้อมจะเติมเต็ม คุณเป็นคนที่ไม่ยึดติดกับกรอบเดิม มองเห็นความเป็นไปได้ที่คนอื่นมองข้าม และปรับตัวเข้ากับสถานการณ์ใหม่ได้ดี ชีวิตมักมีจุดเปลี่ยนที่ทำให้ต้องเริ่มต้นใหม่หลายครั้ง และทุกครั้งคุณจะกลับมาแข็งแรงกว่าเดิม\n\nข้อควรระวัง: บางช่วงอาจรู้สึกไม่แน่ใจในตัวเองหรือไม่รู้ว่าจะไปทางไหน การมีเป้าหมายชัดเจนสักหนึ่งอย่างจะช่วยให้พลังของคุณไม่กระจัดกระจาย"
+  },
+  "day.1": {
+   "en": "One is the leader and pioneer. You are confident, bold, and love to start new things, and you rarely wait for someone to tell you what to do. Work where you make the decisions or launch projects suits you.\n\nWatch out for: determination turning into stubbornness or a need to control everything. Listening to the people around you makes you a leader others want to follow.",
+   "th": "เลข 1 คือผู้นำและผู้บุกเบิก คุณมีความมั่นใจ กล้าคิดกล้าทำ ชอบเริ่มต้นสิ่งใหม่ และมักไม่ชอบรอให้ใครมาบอกว่าต้องทำอะไร เหมาะกับงานที่ได้ตัดสินใจเองหรือได้ริเริ่มโครงการ\n\nข้อควรระวัง: ความมุ่งมั่นอาจกลายเป็นความดื้อหรืออยากควบคุมทุกอย่าง การฟังคนรอบข้างจะทำให้คุณเป็นผู้นำที่คนอยากเดินตาม"
+  },
+  "day.2": {
+   "en": "Two is gentleness and cooperation. You read people well, sense how others feel, and act as the bridge that helps everyone get along. Relationships and teamwork are your strengths.\n\nWatch out for: sensitivity that makes you dwell on small things or hold back what you want. Try saying how you feel more directly.",
+   "th": "เลข 2 คือความอ่อนโยนและการประสานงาน คุณอ่านใจคนเก่ง เข้าใจความรู้สึกผู้อื่น และเป็นคนกลางที่ช่วยให้ทุกฝ่ายเข้ากันได้ ความสัมพันธ์และการทำงานเป็นทีมคือจุดแข็งของคุณ\n\nข้อควรระวัง: ความอ่อนไหวอาจทำให้เก็บเรื่องเล็กมาคิดมากหรือไม่กล้าพูดสิ่งที่ต้องการ ลองบอกความรู้สึกออกไปตรงๆ บ้าง"
+  },
+  "day.3": {
+   "en": "Three is creativity and expression. You are cheerful, witty, articulate and imaginative, and you brighten the mood around you. Art, communication and work with people suit you.\n\nWatch out for: many interests that leave things half-finished. Choosing a focus lets your talents bear full fruit.",
+   "th": "เลข 3 คือความคิดสร้างสรรค์และการแสดงออก คุณร่าเริง มีอารมณ์ขัน พูดเก่ง มีจินตนาการ และทำให้บรรยากาศรอบตัวสดใส งานด้านศิลปะ การสื่อสาร หรือการพบปะผู้คนเหมาะกับคุณ\n\nข้อควรระวัง: ความสนใจที่หลากหลายอาจทำให้ทำหลายอย่างแต่ไม่จบสักอย่าง การเลือกโฟกัสจะทำให้พรสวรรค์ของคุณออกผลเต็มที่"
+  },
+  "day.4": {
+   "en": "Four is stability and order. You are serious, hardworking and patient, you work step by step, and what you build lasts. People trust you because you do what you say.\n\nWatch out for: carefulness turning into rigidity or resistance to change. Being open to new ways speeds things up.",
+   "th": "เลข 4 คือความมั่นคงและระเบียบ คุณเป็นคนจริงจัง ขยัน อดทน ทำงานเป็นขั้นตอน และสร้างผลงานที่อยู่ได้นาน คนรอบข้างไว้ใจคุณเพราะพูดแล้วทำจริง\n\nข้อควรระวัง: ความรอบคอบอาจกลายเป็นความเข้มงวดหรือไม่ยอมเปลี่ยนแปลง การเปิดรับวิธีใหม่ๆ บ้างจะช่วยให้งานเดินเร็วขึ้น"
+  },
+  "day.5": {
+   "en": "Five is freedom and change. You are curious, love learning and travel, adapt quickly, and are charming to talk to. Variety in life gives you energy.\n\nWatch out for: getting bored and changing jobs or goals too often. Planning your money and finishing what you start keeps your freedom secure.",
+   "th": "เลข 5 คืออิสระและการเปลี่ยนแปลง คุณช่างสงสัย ชอบเรียนรู้ ชอบเดินทาง ปรับตัวเร็ว และมีเสน่ห์ในการพูดคุย ชีวิตที่มีความหลากหลายทำให้คุณมีพลัง\n\nข้อควรระวัง: ความเบื่อง่ายอาจทำให้เปลี่ยนงานหรือเป้าหมายบ่อยเกินไป การวางแผนการเงินและทำสิ่งที่เริ่มไว้ให้เสร็จจะทำให้อิสรภาพของคุณมั่นคง"
+  },
+  "day.6": {
+   "en": "Six is love and responsibility. You care deeply for family and those close to you, enjoy looking after others, and love beauty and harmony. People can always lean on you.\n\nWatch out for: giving so much that you forget yourself, which can lead to exhaustion or resentment. You deserve care too.",
+   "th": "เลข 6 คือความรักและความรับผิดชอบ คุณใส่ใจครอบครัวและคนใกล้ชิด ชอบดูแลผู้อื่น รักความสวยงามและความกลมกลืน เป็นที่พึ่งของคนรอบข้างได้เสมอ\n\nข้อควรระวัง: การให้มากเกินไปจนลืมดูแลตัวเองอาจทำให้เหนื่อยหรือน้อยใจ อย่าลืมว่าตัวคุณก็สมควรได้รับการดูแลเช่นกัน"
+  },
+  "day.7": {
+   "en": "Seven is wisdom and reflection. You are observant, think deeply, look for the truth behind things, and are drawn to the inner life or specialist knowledge. Research, analysis and expert work suit you.\n\nWatch out for: withdrawing, or expecting others to understand you without explanation, which can feel lonely. Let trusted people in.",
+   "th": "เลข 7 คือปัญญาและการใคร่ครวญ คุณช่างสังเกต คิดลึก ชอบหาความจริงเบื้องหลังสิ่งต่างๆ และสนใจเรื่องจิตใจหรือความรู้เฉพาะทาง งานวิจัย การวิเคราะห์ หรือที่ต้องใช้ความเชี่ยวชาญเหมาะกับคุณ\n\nข้อควรระวัง: การเก็บตัวหรือคาดหวังให้คนอื่นเข้าใจโดยไม่อธิบาย อาจทำให้รู้สึกโดดเดี่ยว ลองเปิดใจให้คนที่ไว้ใจได้บ้าง"
+  },
+  "day.8": {
+   "en": "Eight is power and material success. You manage well, handle money and resources skilfully, are ambitious, and dare to make big decisions. You can build your own wealth.\n\nWatch out for: fixation on status or control, and hasty money decisions. Balancing work and life makes success last.",
+   "th": "เลข 8 คืออำนาจและความสำเร็จทางวัตถุ คุณมีความสามารถในการบริหาร จัดการเงินและทรัพยากรเก่ง มีความทะเยอทะยาน และกล้าตัดสินใจเรื่องใหญ่ มีโอกาสสร้างฐานะได้ด้วยตัวเอง\n\nข้อควรระวัง: การยึดติดกับสถานะหรือการควบคุม และการตัดสินใจเรื่องเงินอย่างใจร้อน ความสมดุลระหว่างงานกับชีวิตจะทำให้ความสำเร็จยั่งยืน"
+  },
+  "day.9": {
+   "en": "Nine is compassion and completion. You are generous, see the big picture, empathise with others, and want to do good for the wider world. You know a lot and give good advice.\n\nWatch out for: giving until you are drained, finding it hard to accept help, and mood swings. Letting go of what is finished lightens your heart.",
+   "th": "เลข 9 คือความเมตตาและความสมบูรณ์ คุณใจกว้าง มองโลกกว้าง เห็นอกเห็นใจผู้อื่น และอยากทำสิ่งที่เป็นประโยชน์ต่อส่วนรวม มีความรู้รอบตัวและเป็นที่ปรึกษาที่ดี\n\nข้อควรระวัง: การให้จนตัวเองเหนื่อยหรือรับความช่วยเหลือจากคนอื่นไม่เป็น และอารมณ์ที่ขึ้นลง การรู้จักปล่อยวางเรื่องที่จบไปแล้วจะทำให้ใจเบา"
+  },
+  "dayYear.diff.0": {
+   "en": "Your birth number matches this year's power, so the rhythm of your life is in step with the year. What you set out to do gets full support, which makes it a good time to act on plans you have been holding.\n\nWatch out for: with the same energy doubled, both strengths and weaknesses show twice as clearly. Don't overreach.",
+   "th": "เลขวันเกิดของคุณตรงกับกำลังปี ปีนี้จึงเป็นปีที่จังหวะชีวิตของคุณสอดคล้องกับพลังของปีพอดี สิ่งที่ตั้งใจทำมีแรงหนุนเต็มที่ เหมาะกับการลงมือทำเรื่องที่รอมานาน\n\nข้อควรระวัง: เมื่อพลังซ้ำกัน ทั้งจุดเด่นและจุดด้อยจะชัดขึ้นเป็นสองเท่า ระวังทำอะไรเกินตัว"
+  },
+  "dayYear.diff.1": {
+   "en": "Your birth number and the year's power differ by only 1. The year moves close to your nature, change comes smoothly a little at a time, and it suits building on what you already have.",
+   "th": "เลขวันเกิดกับกำลังปีต่างกันเพียง 1 ปีนี้เดินไปในทิศทางที่ใกล้กับธรรมชาติของคุณ การเปลี่ยนแปลงเกิดขึ้นทีละน้อยอย่างราบรื่น เหมาะกับการพัฒนาต่อยอดสิ่งที่มีอยู่"
+  },
+  "dayYear.diff.2": {
+   "en": "Your birth number and the year's power differ by 2. Opportunities this year come through cooperation and the people around you; working with a team or partner takes you further than going alone.",
+   "th": "เลขวันเกิดกับกำลังปีต่างกัน 2 ปีนี้มีโอกาสเข้ามาจากความร่วมมือและคนรอบข้าง การทำงานเป็นทีมหรือมีหุ้นส่วนจะช่วยให้ไปได้ไกลกว่าทำคนเดียว"
+  },
+  "dayYear.diff.3": {
+   "en": "Your birth number and the year's power differ by 3. The year opens the way for new ideas and self-expression, a good time to learn, experiment, and show people what you have.",
+   "th": "เลขวันเกิดกับกำลังปีต่างกัน 3 ปีนี้เปิดทางให้ความคิดใหม่และการแสดงออก เป็นช่วงที่ดีสำหรับการเรียนรู้ ทดลอง และสื่อสารสิ่งที่คุณมีให้คนอื่นเห็น"
+  },
+  "dayYear.diff.4": {
+   "en": "Your birth number and the year's power differ by 4. This year asks for patience and planning; things may move slower than you hope, but a solid foundation built now will last.",
+   "th": "เลขวันเกิดกับกำลังปีต่างกัน 4 ปีนี้ต้องใช้ความอดทนและการวางแผน สิ่งต่างๆ อาจช้ากว่าที่หวัง แต่ถ้าค่อยๆ สร้างฐานให้มั่นคง ผลจะอยู่ได้นาน"
+  },
+  "dayYear.diff.5": {
+   "en": "Your birth number and the year's power differ by 5. This is a year of change: a move, a new job or unfamiliar situations. Flexibility is the key; don't make big decisions on impulse.",
+   "th": "เลขวันเกิดกับกำลังปีต่างกัน 5 ปีนี้เป็นปีแห่งการเปลี่ยนแปลง อาจมีการย้ายที่ เปลี่ยนงาน หรือเจอสถานการณ์ใหม่ ความยืดหยุ่นคือกุญแจสำคัญ อย่าตัดสินใจเรื่องใหญ่ด้วยอารมณ์"
+  },
+  "dayYear.diff.6": {
+   "en": "Your birth number and the year's power differ by 6. Family, love and responsibility come to the fore. You may carry more, but it is also a chance for relationships to grow closer.",
+   "th": "เลขวันเกิดกับกำลังปีต่างกัน 6 ปีนี้เรื่องครอบครัว ความรัก และความรับผิดชอบจะเด่นขึ้น อาจมีภาระเพิ่ม แต่ก็เป็นโอกาสให้ความสัมพันธ์แน่นแฟ้นขึ้น"
+  },
+  "dayYear.diff.7": {
+   "en": "Your birth number and the year's power differ by 7. The year favours reflection over pushing ahead. Study, learn and listen to yourself; the answers will point the way for next year.",
+   "th": "เลขวันเกิดกับกำลังปีต่างกัน 7 ปีนี้เหมาะกับการทบทวนตัวเองมากกว่าการเร่งก้าวไปข้างหน้า ใช้เวลาศึกษา หาความรู้ และฟังเสียงภายใน คำตอบที่ได้จะชี้ทางให้ปีต่อไป"
+  },
+  "dayYear.diff.8": {
+   "en": "Your birth number and the year's power differ widely (8). The year's energy is unlike your nature, so you may need to adjust in many ways, but it is also a chance to try a new role. Be careful with money and risky investments.",
+   "th": "เลขวันเกิดกับกำลังปีต่างกันมาก (8) ปีนี้พลังของปีต่างจากธรรมชาติของคุณ อาจต้องปรับตัวหลายเรื่อง แต่ก็เป็นโอกาสให้ได้ลองบทบาทใหม่ ระวังเรื่องการเงินและการลงทุนที่เสี่ยง"
+  },
+  "dayYear.diff.9": {
+   "en": "Your birth number and the year's power are at opposite ends (a difference of 9). This year closes old chapters to make room for new beginnings; what isn't yours will fall away. Let go and make space for what comes next.",
+   "th": "เลขวันเกิดกับกำลังปีอยู่คนละขั้ว (ต่างกัน 9) ปีนี้เป็นช่วงปิดฉากเรื่องเก่าเพื่อเริ่มต้นใหม่ สิ่งที่ไม่ใช่ของคุณจะค่อยๆ หลุดออกไป ปล่อยวางแล้วเตรียมพื้นที่ให้สิ่งใหม่"
+  },
+  "sign.0": {
+   "en": "Aries are energetic, brave and competitive, thriving on challenge. You decide quickly, are ready to go first, lead naturally and speak plainly.\n\nWatch out for: impatience and impulsiveness; quick to anger but quick to forgive. A moment's pause before acting saves mistakes.",
+   "th": "ชาวราศีเมษเป็นคนกระตือรือร้น กล้าหาญ ชอบการแข่งขันและความท้าทาย ตัดสินใจเร็วและพร้อมเป็นคนแรกที่ลงมือ มีภาวะผู้นำตามธรรมชาติ พูดตรงไปตรงมา\n\nข้อควรระวัง: ใจร้อนและหุนหันพลันแล่น โกรธง่ายแต่ก็หายเร็ว การหยุดคิดสักนิดก่อนลงมือจะช่วยลดความผิดพลาด"
+  },
+  "sign.1": {
+   "en": "Taurus are steady, patient and dependable; you follow through and don't quit halfway. You love comfort, quality, good food and a warm home, stay loyal to those you love, and know how to save.\n\nWatch out for: stubbornness and resistance to change. Adapting sometimes leads somewhere better.",
+   "th": "ชาวราศีพฤษภเป็นคนหนักแน่น อดทน มั่นคง ทำอะไรทำจริงและไม่ทิ้งกลางทาง รักความสะดวกสบาย ของดี อาหารอร่อย และบ้านที่อบอุ่น ซื่อสัตย์ต่อคนที่รัก รู้จักเก็บออม\n\nข้อควรระวัง: ความดื้อและการไม่ยอมเปลี่ยนแปลง บางครั้งการยอมปรับตัวจะพาไปเจอสิ่งที่ดีกว่า"
+  },
+  "sign.10": {
+   "en": "Aquarians think outside the box, are full of new ideas, love independence, care about society, are very much themselves, and make good friends.\n\nWatch out for: being hard to read, hiding feelings, and clinging to your own ideas. Hearing other views makes your ideas stronger.",
+   "th": "ชาวราศีกุมภ์เป็นคนคิดนอกกรอบ มีไอเดียใหม่ รักอิสระ ใส่ใจสังคมและส่วนรวม เป็นตัวของตัวเองสูง และเป็นเพื่อนที่ดี\n\nข้อควรระวัง: เข้าใจยาก เก็บความรู้สึก และดื้อในความคิดของตัวเอง การเปิดใจรับฟังมุมมองอื่นจะทำให้ไอเดียของคุณยิ่งแข็งแรง"
+  },
+  "sign.11": {
+   "en": "Pisceans are gentle, compassionate, imaginative, artistic, romantic and intuitive, always ready to help someone in need.\n\nWatch out for: mood swings, indecision and avoiding hard truths. Setting boundaries protects your energy.",
+   "th": "ชาวราศีมีนเป็นคนอ่อนโยน เห็นอกเห็นใจผู้อื่น มีจินตนาการ มีศิลปะ โรแมนติก และมีสัญชาตญาณดี พร้อมช่วยเหลือคนที่ลำบาก\n\nข้อควรระวัง: อารมณ์ขึ้นลง ลังเล และหลีกเลี่ยงความจริงที่ไม่อยากเผชิญ การตั้งขอบเขตให้ตัวเองจะช่วยรักษาพลังใจ"
+  },
+  "sign.2": {
+   "en": "Gemini are curious, quick-thinking, talkative and sociable; you adapt easily and always have something new to explore. Work built on communication and variety suits you.\n\nWatch out for: boredom, changing moods and inconsistency. Seeing important things through builds trust.",
+   "th": "ชาวราศีเมถุนเป็นคนช่างสงสัย คิดไว พูดเก่ง เข้าสังคมง่าย ปรับตัวเก่ง และมีเรื่องให้สนใจอยู่ตลอด เหมาะกับงานที่ใช้การสื่อสารและความคิดหลากหลาย\n\nข้อควรระวัง: เบื่อง่าย อารมณ์เปลี่ยนเร็ว และอาจทำอะไรไม่ต่อเนื่อง การเลือกเรื่องสำคัญมาทำให้จบจะสร้างความน่าเชื่อถือ"
+  },
+  "sign.3": {
+   "en": "Cancer are sensitive and caring, devoted to family and loved ones, protective of others, attached to memories and meaningful things, and strongly intuitive.\n\nWatch out for: bottling up feelings, getting hurt easily, and hesitating over decisions. Saying what you feel helps others understand you.",
+   "th": "ชาวราศีกรกฎเป็นคนอ่อนไหว ใส่ใจ รักครอบครัวและคนใกล้ชิด ชอบปกป้องดูแลผู้อื่น ผูกพันกับความทรงจำและสิ่งของที่มีความหมาย มีสัญชาตญาณดี\n\nข้อควรระวัง: เก็บความรู้สึก น้อยใจง่าย และลังเลเมื่อต้องตัดสินใจ การพูดสิ่งที่รู้สึกออกมาจะทำให้คนรอบข้างเข้าใจคุณมากขึ้น"
+  },
+  "sign.4": {
+   "en": "Leos are confident, generous and dignified; you enjoy the spotlight and draw people in. Honour and praise matter to you, and you are a warm leader who protects your own.\n\nWatch out for: pride, stubbornness and needing too much recognition. Giving others credit makes you shine even more.",
+   "th": "ชาวราศีสิงห์เป็นคนมั่นใจ ใจกว้าง มีศักดิ์ศรี ชอบเป็นจุดสนใจ และมีพลังดึงดูดผู้คน ให้ความสำคัญกับเกียรติและคำชม เป็นผู้นำที่อบอุ่นและปกป้องคนของตัวเอง\n\nข้อควรระวัง: ความถือตัว ดื้อ และอยากได้รับการยอมรับมากเกินไป การให้เครดิตผู้อื่นจะทำให้คุณยิ่งเปล่งประกาย"
+  },
+  "sign.5": {
+   "en": "Virgos are meticulous, careful, orderly, observant and modest, with a good memory. You like things done right and done usefully, and people rely on you when precision matters.\n\nWatch out for: perfectionism that brings stress or too much criticism of yourself and others.",
+   "th": "ชาวราศีกันย์เป็นคนละเอียด รอบคอบ เป็นระเบียบ ช่างสังเกต ถ่อมตัว และมีความจำดี ชอบทำสิ่งต่างๆ ให้ถูกต้องและมีประโยชน์ เป็นคนที่พึ่งพาได้ในงานที่ต้องการความแม่นยำ\n\nข้อควรระวัง: ความสมบูรณ์แบบที่อาจทำให้เครียดหรือวิจารณ์ตัวเองและคนอื่นมากเกินไป"
+  },
+  "sign.6": {
+   "en": "Libras are charming, polite and fair, love beauty and peace, and are skilled at negotiation and compromise, with an artistic eye.\n\nWatch out for: indecision and avoiding conflict so much that you don't say what you think. Standing your ground is a kind of fairness too.",
+   "th": "ชาวราศีตุลย์เป็นคนมีเสน่ห์ สุภาพ ยุติธรรม รักความสวยงามและความสงบ เก่งเรื่องการเจรจาและประนีประนอม มีรสนิยมทางศิลปะ\n\nข้อควรระวัง: ลังเลตัดสินใจไม่ได้และหลีกเลี่ยงความขัดแย้งจนไม่พูดสิ่งที่คิด การยืนหยัดในจุดยืนของตัวเองก็เป็นความยุติธรรมอย่างหนึ่ง"
+  },
+  "sign.7": {
+   "en": "Scorpios are deep, intense and determined; you read people well, commit fully, and protect those you love with total loyalty.\n\nWatch out for: strong emotions, jealousy and holding on to hurt. Forgiving frees your own heart.",
+   "th": "ชาวราศีพิจิกเป็นคนลึกซึ้ง เข้มข้น มุ่งมั่น มองคนออก ทำอะไรทำจริงและทุ่มสุดตัว ซื่อสัตย์และปกป้องคนที่รักอย่างเต็มที่\n\nข้อควรระวัง: อารมณ์รุนแรง ความหึงหวง และการจำความเจ็บได้นาน การให้อภัยจะปลดภาระในใจของคุณเอง"
+  },
+  "sign.8": {
+   "en": "Sagittarians are optimistic, cheerful and freedom-loving; you love travel and new knowledge, speak frankly, and put people at ease with your humour.\n\nWatch out for: bluntness that can hurt without meaning to, and dislike of rules and commitment.",
+   "th": "ชาวราศีธนูเป็นคนมองโลกในแง่ดี ร่าเริง รักอิสระ ชอบเดินทาง ชอบเรียนรู้สิ่งใหม่ และพูดตรงไปตรงมา มีอารมณ์ขันและทำให้คนรอบข้างสบายใจ\n\nข้อควรระวัง: พูดตรงจนบางครั้งทำร้ายใจคนอื่นโดยไม่ตั้งใจ และไม่ชอบถูกผูกมัดด้วยกฎ"
+  },
+  "sign.9": {
+   "en": "Capricorns are ambitious, disciplined, responsible and serious, good at long-term planning, climbing steadily to your goals and careful with money.\n\nWatch out for: working so hard you forget to rest, and seeming cold to others. Time with loved ones is a worthwhile investment too.",
+   "th": "ชาวราศีมังกรเป็นคนมีความทะเยอทะยาน มีวินัย รับผิดชอบ จริงจัง และวางแผนระยะยาวเก่ง ค่อยๆ ไต่ไปถึงเป้าหมายอย่างมั่นคง ระมัดระวังเรื่องเงิน\n\nข้อควรระวัง: ทำงานหนักจนลืมพักผ่อน และดูเย็นชาในสายตาคนอื่น การให้เวลากับคนที่รักก็เป็นการลงทุนที่คุ้มค่า"
+  },
+  "signNow.dist.0": {
+   "en": "The Sun is passing through your birth sign: your astrological birthday month. Vitality and confidence peak for the year, a good time to set new goals and begin what you have planned.",
+   "th": "ดวงอาทิตย์กำลังเดินผ่านราศีเกิดของคุณ ช่วงนี้คือ 'เดือนเกิด' ทางโหราศาสตร์ พลังชีวิตและความมั่นใจสูงสุดในรอบปี เหมาะกับการตั้งเป้าหมายใหม่และเริ่มต้นสิ่งที่ตั้งใจ"
+  },
+  "signNow.dist.1": {
+   "en": "The Sun is one sign past your birth sign. This is a time to gather and to manage money and possessions; good for financial planning.",
+   "th": "ดวงอาทิตย์อยู่ถัดจากราศีเกิดของคุณไป 1 ราศี ช่วงนี้เป็นจังหวะของการเก็บเกี่ยวและจัดการเรื่องเงินทองและทรัพย์สิน เหมาะกับการวางแผนการเงิน"
+  },
+  "signNow.dist.10": {
+   "en": "The Sun makes a sextile to your birth sign again. Friends and networks bring opportunities; good for group work and long-term goals.",
+   "th": "ดวงอาทิตย์ทำมุมหนุนกับราศีเกิดอีกครั้ง ช่วงนี้เพื่อนและเครือข่ายสังคมนำโอกาสมาให้ เหมาะกับการทำงานกลุ่มและการวางเป้าหมายระยะยาว"
+  },
+  "signNow.dist.11": {
+   "en": "The Sun is in the sign just before yours, the end of your personal year. Rest, reflect and let go of old things to gather strength for the new cycle that is about to begin.",
+   "th": "ดวงอาทิตย์อยู่ก่อนราศีเกิดของคุณ 1 ราศี ช่วงนี้คือช่วงปลายรอบปีส่วนตัว เหมาะกับการพักผ่อน ทบทวน และปล่อยวางเรื่องเก่า เพื่อเตรียมพลังสำหรับรอบใหม่ที่กำลังจะมาถึง"
+  },
+  "signNow.dist.2": {
+   "en": "The Sun makes a supportive sextile to your birth sign. Opportunities come through conversations, friends and learning; be open to new offers.",
+   "th": "ดวงอาทิตย์ทำมุมหนุน (เซ็กซ์ไทล์) กับราศีเกิด ช่วงนี้มีโอกาสดีจากการติดต่อสื่อสาร เพื่อนฝูง และการเรียนรู้ ลองเปิดรับข้อเสนอใหม่ๆ"
+  },
+  "signNow.dist.3": {
+   "en": "The Sun squares your birth sign. Expect some friction or tension, especially around home and family; use the pressure to fix what has been left unresolved.",
+   "th": "ดวงอาทิตย์ทำมุมฉาก (สแควร์) กับราศีเกิด ช่วงนี้อาจเจอแรงเสียดทานหรือความตึงเครียด โดยเฉพาะเรื่องบ้านและครอบครัว ใช้แรงกดดันนี้เป็นแรงผลักให้แก้ปัญหาที่ค้างอยู่"
+  },
+  "signNow.dist.4": {
+   "en": "The Sun is in trine to your birth sign, one of the smoothest times of the year. Creativity, romance and fun come easily; don't let comfort make you miss the opportunity.",
+   "th": "ดวงอาทิตย์ทำมุมตรีโกณ (ไทรน์) กับราศีเกิด เป็นช่วงที่ราบรื่นที่สุดช่วงหนึ่งของปี ความคิดสร้างสรรค์ ความรัก และความสนุกไหลมาง่าย อย่าปล่อยให้ความสบายทำให้พลาดโอกาส"
+  },
+  "signNow.dist.5": {
+   "en": "The Sun is quincunx your birth sign. Daily routines and health need adjustment, and things that don't fit together need reconciling. Look after your body.",
+   "th": "ดวงอาทิตย์ทำมุม 150° (ควินคันซ์) กับราศีเกิด ช่วงนี้ต้องปรับตัวกับเรื่องงานประจำวันและสุขภาพ สิ่งที่ดูไม่เข้ากันต้องหาทางประสาน ดูแลร่างกายให้ดี"
+  },
+  "signNow.dist.6": {
+   "en": "The Sun is opposite your birth sign. Partners, colleagues and other people take centre stage, and views may clash; finding middle ground turns conflict into cooperation.",
+   "th": "ดวงอาทิตย์อยู่ตรงข้ามราศีเกิด (ออปโพซิชัน) ช่วงนี้เรื่องคู่ครอง หุ้นส่วน และคนอื่นจะเด่นขึ้นมา อาจมีความเห็นไม่ตรงกัน การหาจุดกึ่งกลางจะเปลี่ยนความขัดแย้งให้เป็นความร่วมมือ"
+  },
+  "signNow.dist.7": {
+   "en": "The Sun is seven signs from your birth sign (150°). Shared resources, debts and trust come up; align your expectations with reality.",
+   "th": "ดวงอาทิตย์อยู่ห่างจากราศีเกิด 7 ราศี (มุม 150°) ช่วงนี้เป็นเรื่องของการแบ่งปันทรัพยากร หนี้สิน และความไว้ใจ ต้องปรับความคาดหวังให้ตรงกับความจริง"
+  },
+  "signNow.dist.8": {
+   "en": "The Sun is in trine to your birth sign again. Good for travel, study and broadening your outlook; luck favours those willing to try something new.",
+   "th": "ดวงอาทิตย์ทำมุมตรีโกณกับราศีเกิดอีกครั้ง ช่วงนี้เหมาะกับการเดินทาง การเรียน และการขยายมุมมอง โชคเข้าข้างคนที่กล้าลองสิ่งใหม่"
+  },
+  "signNow.dist.9": {
+   "en": "The Sun squares your birth sign again. Career and reputation are tested, perhaps with pressure from bosses or targets; responsibility shown now will be remembered.",
+   "th": "ดวงอาทิตย์ทำมุมฉากกับราศีเกิดอีกครั้ง ช่วงนี้เรื่องงานและชื่อเสียงจะถูกทดสอบ อาจมีความกดดันจากหัวหน้าหรือเป้าหมาย ความรับผิดชอบที่แสดงออกตอนนี้จะถูกจดจำ"
+  },
+  "sky.bright.0": {
+   "en": "Your birth sign is bright, with no major body covering it. Your path is open, your abilities are easy for others to see, and support tends to arrive when it matters.",
+   "th": "ราศีเกิดของคุณสว่าง ไม่มีดาวใหญ่บัง ชีวิตมีทางที่เปิดกว้าง ความสามารถของคุณเป็นที่มองเห็นได้ง่าย และมักมีคนคอยสนับสนุนเมื่อถึงเวลาสำคัญ"
+  },
+  "sky.bright.1": {
+   "en": "Your birth sign is slightly dark, partly covered by a major body. Success comes, but with a little more effort than others; sometimes you must prove yourself before you are recognised.",
+   "th": "ราศีเกิดของคุณมืดเล็กน้อย มีดาวใหญ่บังอยู่บ้าง ความสำเร็จมาได้แต่ต้องออกแรงมากกว่าคนอื่นนิดหน่อย บางเรื่องอาจต้องพิสูจน์ตัวเองก่อนจึงจะได้รับการยอมรับ"
+  },
+  "sky.bright.2": {
+   "en": "Your birth sign is dark, covered by several major bodies. Early life may bring tests and obstacles, but these experiences make you strong and self-reliant.",
+   "th": "ราศีเกิดของคุณมืด มีดาวใหญ่บังหลายดวง ชีวิตช่วงแรกอาจต้องเจอบททดสอบและอุปสรรค แต่ประสบการณ์เหล่านี้หล่อหลอมให้คุณแข็งแกร่งและรู้จักพึ่งตัวเอง"
+  },
+  "sky.bright.3": {
+   "en": "Your birth sign is very dark, heavily covered by major bodies. Your road is not smooth, but people who come through the dark often gain unusual depth and endurance; your success will be entirely your own work.",
+   "th": "ราศีเกิดของคุณมืดมาก มีดาวใหญ่บังอยู่หนาแน่น เส้นทางของคุณไม่ใช่ทางเรียบ แต่คนที่ผ่านความมืดมาได้มักมีความลึกซึ้งและความอดทนเหนือคนทั่วไป ความสำเร็จของคุณจะมาจากความพยายามของตัวเองล้วนๆ"
+  },
+  "sky.zenith.And": {
+   "en": "Overhead at your birth: Andromeda, the princess freed from her chains. You come through hard situations with patience, and help tends to arrive just when hope runs lowest.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือแอนดรอเมดา เจ้าหญิงที่ได้รับการช่วยเหลือจากโซ่ตรวน คุณเป็นคนที่ผ่านพ้นสถานการณ์ยากด้วยความอดทน และมักได้รับความช่วยเหลือในจังหวะที่สิ้นหวังที่สุด"
+  },
+  "sky.zenith.Ant": {
+   "en": "Overhead at your birth: Antlia, the air pump, a scientific instrument. You have an experimenter's mind, like finding answers yourself, and turn knowledge into something useful.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือเครื่องสูบลม เครื่องมือทางวิทยาศาสตร์ คุณมีหัวคิดเชิงทดลอง ชอบหาคำตอบด้วยตัวเอง และเปลี่ยนความรู้ให้เป็นสิ่งที่ใช้งานได้จริง"
+  },
+  "sky.zenith.Aps": {
+   "en": "Overhead at your birth: Apus, the bird of paradise. You have high ideals, love beauty, and a charm that leaves an impression.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือนกการเวก นกแห่งสวรรค์ คุณมีจิตใจสูง รักความงาม และมีเสน่ห์ที่ทำให้คนรอบข้างประทับใจ"
+  },
+  "sky.zenith.Aql": {
+   "en": "Overhead at your birth: Aquila, the eagle who flies high and sees far. You have vision and courage, ready to soar towards goals higher than most.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือนกอินทรี ผู้บินสูงและมองเห็นไกล คุณมีวิสัยทัศน์ กล้าหาญ และพร้อมทะยานสู่เป้าหมายที่สูงกว่าคนทั่วไป"
+  },
+  "sky.zenith.Aqr": {
+   "en": "Overhead at your birth: Aquarius, the water-bearer who pours for the world. You are generous, love to share, and think ahead for the common good.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือคนแบกหม้อน้ำ ผู้รินน้ำให้โลก คุณมีน้ำใจ ชอบแบ่งปัน และมีความคิดก้าวหน้าเพื่อส่วนรวม"
+  },
+  "sky.zenith.Ara": {
+   "en": "Overhead at your birth: Ara, the altar where oaths are sworn. You hold to your principles, keep your word, and have steady faith.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือแท่นบูชา สถานที่แห่งคำสัตย์ คุณยึดมั่นในคุณธรรม ให้ความสำคัญกับคำมั่นสัญญา และมีศรัทธาที่มั่นคง"
+  },
+  "sky.zenith.Ari": {
+   "en": "Overhead at your birth: Aries, the golden ram, a sign of beginnings and courage. You are a pioneer, ready to act first, with strong drive.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือแกะทองคำ สัญลักษณ์ของการเริ่มต้นและความกล้า คุณเป็นผู้บุกเบิก พร้อมลงมือก่อนใคร และมีแรงผลักดันสูง"
+  },
+  "sky.zenith.Aur": {
+   "en": "Overhead at your birth: Auriga, the charioteer. You steer your own life, are responsible, and look after those in your care.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือสารถี ผู้ควบคุมรถม้า คุณรู้จักควบคุมทิศทางชีวิตตัวเอง มีความรับผิดชอบ และดูแลคนที่อยู่ในความดูแลได้ดี"
+  },
+  "sky.zenith.Boo": {
+   "en": "Overhead at your birth: Boötes, the herdsman who watches the Great Bear. You are hardworking and patient, a steady support for those around you.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือคนเลี้ยงสัตว์ ผู้เฝ้าดูแลหมีใหญ่ คุณขยัน อดทน และเป็นที่พึ่งที่มั่นคงของคนรอบข้าง"
+  },
+  "sky.zenith.CMa": {
+   "en": "Overhead at your birth: Canis Major, the great dog at the hunter's heel, home of Sirius, the brightest star. You are loyal, stand out, and protect those you love.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือหมาใหญ่ ผู้ติดตามนายพราน มีดาวซิริอุสที่สว่างที่สุดในฟ้า คุณซื่อสัตย์ โดดเด่น และพร้อมปกป้องคนที่รัก"
+  },
+  "sky.zenith.CMi": {
+   "en": "Overhead at your birth: Canis Minor, the hunter's little dog. You are warm and sincere, the kind of friend everyone wants beside them.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือหมาเล็ก เพื่อนคู่ใจของนายพราน คุณเป็นคนอบอุ่น จริงใจ และเป็นเพื่อนที่ใครๆ ก็อยากมีไว้ข้างกาย"
+  },
+  "sky.zenith.CVn": {
+   "en": "Overhead at your birth: Canes Venatici, the hunting dogs. You are determined, don't give up easily, and work well in a team.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือหมาล่าเนื้อ คู่หูที่ไล่ตามเป้าหมาย คุณมีความมุ่งมั่น ไม่ยอมแพ้ง่าย และทำงานเป็นทีมได้ดี"
+  },
+  "sky.zenith.Cae": {
+   "en": "Overhead at your birth: Caelum, the engraver's chisel. You are precise and detail-minded, and create through skilled hands.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือสิ่ว เครื่องมือของช่างแกะสลัก คุณมีความประณีต ใส่ใจรายละเอียด และสร้างผลงานด้วยฝีมือ"
+  },
+  "sky.zenith.Cam": {
+   "en": "Overhead at your birth: Camelopardalis, the giraffe who sees from on high. You think long-term, stay calm, and see things differently.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือยีราฟ ผู้มองเห็นจากที่สูง คุณมองการณ์ไกล ใจเย็น และมีมุมมองที่ต่างจากคนอื่น"
+  },
+  "sky.zenith.Cap": {
+   "en": "Overhead at your birth: Capricornus, the sea-goat who climbs mountains and swims the sea. You are ambitious, adapt to anything, and reach the summit through persistence.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือแพะทะเล ผู้ไต่ขึ้นภูเขาได้และว่ายในทะเลได้ คุณมีความทะเยอทะยาน ปรับตัวได้ทุกสภาพ และไปถึงยอดเขาด้วยความเพียร"
+  },
+  "sky.zenith.Car": {
+   "en": "Overhead at your birth: Carina, the keel of the ship Argo. You are the backbone others rely on, steady even in a storm.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือกระดูกงูเรืออาร์โก ฐานที่ทำให้เรือมั่นคง คุณเป็นหลักให้คนอื่นพึ่งพิง หนักแน่นแม้ในพายุ"
+  },
+  "sky.zenith.Cas": {
+   "en": "Overhead at your birth: Cassiopeia, the queen on her throne. You have grace, confidence and presence, though beware of pride.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือราชินีแคสซิโอเปีย ผู้นั่งบนบัลลังก์ คุณมีความสง่างาม มั่นใจ และมีบารมี แต่ควรระวังความถือตัว"
+  },
+  "sky.zenith.Cen": {
+   "en": "Overhead at your birth: Centaurus, Chiron the centaur who taught heroes. You are wise, a good counsellor, with a gift for healing others.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือคนครึ่งม้า ไครอนผู้เป็นครูของวีรบุรุษ คุณมีปัญญา เป็นที่ปรึกษาที่ดี และมีพรสวรรค์ในการเยียวยาผู้อื่น"
+  },
+  "sky.zenith.Cep": {
+   "en": "Overhead at your birth: Cepheus, the steady king. You lead quietly and take responsibility for family and duty.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือกษัตริย์ซีฟิอัส ผู้ปกครองที่มั่นคง คุณมีภาวะผู้นำแบบสุขุม รับผิดชอบต่อครอบครัวและหน้าที่"
+  },
+  "sky.zenith.Cet": {
+   "en": "Overhead at your birth: Cetus, the great sea creature. You hold vast inner power and depth; used well, it can achieve great things.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือซีตัส สัตว์ทะเลยักษ์ คุณมีพลังภายในมหาศาล ลึกซึ้ง และเมื่อเลือกใช้พลังถูกทางจะยิ่งใหญ่มาก"
+  },
+  "sky.zenith.Cha": {
+   "en": "Overhead at your birth: Chamaeleon, the colour-changer. You adapt to any situation and read a room well.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือกิ้งก่าคะมีเลียน ผู้เปลี่ยนสีได้ คุณปรับตัวเก่ง เข้ากับทุกสถานการณ์ และอ่านบรรยากาศได้ดี"
+  },
+  "sky.zenith.Cir": {
+   "en": "Overhead at your birth: Circinus, the compass that draws a perfect circle. You are precise, plan systematically, and finish things completely.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือวงเวียน เครื่องมือวาดวงกลมที่สมบูรณ์ คุณมีความแม่นยำ วางแผนเป็นระบบ และทำทุกอย่างให้ครบถ้วน"
+  },
+  "sky.zenith.Cnc": {
+   "en": "Overhead at your birth: Cancer, the crab whose hard shell guards a tender heart. You love home and family and protect your own, however tough you look.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือปู ผู้มีเปลือกแข็งปกป้องหัวใจอ่อนโยน คุณรักบ้านและครอบครัว ปกป้องคนที่รัก แม้ภายนอกจะดูแข็ง"
+  },
+  "sky.zenith.Col": {
+   "en": "Overhead at your birth: Columba, the dove that brings good news and peace. You are peace-loving and kind, often bringing good news to others.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือนกเขา ผู้นำข่าวดีและสันติภาพ คุณเป็นคนรักสงบ มีน้ำใจ และมักนำข่าวดีมาให้คนรอบข้าง"
+  },
+  "sky.zenith.Com": {
+   "en": "Overhead at your birth: Coma Berenices, the queen's hair offered for her beloved's safe return. You sacrifice for those you love, and it is remembered.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือผมของราชินีเบเรนิซ ที่ถวายเพื่อแลกกับความปลอดภัยของคนรัก คุณยอมเสียสละเพื่อคนที่รัก และความเสียสละนั้นจะได้รับการจดจำ"
+  },
+  "sky.zenith.CrA": {
+   "en": "Overhead at your birth: Corona Australis, the southern crown. Your honour is quiet; you are recognised for your work more than your words.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือมงกุฎใต้ คุณมีเกียรติในแบบเงียบๆ ได้รับการยอมรับจากผลงานมากกว่าคำพูด"
+  },
+  "sky.zenith.CrB": {
+   "en": "Overhead at your birth: Corona Borealis, Ariadne's crown. You have charm and self-worth, and life tends to reward you after hard times.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือมงกุฎเหนือ มงกุฎของอาริแอดนี คุณมีเสน่ห์ มีคุณค่าในตัวเอง และชีวิตมักได้รับรางวัลหลังผ่านเรื่องยาก"
+  },
+  "sky.zenith.Crt": {
+   "en": "Overhead at your birth: Crater, the cup of sharing. You are generous, love to host, and bring people together.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือถ้วย ภาชนะแห่งการแบ่งปัน คุณใจกว้าง ชอบเลี้ยงดูผู้อื่น และเป็นศูนย์รวมของงานเลี้ยงและมิตรภาพ"
+  },
+  "sky.zenith.Cru": {
+   "en": "Overhead at your birth: Crux, the Southern Cross, guide of sailors. You are a compass for others, with clear principles, and you don't lose your way.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือกางเขนใต้ ดาวนำทางของนักเดินเรือ คุณเป็นเข็มทิศให้คนอื่น มีหลักยึดชัดเจน และไม่หลงทาง"
+  },
+  "sky.zenith.Crv": {
+   "en": "Overhead at your birth: Corvus, the clever messenger crow. You are observant, articulate, and learn quickly from mistakes.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือนกกา ผู้ส่งสารที่ฉลาด คุณช่างสังเกต พูดเก่ง และเรียนรู้จากความผิดพลาดได้เร็ว"
+  },
+  "sky.zenith.Cyg": {
+   "en": "Overhead at your birth: Cygnus, the swan flying along the Milky Way. You are graceful and artistic, with lofty ideals.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือหงส์ ผู้บินไปตามทางช้างเผือก คุณสง่างาม มีศิลปะ และมีอุดมคติสูงส่ง"
+  },
+  "sky.zenith.Del": {
+   "en": "Overhead at your birth: Delphinus, the dolphin who saved a poet from the sea. You are cheerful, friendly, and help others without hesitation.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือโลมา ผู้ช่วยชีวิตกวีที่ตกทะเล คุณร่าเริง เป็นมิตร และพร้อมช่วยเหลือคนอื่นอย่างไม่ลังเล"
+  },
+  "sky.zenith.Dor": {
+   "en": "Overhead at your birth: Dorado, the swordfish of southern seas. You are agile and quick to seize opportunities.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือปลากระโทงแทง ปลาทองแห่งทะเลใต้ คุณมีความคล่องแคล่ว ว่องไว และคว้าโอกาสได้รวดเร็ว"
+  },
+  "sky.zenith.Dra": {
+   "en": "Overhead at your birth: Draco, the dragon guarding the golden apples. You are powerful and wise, and guard what you value.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือมังกร ผู้เฝ้าแอปเปิลทองคำ คุณมีพลัง ฉลาด และปกป้องสิ่งมีค่าของตัวเองอย่างดี"
+  },
+  "sky.zenith.Equ": {
+   "en": "Overhead at your birth: Equuleus, the little horse beside Pegasus. You start small but go far: modest, with great potential.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือม้าแกลบ ม้าตัวน้อยข้างม้าบิน คุณเริ่มต้นจากเล็กแต่เติบโตได้ไกล ถ่อมตัวแต่มีศักยภาพ"
+  },
+  "sky.zenith.Eri": {
+   "en": "Overhead at your birth: Eridanus, the long river that never stops flowing. You keep going, adapt to circumstances, and nourish those around you.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือแม่น้ำอีริดานัส สายน้ำยาวที่ไหลไม่หยุด คุณมีความต่อเนื่อง ปรับตัวไปตามสถานการณ์ และหล่อเลี้ยงผู้คนรอบข้าง"
+  },
+  "sky.zenith.For": {
+   "en": "Overhead at your birth: Fornax, the furnace that shapes metal. Life's heat has made you strong, and you create new things from raw material.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือเตาหลอม ที่หลอมโลหะให้เป็นรูปร่าง คุณแข็งแกร่งจากการผ่านความร้อนของชีวิต และสร้างสรรค์สิ่งใหม่จากวัตถุดิบเดิม"
+  },
+  "sky.zenith.Gem": {
+   "en": "Overhead at your birth: Gemini, Castor and Pollux, brothers who never part. You value friendship and loyalty, and have many sides to you.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือคนคู่ แคสเตอร์และพอลลักซ์ พี่น้องที่ไม่ทิ้งกัน คุณให้ความสำคัญกับมิตรภาพ ความผูกพัน และมีหลายด้านในตัวเอง"
+  },
+  "sky.zenith.Gru": {
+   "en": "Overhead at your birth: Grus, the crane, symbol of long life and poise. You are patient and composed, and what you do lasts.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือนกกระเรียน สัญลักษณ์ของความยืนยาวและความสง่า คุณมีความอดทน สุขุม และอายุยืนในสิ่งที่ทำ"
+  },
+  "sky.zenith.Her": {
+   "en": "Overhead at your birth: Hercules, the hero of the twelve labours. You are strong and enduring, and overcome great obstacles through your own effort.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือเฮอร์คิวลีส วีรบุรุษผู้ผ่านภารกิจ 12 อย่าง คุณแข็งแกร่ง อดทน และเอาชนะอุปสรรคใหญ่ได้ด้วยความพยายามของตัวเอง"
+  },
+  "sky.zenith.Hor": {
+   "en": "Overhead at your birth: Horologium, the clock. You are punctual and disciplined, and know the right moment to act.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือนาฬิกา ผู้วัดเวลา คุณตรงต่อเวลา มีวินัย และรู้จักจังหวะที่เหมาะสมในการลงมือ"
+  },
+  "sky.zenith.Hya": {
+   "en": "Overhead at your birth: Hydra, the largest constellation. You are highly resilient, recover well, and withstand pressure.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคืองูไฮดรา กลุ่มดาวที่ใหญ่ที่สุดบนฟ้า คุณมีความยืดหยุ่นสูง ฟื้นตัวเก่ง และทนทานต่อแรงกดดัน"
+  },
+  "sky.zenith.Hyi": {
+   "en": "Overhead at your birth: Hydrus, the southern water snake. You are quiet and deep, with hidden abilities that show when the time comes.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคืองูน้ำใต้ คุณเงียบ ลึกซึ้ง และมีความสามารถที่ซ่อนอยู่ซึ่งจะเผยเมื่อถึงเวลา"
+  },
+  "sky.zenith.Ind": {
+   "en": "Overhead at your birth: Indus, the native who knows the land. You have good instincts, stay connected to your roots, and live simply but wisely.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือชนพื้นเมือง ผู้รู้จักธรรมชาติ คุณมีสัญชาตญาณดี เชื่อมโยงกับรากเหง้า และใช้ชีวิตอย่างเรียบง่ายแต่ชาญฉลาด"
+  },
+  "sky.zenith.LMi": {
+   "en": "Overhead at your birth: Leo Minor, the little lion. You have courage and dignity in a modest way, with more inner strength than you show.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือสิงโตเล็ก คุณมีความกล้าและศักดิ์ศรีในแบบถ่อมตัว ไม่จำเป็นต้องโดดเด่นแต่มีพลังภายในมาก"
+  },
+  "sky.zenith.Lac": {
+   "en": "Overhead at your birth: Lacerta, the quick lizard. You are alert, adapt fast, and find a way out of tight spots.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือกิ้งก่า ผู้คล่องแคล่วและรวดเร็ว คุณตื่นตัว ปรับตัวไว และหาทางออกในที่แคบได้"
+  },
+  "sky.zenith.Leo": {
+   "en": "Overhead at your birth: Leo, the king of beasts. You have leadership, courage and pride, and shine wherever you go.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือสิงโต ราชาแห่งสัตว์ คุณมีความเป็นผู้นำ ความกล้าหาญ และความภาคภูมิใจ เปล่งประกายทุกที่ที่ไป"
+  },
+  "sky.zenith.Lep": {
+   "en": "Overhead at your birth: Lepus, the hare who outruns danger. You are quick-witted, respond fast, and dodge trouble skilfully.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือกระต่ายป่า ผู้วิ่งเร็วหลบพ้นอันตราย คุณมีไหวพริบ ตอบสนองไว และหลีกเลี่ยงปัญหาได้เก่ง"
+  },
+  "sky.zenith.Lib": {
+   "en": "Overhead at your birth: Libra, the scales of justice. You love balance and fairness, and are a trusted go-between.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือตาชั่ง สัญลักษณ์แห่งความยุติธรรม คุณรักความสมดุล มีความยุติธรรม และเป็นคนกลางที่ทุกฝ่ายไว้ใจ"
+  },
+  "sky.zenith.Lup": {
+   "en": "Overhead at your birth: Lupus, the wolf who loves its pack and its freedom. You have strong instincts, are loyal to your group, and face challenges boldly.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือหมาป่า ผู้รักฝูงและอิสระ คุณมีสัญชาตญาณแรง ซื่อสัตย์ต่อกลุ่มของตัวเอง และกล้าเผชิญความท้าทาย"
+  },
+  "sky.zenith.Lyn": {
+   "en": "Overhead at your birth: Lynx, the sharp-eyed wildcat. You see what others miss, notice details, and understand people deeply.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือแมวป่า ผู้มีสายตาคมกริบ คุณมองเห็นสิ่งที่คนอื่นมองไม่เห็น ละเอียด และเข้าใจคนได้ลึก"
+  },
+  "sky.zenith.Lyr": {
+   "en": "Overhead at your birth: Lyra, Orpheus's lyre whose music charmed all things. You have a gift for art, voice and words that move people.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือพิณของออร์เฟียส ผู้เล่นดนตรีจนสะกดใจทุกสิ่ง คุณมีพรสวรรค์ทางศิลปะ เสียง และการสื่อสารที่ทำให้คนประทับใจ"
+  },
+  "sky.zenith.Men": {
+   "en": "Overhead at your birth: Mensa, the table mountain, unshaken. You are steady, a refuge for others, and calm about life.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือภูเขาโต๊ะ ที่มั่นคงไม่หวั่นไหว คุณหนักแน่น เป็นที่พักพิงของผู้อื่น และมองชีวิตอย่างสงบ"
+  },
+  "sky.zenith.Mic": {
+   "en": "Overhead at your birth: Microscopium, the microscope. You study small things deeply, have a scientist's mind, and never overlook detail.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือกล้องจุลทรรศน์ คุณชอบศึกษาเรื่องเล็กๆ อย่างลึกซึ้ง มีความเป็นนักวิทยาศาสตร์ และไม่มองข้ามรายละเอียด"
+  },
+  "sky.zenith.Mon": {
+   "en": "Overhead at your birth: Monoceros, the unicorn. You are unique, pure-hearted and rare.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือยูนิคอร์น สัตว์ในตำนานที่บริสุทธิ์ คุณมีเอกลักษณ์ จิตใจดีงาม และเป็นที่หาได้ยาก"
+  },
+  "sky.zenith.Mus": {
+   "en": "Overhead at your birth: Musca, the restless fly. You are eager and tireless, reaching places others don't go.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือแมลงวัน ผู้ขยันและไม่หยุดนิ่ง คุณกระตือรือร้น ทำงานไม่หยุด และไปถึงที่หมายได้แม้เป็นทางที่คนอื่นไม่ไป"
+  },
+  "sky.zenith.Nor": {
+   "en": "Overhead at your birth: Norma, the carpenter's square. You are straight, principled, and keep to high standards.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือไม้ฉาก เครื่องมือของช่างวัด คุณเป็นคนตรง ยึดหลักการ และทำทุกอย่างให้ได้มาตรฐาน"
+  },
+  "sky.zenith.Oct": {
+   "en": "Overhead at your birth: Octans, the navigator's octant pointing to the south celestial pole. Your direction in life is clear, and you help guide others.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือออกแทนต์ เครื่องมือนำทางในทะเล ชี้ไปที่ขั้วฟ้าใต้ คุณมีทิศทางชีวิตชัดเจนและช่วยนำทางผู้อื่น"
+  },
+  "sky.zenith.Oph": {
+   "en": "Overhead at your birth: Ophiuchus, Asclepius the healer holding the serpent. You have a gift for healing body and mind, turning poison into medicine.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือคนแบกงู แอสคลีเพียสผู้รักษาโรค คุณมีพรสวรรค์ในการเยียวยา ทั้งกายและใจ และเปลี่ยนสิ่งที่เป็นพิษให้เป็นยา"
+  },
+  "sky.zenith.Ori": {
+   "en": "Overhead at your birth: Orion, the mighty hunter. You are focused, confident and brave, and pursue your goals to the end.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือนายพรานโอไรออน นักล่าผู้เก่งกาจ คุณมุ่งมั่น มั่นใจ กล้าหาญ และไล่ตามเป้าหมายจนสำเร็จ"
+  },
+  "sky.zenith.Pav": {
+   "en": "Overhead at your birth: Pavo, the peacock, symbol of beauty and pride. You are charming, love beauty, and stand out to others.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือนกยูง สัญลักษณ์แห่งความงามและความภาคภูมิใจ คุณมีเสน่ห์ ชอบความงาม และโดดเด่นในสายตาผู้อื่น"
+  },
+  "sky.zenith.Peg": {
+   "en": "Overhead at your birth: Pegasus, the winged horse who carried heroes to the sky. You are highly inspired and creative, and go further than anyone expects.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือม้าบินเพกาซัส ผู้พาวีรบุรุษสู่ฟ้า คุณมีแรงบันดาลใจสูง มีความคิดสร้างสรรค์ และพาตัวเองไปได้ไกลเกินคาด"
+  },
+  "sky.zenith.Per": {
+   "en": "Overhead at your birth: Perseus, the hero who defeated Medusa. You face what others fear, think on your feet, and rescue those in danger.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือเพอร์ซิอัส วีรบุรุษผู้ปราบเมดูซ่า คุณกล้าเผชิญสิ่งที่คนอื่นกลัว มีไหวพริบ และพร้อมช่วยเหลือผู้ที่ตกอยู่ในอันตราย"
+  },
+  "sky.zenith.Phe": {
+   "en": "Overhead at your birth: Phoenix, reborn from its ashes. You always recover from failure, and rise stronger each time.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือนกฟีนิกซ์ ผู้เกิดใหม่จากเถ้าถ่าน คุณฟื้นตัวจากความล้มเหลวได้เสมอ และทุกครั้งที่ลุกขึ้นจะแข็งแกร่งกว่าเดิม"
+  },
+  "sky.zenith.Pic": {
+   "en": "Overhead at your birth: Pictor, the painter's easel. You have an artist's eye, see the world as a picture, and make work people remember.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือขาตั้งภาพของจิตรกร คุณมีหัวศิลปะ มองโลกเป็นภาพที่สวยงาม และสร้างสรรค์ผลงานที่คนจดจำ"
+  },
+  "sky.zenith.PsA": {
+   "en": "Overhead at your birth: Piscis Austrinus, the southern fish drinking from the water-bearer's jar. You take in what life offers and grow by learning.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือปลาใต้ ผู้ดื่มน้ำจากหม้อของคนแบกหม้อน้ำ คุณรู้จักรับสิ่งดีที่ชีวิตมอบให้ และเติบโตจากการเรียนรู้"
+  },
+  "sky.zenith.Psc": {
+   "en": "Overhead at your birth: Pisces, two fish tied together. You are gentle, imaginative and understanding, linking dreams with reality.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือปลาสองตัวที่ผูกติดกัน คุณอ่อนโยน มีจินตนาการ เข้าใจผู้อื่น และเชื่อมโยงโลกแห่งความฝันกับความจริง"
+  },
+  "sky.zenith.Pup": {
+   "en": "Overhead at your birth: Puppis, the stern of the Argo where it is steered. You are the planner behind the scenes who gets everyone to the destination.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือท้ายเรืออาร์โก ส่วนที่ควบคุมทิศทาง คุณเป็นคนวางแผนเบื้องหลังที่ทำให้ทุกอย่างไปถึงจุดหมาย"
+  },
+  "sky.zenith.Pyx": {
+   "en": "Overhead at your birth: Pyxis, the ship's compass. You have an inner guide, choose the right way, and keep your bearings at crossroads.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือเข็มทิศของเรือ คุณมีหลักยึดในใจ ตัดสินใจได้ถูกทาง และไม่หลงทิศแม้เจอทางแยก"
+  },
+  "sky.zenith.Ret": {
+   "en": "Overhead at your birth: Reticulum, the reticle for measuring stars. You are thorough, pinpoint the key issue, and connect things well.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือตาข่าย เครื่องมือวัดตำแหน่งดาว คุณละเอียดรอบคอบ จับประเด็นได้แม่นยำ และเชื่อมโยงเรื่องต่างๆ เข้าด้วยกันเก่ง"
+  },
+  "sky.zenith.Scl": {
+   "en": "Overhead at your birth: Sculptor. You are patient, slowly refining both your work and yourself until they are complete.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือช่างแกะสลัก คุณอดทน ค่อยๆ ขัดเกลาทั้งงานและตัวเองจนสมบูรณ์"
+  },
+  "sky.zenith.Sco": {
+   "en": "Overhead at your birth: Scorpius, the scorpion. You are deep and intense, with the power to transform things around you; use it with care.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือแมงป่อง ผู้มีพลังเข้มข้น คุณลึกซึ้ง มุ่งมั่น และมีพลังที่จะเปลี่ยนแปลงสิ่งรอบตัว แต่ควรใช้พลังอย่างระมัดระวัง"
+  },
+  "sky.zenith.Sct": {
+   "en": "Overhead at your birth: Scutum, the shield. You are a protector, strong, standing firm for those behind you.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือโล่ คุณเป็นผู้ปกป้อง แข็งแกร่ง และยืนหยัดเพื่อคนที่อยู่ข้างหลัง"
+  },
+  "sky.zenith.Ser": {
+   "en": "Overhead at your birth: Serpens, the serpent, symbol of shedding skin and renewal. You can always reinvent yourself, with a power to heal within.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคืองู สัญลักษณ์ของการลอกคราบและการเริ่มต้นใหม่ คุณเปลี่ยนแปลงตัวเองได้เสมอ และมีพลังฟื้นฟูในตัว"
+  },
+  "sky.zenith.Sex": {
+   "en": "Overhead at your birth: Sextans, the sextant. You are precise and rational, and plan on facts.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือเซกซ์แทนต์ เครื่องมือวัดมุมดาว คุณมีความแม่นยำ ใช้เหตุผล และวางแผนบนข้อเท็จจริง"
+  },
+  "sky.zenith.Sge": {
+   "en": "Overhead at your birth: Sagitta, the arrow flying straight to its mark. Your goals are clear, you are direct, and you get there fast.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือลูกศร ผู้พุ่งตรงสู่เป้าหมาย คุณมีเป้าหมายชัดเจน ตรงไปตรงมา และไปถึงจุดหมายได้รวดเร็ว"
+  },
+  "sky.zenith.Sgr": {
+   "en": "Overhead at your birth: Sagittarius, the archer aiming at the heart of the Milky Way. You are optimistic, adventurous, and always aim high.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือคนยิงธนู ผู้เล็งไปที่ใจกลางทางช้างเผือก คุณมองโลกในแง่ดี รักการผจญภัย และเล็งเป้าหมายไว้สูงเสมอ"
+  },
+  "sky.zenith.Tau": {
+   "en": "Overhead at your birth: Taurus, the bull. You are steady, patient and strong, and build security for yourself.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือวัว ผู้แข็งแกร่งและมั่นคง คุณหนักแน่น อดทน มีพลัง และสร้างความมั่นคงให้ชีวิตได้ด้วยตัวเอง"
+  },
+  "sky.zenith.Tel": {
+   "en": "Overhead at your birth: Telescopium, the telescope. You look far ahead, are curious, and care about what lies beyond most people's view.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือกล้องโทรทรรศน์ คุณมองการณ์ไกล ใฝ่รู้ และสนใจสิ่งที่อยู่ไกลเกินกว่าที่คนทั่วไปมอง"
+  },
+  "sky.zenith.TrA": {
+   "en": "Overhead at your birth: Triangulum Australe, the southern triangle, the steadiest shape. You are principled and balanced, and build strong foundations.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือสามเหลี่ยมใต้ รูปทรงที่มั่นคงที่สุด คุณมีหลักการชัดเจน สมดุล และสร้างรากฐานที่แข็งแรง"
+  },
+  "sky.zenith.Tri": {
+   "en": "Overhead at your birth: Triangulum, the triangle. You think systematically, connect people and ideas, and bring balance to a group.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือสามเหลี่ยม คุณมีความคิดเป็นระบบ เชื่อมโยงคนและความคิดเข้าด้วยกัน และสร้างความสมดุลในกลุ่ม"
+  },
+  "sky.zenith.Tuc": {
+   "en": "Overhead at your birth: Tucana, the colourful toucan. You are cheerful and fully yourself, bringing life wherever you go.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือนกทูแคน นกสีสันสดใส คุณร่าเริง เป็นตัวของตัวเอง และทำให้ทุกที่มีชีวิตชีวา"
+  },
+  "sky.zenith.UMa": {
+   "en": "Overhead at your birth: Ursa Major, the Great Bear that points to the Pole Star. You are a strong protector who gives warmth and shows others the way.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือหมีใหญ่ กลุ่มดาวที่ชี้ไปยังดาวเหนือ คุณเป็นผู้ปกป้องที่แข็งแกร่ง ให้ความอบอุ่น และช่วยชี้ทางให้คนอื่น"
+  },
+  "sky.zenith.UMi": {
+   "en": "Overhead at your birth: Ursa Minor, the Little Bear holding the Pole Star. You are anchored, true to your purpose, and someone others rely on.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือหมีเล็ก ที่มีดาวเหนือดาวนำทาง คุณมีหลักยึดมั่นคง ซื่อสัตย์ต่อเป้าหมาย และเป็นที่พึ่งของผู้อื่น"
+  },
+  "sky.zenith.Vel": {
+   "en": "Overhead at your birth: Vela, the sails of the Argo. You catch the wind of opportunity and carry the team forward.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือใบเรืออาร์โก ที่รับลมพาเรือไปข้างหน้า คุณเก่งในการใช้โอกาส และพาทีมไปสู่จุดหมาย"
+  },
+  "sky.zenith.Vir": {
+   "en": "Overhead at your birth: Virgo, the maiden holding an ear of wheat, symbol of harvest. You are diligent, careful and sincere, and your persistence pays off.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือหญิงสาวผู้ถือรวงข้าว สัญลักษณ์แห่งการเก็บเกี่ยว คุณขยัน ละเอียด บริสุทธิ์ใจ และได้รับผลตอบแทนจากความเพียร"
+  },
+  "sky.zenith.Vol": {
+   "en": "Overhead at your birth: Volans, the flying fish leaping from the water. You dare to go beyond limits and escape hard situations in unexpected ways.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือปลาบิน ผู้กระโดดพ้นน้ำ คุณกล้าข้ามขีดจำกัด และหาทางหนีจากสถานการณ์ยากได้อย่างคาดไม่ถึง"
+  },
+  "sky.zenith.Vul": {
+   "en": "Overhead at your birth: Vulpecula, the clever little fox. You think fast, solve problems well, and adapt shrewdly.",
+   "th": "กลุ่มดาวเหนือศีรษะของคุณคือหมาจิ้งจอก ผู้ฉลาดและมีไหวพริบ คุณคิดเร็ว แก้ปัญหาได้ดี และปรับตัวเข้ากับสถานการณ์ได้อย่างชาญฉลาด"
+  },
+  "transit.Jupiter": {
+   "en": "Jupiter crossing a birth planet signals luck, growth and new opportunities, with support from mentors. Good for study, travel or expanding your work; avoid overspending out of too much optimism.",
+   "th": "พฤหัสบดีจรมาทับดาวกำเนิด เป็นสัญญาณของโชค การขยายตัว และโอกาสใหม่ ผู้ใหญ่ให้การสนับสนุน เหมาะกับการเรียนต่อ เดินทาง หรือขยายงาน ระวังการใช้จ่ายเกินตัวเพราะมองโลกในแง่ดีเกินไป"
+  },
+  "transit.Jupiter-Mercury": {
+   "en": "Jupiter over your birth Mercury: broad thinking, good for study, exams, writing, business talks and contracts. Good news comes through communication.",
+   "th": "พฤหัสบดีจรทับพุธกำเนิด ความคิดกว้างไกล เหมาะกับการเรียน สอบ เขียน เจรจาธุรกิจ และทำสัญญา ข่าวดีมาทางการติดต่อสื่อสาร"
+  },
+  "transit.Jupiter-Moon": {
+   "en": "Jupiter over your birth Moon: a happy heart and a happy home, perhaps good news about where you live, and people who care for and help you.",
+   "th": "พฤหัสบดีจรทับจันทร์กำเนิด จิตใจเบิกบาน ครอบครัวมีความสุข อาจมีเรื่องดีเกี่ยวกับบ้านหรือที่อยู่อาศัย มีคนเอ็นดูและช่วยเหลือ"
+  },
+  "transit.Jupiter-Sun": {
+   "en": "Jupiter over your birth Sun: one of the best times in a 12-year cycle. Confidence, reputation and chances to advance open wide; good for asking for promotion or starting something big.",
+   "th": "พฤหัสบดีจรทับอาทิตย์กำเนิด หนึ่งในช่วงเวลาที่ดีที่สุดในรอบ 12 ปี ความมั่นใจ ชื่อเสียง และโอกาสก้าวหน้าเปิดกว้าง เหมาะกับการขอเลื่อนตำแหน่งหรือเริ่มต้นสิ่งใหญ่"
+  },
+  "transit.Jupiter-Venus": {
+   "en": "Jupiter over your birth Venus: love and money flourish. Singles may meet someone right, couples grow warmer, and income or gifts arrive.",
+   "th": "พฤหัสบดีจรทับศุกร์กำเนิด ความรักและการเงินรุ่งเรือง คนโสดมีโอกาสพบคนที่ใช่ คนมีคู่ความสัมพันธ์อบอุ่นขึ้น รายได้หรือของขวัญเข้ามา"
+  },
+  "transit.Mars": {
+   "en": "Mars crossing a birth planet brings energy, courage and drive; stalled work moves fast. But tempers run short and clashes come easily; watch for accidents and arguments.",
+   "th": "อังคารจรมาทับดาวกำเนิด ให้พลัง ความกล้า และแรงขับเคลื่อน งานที่ค้างจะเดินหน้าได้เร็ว แต่ก็ใจร้อนและปะทะง่าย ระวังอุบัติเหตุและการโต้เถียง"
+  },
+  "transit.Mars-Mercury": {
+   "en": "Mars over your birth Mercury: quick thinking and blunt speech, good for decisive negotiation, but watch harsh words and signing papers in a hurry.",
+   "th": "อังคารจรทับพุธกำเนิด ความคิดเร็วและพูดตรง เหมาะกับการเจรจาที่ต้องใช้ความเด็ดขาด แต่ระวังคำพูดแรงและการเซ็นเอกสารด้วยความรีบ"
+  },
+  "transit.Mars-Moon": {
+   "en": "Mars over your birth Moon: feelings run hot and irritable, especially at home. Put the energy into overdue household tasks instead of quarrels.",
+   "th": "อังคารจรทับจันทร์กำเนิด อารมณ์ร้อนและหงุดหงิดง่าย โดยเฉพาะกับคนในบ้าน ใช้พลังนี้จัดการเรื่องบ้านที่ค้างไว้แทนการทะเลาะ"
+  },
+  "transit.Mars-Sun": {
+   "en": "Mars over your birth Sun: energy and determination surge, good for launching projects or exercise, but clashes with people in authority come easily.",
+   "th": "อังคารจรทับอาทิตย์กำเนิด พลังและความมุ่งมั่นพุ่งสูง เหมาะกับการเริ่มโครงการหรือออกกำลังกาย แต่อาจปะทะกับผู้มีอำนาจได้ง่าย"
+  },
+  "transit.Mars-Venus": {
+   "en": "Mars over your birth Venus: love and attraction run hot, good for opening your heart or starting a relationship. Watch impulsive spending.",
+   "th": "อังคารจรทับศุกร์กำเนิด ความรักและแรงดึงดูดร้อนแรง เหมาะกับการเปิดใจหรือเริ่มความสัมพันธ์ ระวังการใช้จ่ายตามอารมณ์"
+  },
+  "transit.Mercury": {
+   "en": "Mercury crossing a birth planet brings activity in communication, paperwork, study and short trips. Good for negotiating and writing; double-check the details.",
+   "th": "พุธจรมาทับดาวกำเนิด เรื่องการติดต่อสื่อสาร เอกสาร การเรียน และการเดินทางระยะสั้นจะคึกคัก เหมาะกับการเจรจาและเขียนงาน ตรวจทานรายละเอียดให้ดี"
+  },
+  "transit.Moon": {
+   "en": "The Moon crossing a birth planet colours your mood and feelings for the day. You may feel more sensitive or unusually intuitive; listen to yourself. The effect lasts a day or two.",
+   "th": "จันทร์จรมาทับดาวกำเนิด ส่งผลต่ออารมณ์และความรู้สึกในวันนั้น คุณอาจอ่อนไหวหรือมีสัญชาตญาณดีเป็นพิเศษ ฟังเสียงใจตัวเองให้ดี ผลกระทบสั้นราว 1–2 วัน"
+  },
+  "transit.Saturn": {
+   "en": "Saturn crossing a birth planet is a time of testing. Responsibilities grow and anything unstable is exposed. It takes patience and discipline, but what you build now will be strong and lasting.",
+   "th": "เสาร์จรมาทับดาวกำเนิด เป็นช่วงแห่งบททดสอบ ความรับผิดชอบเพิ่มขึ้น สิ่งที่ไม่มั่นคงจะถูกเปิดเผย ต้องใช้ความอดทนและวินัย แต่สิ่งที่สร้างในช่วงนี้จะแข็งแรงและอยู่ได้นาน"
+  },
+  "transit.Saturn-Mercury": {
+   "en": "Saturn over your birth Mercury: serious, careful thinking, good for detailed work and planning, though communication may stall or paperwork run late.",
+   "th": "เสาร์จรทับพุธกำเนิด ความคิดจริงจังและรอบคอบ เหมาะกับงานที่ต้องการความละเอียดและการวางแผน แต่การสื่อสารอาจติดขัดหรือเอกสารล่าช้า"
+  },
+  "transit.Saturn-Moon": {
+   "en": "Saturn over your birth Moon: the heart may feel heavy or lonely and family duties increase. Give yourself time and talk to someone you trust; this passes and leaves you stronger.",
+   "th": "เสาร์จรทับจันทร์กำเนิด จิตใจอาจหนักและเหงา มีภาระครอบครัวเพิ่ม ให้เวลากับตัวเอง ระบายกับคนที่ไว้ใจ ช่วงนี้จะผ่านไปและทำให้ใจแข็งแรงขึ้น"
+  },
+  "transit.Saturn-Sun": {
+   "en": "Saturn over your birth Sun: a time to prove yourself. Work gets heavier and you may feel tired or held back, but effort now lays the foundation for long-term success. Look after your health.",
+   "th": "เสาร์จรทับอาทิตย์กำเนิด ช่วงที่ต้องพิสูจน์ตัวเอง งานหนักขึ้นและอาจรู้สึกเหนื่อยหรือถูกจำกัด แต่ความพยายามตอนนี้วางรากฐานให้ความสำเร็จระยะยาว ดูแลสุขภาพให้ดี"
+  },
+  "transit.Saturn-Venus": {
+   "en": "Saturn over your birth Venus: love is tested. Unstable relationships may end while true ones grow firmer. Be careful with money and spending.",
+   "th": "เสาร์จรทับศุกร์กำเนิด ความรักถูกทดสอบ ความสัมพันธ์ที่ไม่มั่นคงอาจจบลง ส่วนความสัมพันธ์ที่แท้จริงจะยิ่งแน่นแฟ้น ระวังเรื่องการเงินและการใช้จ่าย"
+  },
+  "transit.Sun": {
+   "en": "The Sun crossing a birth planet puts that part of life in the spotlight and boosts it. Confidence rises, a good moment to step forward and start something. The effect lasts a few days.",
+   "th": "อาทิตย์จรมาทับดาวกำเนิด ทำให้เรื่องนั้นเป็นจุดสนใจและได้รับพลังเพิ่ม ความมั่นใจสูงขึ้น เหมาะกับการแสดงตัวและเริ่มต้นสิ่งใหม่ ผลกระทบสั้นๆ ไม่กี่วัน"
+  },
+  "transit.Uranus": {
+   "en": "Uranus crossing a birth planet brings sudden, unexpected change: a new opening or a break from old patterns. Be open to the new, but don't rush big decisions without thought.",
+   "th": "มฤตยูจรมาทับดาวกำเนิด นำความเปลี่ยนแปลงแบบฉับพลันและไม่คาดคิด อาจเป็นโอกาสใหม่หรือการหลุดออกจากกรอบเดิม เปิดใจรับสิ่งใหม่ แต่อย่ารีบตัดสินใจเรื่องใหญ่โดยไม่ไตร่ตรอง"
+  },
+  "transit.Uranus-Mercury": {
+   "en": "Uranus over your birth Mercury: new ideas arrive fast, good for learning technology or something unusual. Unexpected news may change your plans.",
+   "th": "มฤตยูจรทับพุธกำเนิด ไอเดียใหม่ผุดขึ้นเร็ว เหมาะกับการเรียนรู้เทคโนโลยีหรือเรื่องแปลกใหม่ ข่าวที่ไม่คาดคิดอาจเปลี่ยนแผน"
+  },
+  "transit.Uranus-Moon": {
+   "en": "Uranus over your birth Moon: quick mood changes and sudden shifts at home or in the family. Stay flexible and find stability within.",
+   "th": "มฤตยูจรทับจันทร์กำเนิด อารมณ์ขึ้นลงเร็ว มีการเปลี่ยนแปลงเรื่องบ้าน ที่อยู่ หรือครอบครัวแบบกะทันหัน ยืดหยุ่นและหาความมั่นคงจากภายใน"
+  },
+  "transit.Uranus-Sun": {
+   "en": "Uranus over your birth Sun: a time of personal revolution. You crave freedom and a new direction, and may change job or image in ways no one expects.",
+   "th": "มฤตยูจรทับอาทิตย์กำเนิด ช่วงแห่งการปฏิวัติตัวเอง อยากเป็นอิสระและเปลี่ยนทิศทางชีวิต อาจเปลี่ยนงานหรือภาพลักษณ์แบบไม่มีใครคาดคิด"
+  },
+  "transit.Uranus-Venus": {
+   "en": "Uranus over your birth Venus: unexpected love, perhaps someone unlike anyone you've known, or an existing relationship needing more freedom. Beware of volatile finances.",
+   "th": "มฤตยูจรทับศุกร์กำเนิด ความรักแบบไม่คาดฝัน อาจพบคนที่แตกต่างจากที่เคยรู้จัก หรือความสัมพันธ์เดิมต้องการอิสระมากขึ้น ระวังการเงินที่ผันผวน"
+  },
+  "transit.Venus": {
+   "en": "Venus crossing a birth planet favours love, relationships, beauty and money. Your charm rises; a good time to meet people, ask for help or buy something you've wanted.",
+   "th": "ศุกร์จรมาทับดาวกำเนิด ความรัก ความสัมพันธ์ ความสวยงาม และเรื่องเงินได้รับพลังดี มีเสน่ห์มากขึ้น เหมาะกับการพบปะ ขอความช่วยเหลือ หรือซื้อของที่ตั้งใจไว้"
+  },
+  "transit.none": {
+   "en": "No moving planet is crossing your birth planets right now, so things are fairly calm, with no special push or pressure from the sky. A good time to keep working steadily on your plans, tidy up what is already in motion, and recharge.",
+   "th": "ช่วงนี้ไม่มีดาวจรเข้ามาทับดาวกำเนิดของคุณ ดวงจึงค่อนข้างนิ่ง ไม่มีแรงกระตุ้นหรือแรงกดดันจากฟ้าเป็นพิเศษ เป็นช่วงที่ดีสำหรับการทำสิ่งที่วางแผนไว้อย่างต่อเนื่อง ดูแลเรื่องเดิมให้เรียบร้อย และพักฟื้นพลัง"
+  }
+ },
+ "version": 1
+}

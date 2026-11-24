@@ -15,6 +15,8 @@ interface Env {
   ACCESS_AUD: string
 }
 
+import seed from './seed.json'
+
 const KEY_RE = /^[A-Za-z0-9.\-]{1,64}$/
 const MAX_TEXT = 20000
 
@@ -26,9 +28,27 @@ function ensureSchema(db: D1) {
   schemaReady ??= db.batch([
     db.prepare('CREATE TABLE IF NOT EXISTS predictions (key TEXT PRIMARY KEY, th TEXT NOT NULL DEFAULT \'\', en TEXT NOT NULL DEFAULT \'\', updated_at TEXT NOT NULL, updated_by TEXT NOT NULL)'),
     db.prepare('CREATE TABLE IF NOT EXISTS prediction_history (id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL, th TEXT, en TEXT, action TEXT NOT NULL, at TEXT NOT NULL, by TEXT NOT NULL)'),
-    db.prepare('CREATE INDEX IF NOT EXISTS prediction_history_key ON prediction_history (key, id)')
-  ]).catch((e) => { schemaReady = null; throw e })
+    db.prepare('CREATE INDEX IF NOT EXISTS prediction_history_key ON prediction_history (key, id)'),
+    db.prepare('CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT NOT NULL)')
+  ]).then(() => seedTexts(db)).catch((e) => { schemaReady = null; throw e })
   return schemaReady
+}
+
+/**
+ * Loads the starting texts (worker/seed.json) once per seed version. INSERT OR IGNORE never touches a key
+ * that already exists, so the admin's edits stay; a text the admin deleted only returns if the version is bumped.
+ */
+async function seedTexts(db: D1) {
+  const { results } = await db.prepare("SELECT v FROM meta WHERE k = 'seed_version'").all<{ v: string }>()
+  const done = Number(results[0]?.v ?? 0)
+  if (done >= seed.version) return
+  const now = new Date().toISOString()
+  const rows = Object.entries(seed.texts as Record<string, { th: string; en: string }>)
+  for (let i = 0; i < rows.length; i += 50) {
+    await db.batch(rows.slice(i, i + 50).map(([k, t]) =>
+      db.prepare('INSERT OR IGNORE INTO predictions (key, th, en, updated_at, updated_by) VALUES (?, ?, ?, ?, ?)').bind(k, t.th, t.en, now, 'seed')))
+  }
+  await db.prepare("INSERT INTO meta (k, v) VALUES ('seed_version', ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v").bind(String(seed.version)).run()
 }
 
 // ---- Cloudflare Access sign-in check (fails closed if not configured) ----

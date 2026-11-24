@@ -47,7 +47,18 @@ export function credits(lang: Lang): CreditGroup[] {
       { name: t('Day and year power', 'กำลังวันและกำลังปี'), detail: t('Site owner’s rules: day power = day + month, and if two digits the difference between them; year power = the last two digits of the CE year added, with the same two-digit rule', 'ตามหลักการที่เจ้าของเว็บไซต์กำหนด: กำลังวัน = วันที่ + เลขเดือน ถ้าได้สองหลักให้เอาผลต่างของสองหลัก กำลังปี = ผลบวกเลข 2 ตัวท้ายของปี ค.ศ. ถ้าได้สองหลักให้เอาผลต่างเช่นกัน'), links: [] },
       { name: t('Life number', 'เลขชีวิต'), detail: t('Pythagorean numerology', 'เลขศาสตร์แบบพีทาโกรัส'), links: [] },
       { name: t('Lunar day and retrograde motion', 'ดิถีและการโคจรพักร์'), detail: t('Lunar day from the Moon–Sun angle in 12° steps; retrograde by comparing longitude 12 hours before and after', 'ดิถีจากมุมห่างจันทร์–อาทิตย์ช่วงละ 12° · พักร์ เทียบลองจิจูดก่อนและหลัง 12 ชั่วโมง'), links: [] },
-      { name: t('Chinese zodiac', 'ปีนักษัตร'), detail: t('12-year cycle counted by calendar year', 'วัฏจักร 12 ปี นับตามปีปฏิทิน'), links: [] }
+      { name: t('Chinese zodiac', 'ปีนักษัตร'), detail: t('12-year cycle counted by calendar year', 'วัฏจักร 12 ปี นับตามปีปฏิทิน'), links: [] },
+      { name: t('Planets passing over birth planets', 'ดาวจรทับดาวกำเนิด'), detail: t('Moving planets compared with birth positions by ecliptic longitude: within 1° overlapping, within 5° touching, same sign same area', 'เทียบลองจิจูดสุริยวิถีของดาวจรกับดาวกำเนิด: ห่างไม่เกิน 1° ซ้อน ไม่เกิน 5° เริ่มทับ ราศีเดียวกันร่วมพื้นที่'), links: [] }
+    ] },
+    { group: t('Prediction texts', 'ข้อความคำทำนาย'), items: [
+      { name: t('Starting texts for topics 1–10', 'ข้อความตั้งต้นหัวข้อ 1–10'), detail: t('Written for Kaitianming in our own words, drawing on common traditions described by these sources; the site owner edits them in the admin', 'เรียบเรียงใหม่สำหรับ Kaitianming โดยอิงความหมายตามตำราที่แพร่หลายจากแหล่งเหล่านี้ และเจ้าของเว็บไซต์แก้ไขได้ในระบบหลังบ้าน'), links: [] },
+      { name: t('Number meanings', 'ความหมายของตัวเลข'), detail: 'Numerologist.com', links: [{ label: 'numerologist.com', url: 'https://numerologist.com/meanings/numbers-1-to-9' }] },
+      { name: t('Zodiac sign traits', 'ลักษณะ 12 ราศี'), detail: 'Sanook Horoscope', links: [{ label: 'sanook.com', url: 'https://www.sanook.com/horoscope/18585/' }] },
+      { name: t('Chinese zodiac traits', 'ลักษณะ 12 นักษัตร'), detail: 'Sanook Horoscope', links: [{ label: 'sanook.com', url: 'https://www.sanook.com/horoscope/57497/' }] },
+      { name: t('Chinese zodiac relations and Ben Ming Nian', 'คู่มิตร สามประสาน คู่ปะทะ คู่ขัด และปีชง'), detail: 'ChineseNewYear.net', links: [{ label: t('Compatibility', 'ความเข้ากัน'), url: 'https://chinesenewyear.net/zodiac/compatibility' }, { label: 'Ben Ming Nian', url: 'https://chinesenewyear.net/zodiac/ben-ming-nian' }] },
+      { name: t('Aspects between signs', 'มุมสัมพันธ์ระหว่างราศี'), detail: "The Old Farmer's Almanac", links: [{ label: 'almanac.com', url: 'https://www.almanac.com/what-do-aspects-mean-astrology' }] },
+      { name: t('Planet transits', 'ความหมายของดาวจร'), detail: 'Astrostyle; Cafe Astrology', links: [{ label: 'astrostyle.com', url: 'https://astrostyle.com/learn-astrology/transiting-planets/' }, { label: 'cafeastrology.com', url: 'https://cafeastrology.com/transits.html' }] },
+      { name: t('Constellation lore', 'ตำนานกลุ่มดาว'), detail: t('Figures and classical myths of the 88 IAU constellations', 'รูปและตำนานคลาสสิกของ 88 กลุ่มดาวตาม IAU'), links: [{ label: 'IAU', url: 'https://www.iau.org/public/themes/constellations/' }] }
     ] }
   ]
 }
