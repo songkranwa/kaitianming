@@ -1,8 +1,11 @@
-// Content of the result page as topics of swipeable cards.
+// The 13 readings on the result page, as topics of swipeable cards.
 // Swipe left/right = more cards in the same topic; scroll down = next topic.
+// Card 1 of each topic is the reading (text from src/content/predictions.ts); the rest show the facts behind it.
 // Lock levels: 'free' (everyone), 'member' (free sign-up), 'premium' (paid). Change a topic's level here.
 
+import { lookup, type Texts } from '../content/predictions'
 import type { Result } from '../engine/compute'
+import type { AnimalRelation, Contact } from '../engine/forecast'
 import type { Lang } from '../i18n/types'
 import { starText } from './format'
 
@@ -17,6 +20,8 @@ export interface DeckCard {
   rows?: { k: string; v: string }[]
   /** Renders the small sky map inside the card. */
   skyMap?: boolean
+  /** The reading text has not been written yet. */
+  pending?: boolean
 }
 export interface Topic { id: string; title: string; lock: LockLevel; cards: DeckCard[] }
 
@@ -37,92 +42,159 @@ export function deckText(lang: Lang) {
     lockedBodyPremium: (n: number) => (th ? `อัปเกรดเป็นพรีเมียมเพื่อปลดล็อกบัตร ${n} ใบในหัวข้อนี้` : `Upgrade to Premium to unlock the ${n} cards in this topic.`),
     unlockMember: th ? 'สมัครสมาชิกเพื่อปลดล็อก' : 'Sign up to unlock',
     unlockPremium: th ? 'อัปเกรดเพื่อปลดล็อก' : 'Upgrade to unlock',
-    loading: th ? 'กำลังโหลดข้อมูลดาว…' : 'Loading star data…'
+    loading: th ? 'กำลังโหลดข้อมูลดาว…' : 'Loading star data…',
+    pending: th ? 'ข้อความคำทำนายของหัวข้อนี้กำลังจัดทำ' : 'The reading for this topic is being written.'
   }
 }
 
-export function buildTopics(res: Result, lang: Lang): Topic[] {
+const SIGN_EN = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces']
+const SIGN_TH = ['เมษ', 'พฤษภ', 'เมถุน', 'กรกฎ', 'สิงห์', 'กันย์', 'ตุลย์', 'พิจิก', 'ธนู', 'มังกร', 'กุมภ์', 'มีน']
+
+export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
   const th = lang === 'th'
-  const { ch, np, pp, L } = res
-  const wait: DeckCard = { kicker: '', value: deckText(lang).loading }
-  const starRows = (st: NonNullable<typeof pp>['personal']) => [
-    { k: th ? 'กลุ่มดาว' : 'Constellation', v: st.constellation_name },
-    { k: th ? 'โชติมาตร' : 'Magnitude', v: String(st.mag) },
-    { k: th ? 'ห่างจากจุดเหนือศีรษะ' : 'From overhead', v: `${st.distance_from_zenith_deg}° · ${st.bearing}` }
-  ]
-  const bodyJson = pp ? (pp.json as { bodies: { name: string; constellation_name: string }[] }).bodies : []
+  const d = deckText(lang)
+  const { ch, np, pp, L, fc } = res
+  const wait: DeckCard = { kicker: '', value: d.loading }
+  const sign = (i: number) => (th ? 'ราศี' + SIGN_TH[i] : SIGN_EN[i])
+  const animal = (i: number) => L.animals[i]
+  const body = (p: string) => L.bodies[p as keyof typeof L.bodies]
+  const when = (days: number) => new Date(fc.now + days * 86400000).toLocaleDateString(th ? 'th-TH' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+
+  /** Card 1 of a topic: the reading itself. */
+  const reading = (value: string, keys: string[], kicker = th ? 'คำทำนาย' : 'Reading'): DeckCard => {
+    const text = lookup(texts, keys, lang)
+    return { kicker, value, body: text ?? d.pending, pending: !text }
+  }
+  const relText: Record<AnimalRelation, string> = th
+    ? { same: 'ปีชง (ปีนักษัตรเดียวกับปีเกิด)', harmony: 'ปีที่เข้ากัน (หลักคู่มิตร)', trine: 'ปีที่หนุนกัน (สามประสาน)', clash: 'ปีที่ปะทะ (คู่ตรงข้าม)', harm: 'ปีที่ขัดกัน (คู่ทำร้าย)', neutral: 'ปีที่เป็นกลาง' }
+    : { same: 'Your own animal year', harmony: 'A harmony year (six-harmony pair)', trine: 'A supporting year (trine)', clash: 'A clash year (opposite animal)', harm: 'A friction year (harm pair)', neutral: 'A neutral year' }
+  const levelText = (c: Contact) => L.levels[c.level]
+  const contactRows = (list: Contact[], withDate: boolean) =>
+    list.map((c) => ({ k: (th ? `${body(c.transit)} จร → ${body(c.natal)} กำเนิด` : `${body(c.transit)} → birth ${body(c.natal)}`), v: `${levelText(c)} · ${c.sep}°` + (withDate ? ` · ${when(c.peakDay)}` : '') }))
+  const contactKeys = (list: Contact[]) => list.length
+    ? [...list.map((c) => `transit.${c.transit}-${c.natal}`), ...list.map((c) => `transit.${c.transit}`)]
+    : ['transit.none']
+  const transitTopic = (id: string, lock: LockLevel, title: string, list: Contact[], span: string, withDate: boolean): Topic => ({
+    id, lock, title,
+    cards: [
+      reading(list.length ? (th ? `${list.length} จุดที่ดาวจรมาทับ` : `${list.length} contact${list.length > 1 ? 's' : ''}`) : (th ? 'ไม่มีดาวจรมาทับ' : 'No contacts'), contactKeys(list)),
+      { kicker: th ? `ดาวจรที่มาทับดาวกำเนิด · ${span}` : `Planets reaching your birth planets · ${span}`, value: '', rows: contactRows(list, withDate),
+        body: list.length ? undefined : (th ? 'ช่วงนี้ไม่มีดาวจรเข้ามาใกล้ดาวกำเนิดของคุณ' : 'No moving planet comes close to your birth planets in this period.') },
+      { kicker: th ? 'วิธีดู' : 'How this is read', value: '',
+        body: th ? 'เทียบตำแหน่งดาวบนท้องฟ้าจริงในช่วงเวลานั้นกับตำแหน่งดาวตอนคุณเกิด: ห่างไม่เกิน 1° = ซ้อน, ไม่เกิน 5° = เริ่มทับ, อยู่ราศีเดียวกัน = ร่วมพื้นที่ (ดูเฉพาะวันนี้)' : 'Planets in the real sky for that period are compared with where they were at your birth: within 1° = overlapping, within 5° = touching, same sign = same area (today only).' }
+    ]
+  })
+  const nextAnimalRel = fc.animal.relNext
 
   return [
+    // 1 — character from the day power
     {
-      id: 'star', lock: 'free', title: th ? 'ดาวประจำตัว' : 'Your personal star',
-      cards: pp ? [
-        { kicker: th ? 'ดาวที่ใกล้จุดเหนือศีรษะที่สุด' : 'Closest to straight overhead', value: starText(pp.personal), rows: starRows(pp.personal),
-          body: th ? 'ดาวที่อยู่ตรงเหนือศีรษะมากที่สุด เวลา 00:00 น. ของวันเกิด ณ ที่ที่คุณเกิด' : 'The star nearest the point straight overhead at 00:00 on your birth date, where you were born.' },
-        ...(pp.bright ? [{ kicker: th ? 'ดาวสว่างเด่นที่ใกล้ที่สุด' : 'Closest bright star', value: starText(pp.bright), rows: starRows(pp.bright) }] : []),
-        { kicker: th ? 'ดาวเด่นในรัศมี 12°' : 'Notable stars within 12°', value: String(pp.nearby.length),
-          rows: pp.nearby.map((s) => ({ k: starText(s), v: `${s.distance_from_zenith_deg}°` })) }
-      ] : [wait]
+      id: 'day', lock: 'free', title: th ? 'ลักษณะเจ้าของวันเกิด' : 'Your character from your birth number',
+      cards: [
+        reading(th ? `เลขประจำวันเกิด ${np.day.value}` : `Birth number ${np.day.value}`, [`day.${np.day.value}`]),
+        { kicker: th ? 'วิธีคิด (วันที่ + เดือน)' : 'How it is worked out (day + month)', value: String(np.day.value), body: np.day.working }
+      ]
     },
+    // 2 — day power vs this year
     {
-      id: 'zenith', lock: 'free', title: th ? 'กลุ่มดาวเหนือศีรษะ' : 'Constellation overhead',
+      id: 'dayYear', lock: 'member', title: th ? `ดวงปีนี้จากเลขวันเกิด (ค.ศ. ${fc.dayVsYear.yearCE})` : `Your ${fc.dayVsYear.yearCE} from your birth number`,
+      cards: [
+        reading(`${fc.dayVsYear.day} · ${fc.dayVsYear.year}`, [`dayYear.${fc.dayVsYear.day}-${fc.dayVsYear.year}`, `dayYear.diff.${fc.dayVsYear.diff}`]),
+        { kicker: th ? 'เลขที่นำมาเทียบ' : 'The two numbers', value: '',
+          rows: [{ k: th ? 'เลขประจำวันเกิด' : 'Birth number', v: String(fc.dayVsYear.day) }, { k: th ? `กำลังปี ค.ศ. ${fc.dayVsYear.yearCE}` : `Year power ${fc.dayVsYear.yearCE}`, v: String(fc.dayVsYear.year) },
+            { k: th ? 'ผลต่าง' : 'Difference', v: fc.dayVsYear.diff === 0 ? (th ? 'ตรงกัน' : 'Same') : String(fc.dayVsYear.diff) }],
+          body: np.curYear.working }
+      ]
+    },
+    // 3 — the sky at birth
+    {
+      id: 'sky', lock: 'free', title: th ? 'ดวงดาวบนฟากฟ้าตอนเกิด' : 'The sky when you were born',
       cards: pp ? [
-        { kicker: th ? 'ศูนย์กลางแผ่นฟากฟ้าของคุณ' : 'The centre of your sky map', value: pp.zenName,
-          body: th ? 'กลุ่มดาวที่ครอบจุดเหนือศีรษะ ณ ที่และวันที่คุณเกิด' : 'The constellation that held the point straight overhead, where and when you were born.' },
+        reading(pp.zenName, [...(pp.zenCon ? [`sky.zenith.${pp.zenCon}`] : []), `sky.bright.${pp.brightness.birth_sign.state_index}`]),
+        { kicker: th ? 'ดาวประจำตัว (ใกล้จุดเหนือศีรษะที่สุด)' : 'Your personal star (closest to overhead)', value: starText(pp.personal),
+          rows: [{ k: th ? 'กลุ่มดาว' : 'Constellation', v: pp.personal.constellation_name }, { k: th ? 'โชติมาตร' : 'Magnitude', v: String(pp.personal.mag) },
+            { k: th ? 'ห่างจากจุดเหนือศีรษะ' : 'From overhead', v: `${pp.personal.distance_from_zenith_deg}° · ${pp.personal.bearing}` }] },
         { kicker: th ? 'แผ่นฟากฟ้า ณ คืนวันเกิด' : 'Your sky on the night of birth', value: '', skyMap: true },
-        { kicker: th ? 'กลุ่มดาวรอบด้าน (ห่าง 20°)' : 'Around it (20° away)', value: '',
-          rows: pp.surroundings.map((r) => ({ k: r.bearing, v: r.at20Name })) }
+        { kicker: th ? 'สว่างหรือมืด' : 'Bright or dark', value: pp.brightness.birth_sign.state,
+          body: pp.brightness.birth_sign.blockers.length ? (th ? 'ดาวที่บัง: ' : 'Covered by: ') + pp.brightness.birth_sign.blockers.join(', ') : (th ? 'ไม่มีดาวใหญ่บังราศีเกิด' : 'No major body covers your birth sign') },
+        { kicker: th ? 'ดาวใหญ่และการทับซ้อน' : 'Planets and overlaps', value: pp.overlaps.length ? String(pp.overlaps.length) : (th ? 'ไม่มี' : 'None'),
+          rows: pp.overlaps.map((o) => ({ k: `${o.a} – ${o.b}`, v: `${o.level_name} · ${o.separation_deg}°` })) },
+        { kicker: th ? 'ดวงจันทร์และวันเกิด' : 'Moon and weekday', value: L.days[ch.dowI],
+          rows: [{ k: th ? 'ดิถี' : 'Lunar day', v: ch.lunar }, { k: th ? 'ช่วง' : 'Phase', v: ch.phase }, { k: th ? 'ส่วนที่สว่าง' : 'Illuminated', v: `${ch.illum}%` }] }
       ] : [wait]
     },
+    // 4–6 — transits
+    transitTopic('today', 'member', th ? 'ดวงดาววันนี้ที่มีผลต่อคุณ' : 'How today’s sky affects you', fc.today, when(0), false),
+    transitTopic('month', 'premium', th ? 'ดวงดาวที่กำลังมาถึงในอีก 1 เดือน' : 'The sky over the next month', fc.month, th ? '30 วันข้างหน้า' : 'next 30 days', true),
+    transitTopic('year', 'premium', th ? 'ดวงดาวที่กำลังมาถึงในอีก 1 ปี' : 'The sky over the next year', fc.year, th ? '12 เดือนข้างหน้า' : 'next 12 months', true),
+    // 7 — birth sign (Western)
     {
-      id: 'numbers', lock: 'free', title: th ? 'กำลังวันและกำลังปี' : 'Day and year power',
+      id: 'sign', lock: 'free', title: th ? 'ลักษณะตามราศีเกิด' : 'Your zodiac sign',
       cards: [
-        { kicker: th ? 'กำลังวัน (วันที่ + เดือน)' : 'Day power (day + month)', value: String(np.day.value), body: np.day.working },
-        { kicker: th ? `กำลังปีเกิด (ค.ศ. ${np.birthYear.year})` : `Birth-year power (${np.birthYear.year})`, value: String(np.birthYear.value), body: np.birthYear.working },
-        { kicker: th ? 'เทียบกับปีนี้และปีหน้า' : 'Compared with this year and next', value: `${np.curYear.value} · ${np.nextYear.value}`,
-          rows: np.compare.map((c) => ({ k: c.label, v: `${c.value} · ${c.rel}` })) }
+        reading(sign(fc.sign.birth), [`sign.${fc.sign.birth}`]),
+        { kicker: th ? 'ราศีแบบสากล (ตามตำแหน่งดวงอาทิตย์)' : 'Western zodiac (from the Sun’s position)', value: sign(fc.sign.birth),
+          body: th ? 'ใช้ราศีแบบสากล (สายนะ) ซึ่งต่างจากราศีแบบไทยประมาณ 1 ราศี' : 'Uses the Western (tropical) zodiac.' }
       ]
     },
+    // 8 — the zodiac now
     {
-      id: 'sunmoon', lock: 'free', title: th ? 'อาทิตย์ จันทร์ และวันเกิด' : 'Sun, Moon and weekday',
+      id: 'signNow', lock: 'member', title: th ? 'ผลของจักรราศีช่วงนี้' : 'The zodiac right now',
       cards: [
-        { kicker: th ? 'อาทิตย์สถิตราศี (ไทย)' : 'Sun sign (Thai sidereal)', value: ch.sunSign,
-          rows: [{ k: th ? 'อาทิตย์ขึ้น' : 'Sunrise', v: ch.rise }, { k: th ? 'อาทิตย์ตก' : 'Sunset', v: ch.set }, { k: th ? 'กลางวันยาว' : 'Day length', v: ch.dayLen }] },
-        { kicker: th ? 'จันทร์สถิตราศี (ไทย)' : 'Moon sign (Thai sidereal)', value: ch.moonSign,
-          rows: [{ k: th ? 'ดิถี' : 'Lunar day', v: ch.lunar }, { k: th ? 'ช่วง' : 'Phase', v: ch.phase }, { k: th ? 'ส่วนที่สว่าง' : 'Illuminated', v: `${ch.illum}%` }] },
-        { kicker: th ? 'วันเกิดและปีเกิด' : 'Weekday and year', value: L.days[ch.dowI],
-          rows: [{ k: th ? 'ปีนักษัตร' : 'Chinese zodiac', v: res.animal }, { k: th ? 'เลขชีวิต' : 'Life number', v: String(np.life) }] }
+        reading(`${sign(fc.sign.birth)} → ${sign(fc.sign.current)}`, [`signNow.${fc.sign.birth}-${fc.sign.current}`, `signNow.dist.${fc.sign.distance}`]),
+        { kicker: th ? 'ราศีที่ดวงอาทิตย์อยู่ตอนนี้ เทียบราศีเกิด' : 'Where the Sun is now, compared with your sign', value: '',
+          rows: [{ k: th ? 'ราศีเกิด' : 'Your sign', v: sign(fc.sign.birth) }, { k: th ? 'ราศีปัจจุบัน' : 'Sun sign now', v: sign(fc.sign.current) },
+            { k: th ? 'ห่างกัน' : 'Distance', v: th ? `${fc.sign.distance} ราศี` : `${fc.sign.distance} sign${fc.sign.distance === 1 ? '' : 's'}` }] }
       ]
     },
+    // 9 — birth animal
     {
-      id: 'bright', lock: 'member', title: th ? 'สว่างหรือมืด' : 'Bright or dark',
-      cards: pp ? [
-        { kicker: th ? `ราศีเกิด: ${pp.brightness.birth_sign.sign}` : `Birth sign: ${pp.brightness.birth_sign.sign}`, value: pp.brightness.birth_sign.state,
-          body: pp.brightness.birth_sign.blockers.length ? (th ? 'ดาวที่บัง: ' : 'Blocked by: ') + pp.brightness.birth_sign.blockers.join(', ') : (th ? 'ไม่มีดาวใหญ่บัง' : 'Nothing blocks it') },
-        { kicker: th ? `กลุ่มดาวเหนือศีรษะ: ${pp.brightness.zenith_constellation.constellation}` : `Overhead: ${pp.brightness.zenith_constellation.constellation}`, value: pp.brightness.zenith_constellation.state,
-          body: pp.brightness.zenith_constellation.blockers.length ? (th ? 'ดาวที่บัง: ' : 'Blocked by: ') + pp.brightness.zenith_constellation.blockers.join(', ') : (th ? 'ไม่มีดาวใหญ่บัง' : 'Nothing blocks it') }
-      ] : [wait]
-    },
-    {
-      id: 'planets', lock: 'member', title: th ? 'ดาวใหญ่และการทับซ้อน' : 'Planets and overlaps',
-      cards: pp ? [
-        { kicker: th ? 'ดาวใหญ่อยู่ในกลุ่มดาวใด' : 'Where each planet sits', value: '',
-          rows: bodyJson.map((b) => ({ k: b.name, v: b.constellation_name })) },
-        { kicker: th ? 'การทับซ้อน' : 'Overlaps', value: pp.overlaps.length ? String(pp.overlaps.length) : (th ? 'ไม่มี' : 'None'),
-          rows: pp.overlaps.map((o) => ({ k: `${o.a} – ${o.b}`, v: `${o.level_name} · ${o.separation_deg}°` })) }
-      ] : [wait]
-    },
-    {
-      id: 'year', lock: 'premium', title: th ? `ปีนี้และปีหน้าของคุณ` : 'Your year ahead',
+      id: 'animal', lock: 'free', title: th ? 'ปีนักษัตรที่เกิด' : 'Your Chinese zodiac animal',
       cards: [
-        { kicker: th ? `ปี ค.ศ. ${np.curYear.year}` : `${np.curYear.year}`, value: String(np.curYear.value), body: th ? 'คำทำนายรายปีจะเพิ่มในขั้นถัดไป' : 'The yearly reading arrives in the next phase.' },
-        { kicker: th ? `ปี ค.ศ. ${np.nextYear.year}` : `${np.nextYear.year}`, value: String(np.nextYear.value), body: th ? 'คำทำนายรายปีจะเพิ่มในขั้นถัดไป' : 'The yearly reading arrives in the next phase.' }
+        reading(th ? `ปี${animal(fc.animal.birth)}` : animal(fc.animal.birth), [`animal.${fc.animal.birth}`]),
+        { kicker: th ? 'ปีเกิด ค.ศ.' : 'Birth year', value: String(res.inp.y),
+          body: th ? 'นับปีนักษัตรตามปีปฏิทิน ผู้ที่เกิดช่วงต้นปีก่อนตรุษจีนอาจเป็นปีนักษัตรก่อนหน้า' : 'Counted by calendar year; if you were born before Chinese New Year it may be the previous animal.' }
       ]
     },
+    // 10 — this year's animal
     {
-      id: 'reading', lock: 'premium', title: th ? 'คำทำนายฉบับเต็ม' : 'Your full reading',
+      id: 'animalNow', lock: 'member', title: th ? `ผลของปีนักษัตรปัจจุบัน (ปี${animal(fc.animal.current)})` : `This year’s animal: ${animal(fc.animal.current)}`,
       cards: [
-        { kicker: th ? 'คำทำนายเฉพาะตัว' : 'Personal reading', value: '', body: th ? 'คำทำนายที่สร้างจากดาวและตัวเลขของคุณจะเพิ่มในขั้นถัดไป' : 'A reading built from your stars and numbers arrives in the next phase.' }
+        reading(relText[fc.animal.relNow], [`animalNow.${fc.animal.birth}-${fc.animal.current}`, `animalNow.${fc.animal.relNow}`]),
+        { kicker: th ? 'ปีนักษัตรที่นำมาเทียบ' : 'The two animals', value: '',
+          rows: [{ k: th ? 'ปีเกิด' : 'Birth year', v: animal(fc.animal.birth) }, { k: th ? `ปี ค.ศ. ${fc.dayVsYear.yearCE}` : String(fc.dayVsYear.yearCE), v: animal(fc.animal.current) }] }
       ]
+    },
+    // 11 — overall, now
+    {
+      id: 'overallNow', lock: 'premium', title: th ? 'ดวงชะตารวมช่วงนี้' : 'Your overall fortune now',
+      cards: [
+        reading(th ? 'ภาพรวมช่วงนี้' : 'The picture now', ['overall.now']),
+        { kicker: th ? 'สิ่งที่นำมารวมกัน' : 'What goes into it', value: '',
+          rows: [
+            { k: th ? 'เลขวันเกิด / กำลังปี' : 'Birth number / year', v: `${fc.dayVsYear.day} · ${fc.dayVsYear.year}` },
+            { k: th ? 'ดาวจรวันนี้' : 'Contacts today', v: String(fc.today.filter((c) => c.level !== 'area').length) },
+            { k: th ? 'ราศีช่วงนี้' : 'Zodiac now', v: `${sign(fc.sign.birth)} → ${sign(fc.sign.current)}` },
+            { k: th ? 'ปีนักษัตร' : 'Animal year', v: relText[fc.animal.relNow] }
+          ] }
+      ]
+    },
+    // 12 — overall, next year
+    {
+      id: 'overallNext', lock: 'premium', title: th ? `ดวงชะตารวมปีหน้า (ค.ศ. ${fc.dayVsNext.yearCE})` : `Your overall fortune for ${fc.dayVsNext.yearCE}`,
+      cards: [
+        reading(th ? 'ภาพรวมปีหน้า' : 'The year ahead', ['overall.next', `dayYear.${fc.dayVsNext.day}-${fc.dayVsNext.year}`, `animalNow.${fc.animal.birth}-${fc.animal.next}`]),
+        { kicker: th ? 'สิ่งที่นำมารวมกัน' : 'What goes into it', value: '',
+          rows: [
+            { k: th ? 'เลขวันเกิด / กำลังปีหน้า' : 'Birth number / next year', v: `${fc.dayVsNext.day} · ${fc.dayVsNext.year}` },
+            { k: th ? 'ดาวจรใน 12 เดือน' : 'Contacts in 12 months', v: String(fc.year.length) },
+            { k: th ? `ปีนักษัตรปีหน้า (ปี${animal(fc.animal.next)})` : `Next year’s animal (${animal(fc.animal.next)})`, v: relText[nextAnimalRel] }
+          ] }
+      ]
+    },
+    // 13 — personal number (to be defined)
+    {
+      id: 'personal', lock: 'free', title: th ? 'ความหมายเลขเฉพาะตัว' : 'Your personal number',
+      cards: [reading(th ? 'เลขเฉพาะตัว' : 'Personal number', ['personal'])]
     }
   ]
 }

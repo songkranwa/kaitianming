@@ -59,7 +59,7 @@ export function CardDeck({ topic, index, total, tier, t, lang, paper, onUnlock }
                       {c.rows.map((r, j) => <div key={j}><dt>{r.k}</dt><dd>{r.v}</dd></div>)}
                     </dl>
                   )}
-                  {c.body && <p className="muted deck-body">{c.body}</p>}
+                  {c.body && <p className={c.pending ? 'deck-body deck-pending' : c.kicker && !c.value && !c.rows ? 'muted deck-body' : 'deck-body'}>{c.body}</p>}
                   <span className="deck-count muted-2 small">{i + 1} / {n}</span>
                 </article>
               ))}
