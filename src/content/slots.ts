@@ -17,11 +17,11 @@ const REL: [string, string][] = [['same', 'ปีชง (ปีนักษั�
 /** cons: IAU id → Thai name, from the sky catalog (88 constellations). */
 export function slotGroups(cons: Record<string, string>): SlotGroup[] {
   return [
-    { id: '1', title: '1. ลักษณะเจ้าของวันเกิด (เลขประจำวันเกิด)', note: 'เลขประจำวันเกิด = วันที่ + เดือน รวมจนเหลือหลักเดียว',
-      slots: range(9, 1).map((n) => ({ key: `day.${n}`, label: `เลข ${n}` })) },
+    { id: '1', title: '1. ลักษณะเจ้าของวันเกิด (เลขประจำวันเกิด)', note: 'เลขประจำวันเกิด = วันที่ + เดือน ถ้าได้สองหลัก ให้เอาผลต่างของสองหลัก (ได้ 0–9)',
+      slots: range(10).map((n) => ({ key: `day.${n}`, label: `เลข ${n}` })) },
     { id: '2', title: '2. ดวงจากเลขวันเกิดเทียบกับปีปัจจุบัน (ใช้กับปีหน้าในหัวข้อ 12 ด้วย)', note: 'ถ้ามีข้อความของคู่เลขนั้นจะใช้ก่อน ถ้าไม่มีจะใช้ข้อความตามผลต่าง',
-      slots: [...range(9).map((n) => ({ key: `dayYear.diff.${n}`, label: n === 0 ? 'ผลต่าง 0 (เลขตรงกัน)' : `ผลต่าง ${n}` })),
-        ...range(9, 1).flatMap((a) => range(9, 1).map((b) => ({ key: `dayYear.${a}-${b}`, label: `เลขวันเกิด ${a} · กำลังปี ${b}` })))] },
+      slots: [...range(10).map((n) => ({ key: `dayYear.diff.${n}`, label: n === 0 ? 'ผลต่าง 0 (เลขตรงกัน)' : `ผลต่าง ${n}` })),
+        ...range(10).flatMap((a) => range(9, 1).map((b) => ({ key: `dayYear.${a}-${b}`, label: `เลขวันเกิด ${a} · กำลังปี ${b}` })))] },
     { id: '3', title: '3. ดวงดาวบนฟากฟ้าตอนเกิด', note: 'ใช้ข้อความของกลุ่มดาวเหนือศีรษะก่อน ถ้าไม่มีใช้ข้อความสว่าง/มืดของราศีเกิด',
       slots: [...BRIGHT.map((b, i) => ({ key: `sky.bright.${i}`, label: `ราศีเกิด: ${b}` })),
         ...Object.entries(cons).sort((a, b) => a[1].localeCompare(b[1], 'th')).map(([id, name]) => ({ key: `sky.zenith.${id}`, label: `กลุ่มดาวเหนือศีรษะ: ${name} (${id})` }))] },
