@@ -18,8 +18,8 @@
   ],
   // Cloudflare Access protects /admin and /api/admin. Until both are filled in, admin saving is refused.
   "vars": {
-    "ACCESS_TEAM_DOMAIN": "",
-    "ACCESS_AUD": ""
+    "ACCESS_TEAM_DOMAIN": "tiny-waterfall-00ea.cloudflareaccess.com",
+    "ACCESS_AUD": "1716e34603c7b2fc8a3024e9f2dea03a9a73fa46e47b25d6087ec58052ff6077"
   },
   "observability": { "enabled": true }
 }
