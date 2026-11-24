@@ -1,7 +1,7 @@
 // Day power and year power — the site owner's own rules:
-//   day power  = day of month + month number
-//   year power = sum of the last two digits of the CE year
-//   any result above 9 is reduced again (digit sum) until one digit remains.
+//   day power  = day of month + month number; a one-digit sum is used as is,
+//                a two-digit sum becomes the difference between its two digits (0–9; 11, 22, 33 → 0)
+//   year power = sum of the last two digits of the CE year, reduced (digit sum) to one digit
 // Life number: Pythagorean numerology (digit sum of day, month and CE year).
 
 import type { Lang } from '../i18n/types'
@@ -18,6 +18,16 @@ export function reduce(x: number, expr: string): Reduced {
     x = t
   }
   return { value: x, working: text }
+}
+
+/** Owner's rule (24 Nov 2026): day + month; if two digits, the difference between them. */
+export function dayPower(day: number, month: number): Reduced {
+  const sum = day + month
+  let text = day + ' + ' + month + ' = ' + sum
+  if (sum <= 9) return { value: sum, working: text }
+  const a = Math.floor(sum / 10), b = sum % 10, v = Math.abs(a - b)
+  text += ' → ' + Math.max(a, b) + ' − ' + Math.min(a, b) + ' = ' + v
+  return { value: v, working: text }
 }
 
 export function yearPower(y: number): YearPower {
@@ -40,7 +50,7 @@ export interface NumberPowers {
 
 export function numberPowers(day: number, month: number, yearCE: number, now: Date, lang: Lang): NumberPowers {
   const th = lang === 'th'
-  const dayP = reduce(day + month, day + ' + ' + month)
+  const dayP = dayPower(day, month)
   const curCE = now.getFullYear()
   const birthY = yearPower(yearCE), curY = yearPower(curCE), nextY = yearPower(curCE + 1)
   const rel = (a: number, b: number) => (a === b ? (th ? 'ตรงกัน' : 'Same') : (th ? 'ต่างกัน ' : 'Differ by ') + Math.abs(a - b))
@@ -67,7 +77,7 @@ export function numberPowers(day: number, month: number, yearCE: number, now: Da
       next_year_power: { year_ce: curCE + 1, value: nextY.value, working: nextY.working },
       life_number: life,
       calendar_used: 'CE',
-      rule: 'day power = day + month; year power = sum of the last two digits of the CE year; reduce repeatedly to one digit'
+      rule: 'day power = day + month, and if two digits the difference between them; year power = sum of the last two digits of the CE year, reduced to one digit'
     }
   }
 }
