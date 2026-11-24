@@ -95,7 +95,7 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
     rows: [
       { k: th ? 'อายุ' : 'Age', v: th ? `${o.age} ปี` : `${o.age}` },
       { k: th ? 'ส่วนต่างอายุจาก 60' : 'Age gap from 60', v: String(o.ageGap) },
-      { k: th ? 'ความสว่างดวงจันทร์คืนเกิด' : 'Birth-night Moon brightness', v: `${o.illum}% → ${o.moon}/15` },
+      { k: th ? 'ความสว่างดวงจันทร์คืนเกิด' : 'Birth-night Moon brightness', v: o.eclipsed ? (th ? `จันทรุปราคา → นับเป็นจันทร์ดับ 1/15` : `lunar eclipse → dark moon 1/15`) : `${o.illum}% → ${o.moon}/15` },
       { k: th ? 'ส่วนต่างจาก 9' : 'Gap from 9', v: String(o.moonGap) },
       { k: th ? 'นำไปหาร' : 'Divide by', v: o.divisor === 1 ? (th ? 'ไม่หาร' : 'none') : String(o.divisor) },
       { k: th ? 'ผลหาร (ปัดขึ้น)' : 'Result (rounded up)', v: String(o.quotient) }
@@ -133,8 +133,8 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
             { k: th ? 'ห่างจากจุดเหนือศีรษะ' : 'From overhead', v: `${pp.personal.distance_from_zenith_deg}° · ${pp.personal.bearing}` }] },
         { kicker: th ? 'แผ่นฟากฟ้า ณ คืนวันเกิด' : 'Your sky on the night of birth', value: '', skyMap: true },
         { kicker: th ? 'ค่าดวงดาวคืนเกิด (ความสูงจากขอบฟ้า)' : 'Star values on the night of birth (height above the horizon)', value: '',
-          rows: pp.bodies.map((b) => ({ k: b.name, v: b.p.alt >= 0 ? `${Math.round(b.p.alt)}° → ${starValue(b.p.alt)}` : (th ? `ใต้ขอบฟ้า (${Math.round(b.p.alt)}°)` : `below horizon (${Math.round(b.p.alt)}°)`) })),
-          body: th ? 'ขอบฟ้า 0° ถึงเหนือศีรษะ 90° แบ่งช่วงละ 10°: 0–10° = 1 … 80–90° = 9 ดูจากที่เกิด เวลา 00:00 น.' : 'Horizon 0° to overhead 90° in 10° steps: 0–10° = 1 … 80–90° = 9, seen from your birthplace at 00:00.' },
+          rows: pp.bodies.map((b) => ({ k: b.name, v: b.p.alt >= 0 ? `${Math.round(b.p.alt)}° → ${starValue(b.p.alt)}` : (th ? `ใต้ขอบฟ้า ${Math.round(-b.p.alt)}° → ${starValue(b.p.alt)}` : `below horizon ${Math.round(-b.p.alt)}° → ${starValue(b.p.alt)}`) })),
+          body: th ? 'ขอบฟ้า 0° ถึงเหนือศีรษะ 90° แบ่งช่วงละ 10°: 0–10° = 1 … 80–90° = 9 ดูจากที่เกิด เวลา 00:00 น. ดาวใต้ขอบฟ้านับลงไปแบบเดียวกัน (ใต้เท้าตรงๆ = 9) ไม่นับเป็นท้องฟ้าที่เห็นตอนเกิด ใช้ดูเฉพาะว่าอยู่ใต้อิทธิพลกลุ่มดาวใด' : 'Horizon 0° to overhead 90° in 10° steps: 0–10° = 1 … 80–90° = 9, from your birthplace at 00:00. Below the horizon counts the same way down (straight below = 9); those planets are not part of the visible birth sky and their value is used only to check constellation influence.' },
         { kicker: th ? 'สว่างหรือมืด' : 'Bright or dark', value: pp.brightness.birth_sign.state,
           body: pp.brightness.birth_sign.blockers.length ? (th ? 'ดาวที่บัง: ' : 'Covered by: ') + pp.brightness.birth_sign.blockers.join(', ') : (th ? 'ไม่มีดาวใหญ่บังราศีเกิด' : 'No major body covers your birth sign') },
         { kicker: th ? 'ดาวใหญ่และการทับซ้อน' : 'Planets and overlaps', value: pp.overlaps.length ? String(pp.overlaps.length) : (th ? 'ไม่มี' : 'None'),
@@ -171,8 +171,8 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
       id: 'animal', lock: 'free', title: th ? 'ปีนักษัตรที่เกิด' : 'Your Chinese zodiac animal',
       cards: [
         reading(th ? `ปี${animal(fc.animal.birth)}` : animal(fc.animal.birth), [`animal.${fc.animal.birth}`]),
-        { kicker: th ? 'ปีเกิด ค.ศ.' : 'Birth year', value: String(res.inp.y),
-          body: th ? 'นับปีนักษัตรตามปีปฏิทิน ผู้ที่เกิดช่วงต้นปีก่อนตรุษจีนอาจเป็นปีนักษัตรก่อนหน้า' : 'Counted by calendar year; if you were born before Chinese New Year it may be the previous animal.' }
+        { kicker: th ? 'ปีนักษัตรเปลี่ยนวันตรุษจีน' : 'The zodiac year starts at Chinese New Year', value: new Date(Date.UTC(fc.animal.birthCny.y, fc.animal.birthCny.m - 1, fc.animal.birthCny.d)).toLocaleDateString(th ? 'th-TH' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }),
+          body: th ? `ตรุษจีนปีที่คุณเกิดตรงกับวันข้างบน คนที่เกิดก่อนวันนี้นับเป็นปีนักษัตรของปีก่อน` : 'Chinese New Year in your birth year fell on the date above; anyone born before it belongs to the previous year’s animal.' }
       ]
     },
     // 10 — this year's animal

@@ -22,9 +22,11 @@ interface Placed { alt: number; az: number; zd: number; x: number; y: number }
 /**
  * Star value (owner's rule, 24 Nov 2026): height above the horizon seen from the birthplace,
  * horizon 0° … overhead 90°, in 10° steps: 0–10° → 1, 10–20° → 2 … 80–90° → 9.
- * Below the horizon there is no value yet (0) until the owner decides.
+ * Below the horizon counts the same way downwards (owner): the point under our feet is 9 like the point
+ * overhead. A planet below the horizon is not part of the visible sky at birth; its value is only used when
+ * checking which constellation influences it.
  */
-export const starValue = (alt: number): number => (alt < 0 ? 0 : Math.min(9, Math.floor(alt / 10) + 1))
+export const starValue = (alt: number): number => Math.min(9, Math.floor(Math.abs(alt) / 10) + 1)
 
 export interface StarInfo {
   name: string; designation: string; constellation: string | null; constellation_name: string
@@ -231,7 +233,8 @@ export function paperCompute(cat: SkyCatalog, inp: PaperInput, L: Labels, lang: 
         paper: { distance_deg: f1(b.p.zd), bearing_deg: f1(b.p.az), bearing: dirOf(b.p.az), x: Math.round(b.p.x * 1000) / 1000, y: Math.round(b.p.y * 1000) / 1000 },
         above_horizon: b.p.alt >= 0,
         altitude_deg: f1(b.p.alt),
-        star_value: starValue(b.p.alt)
+        star_value: starValue(b.p.alt),
+        star_value_below_horizon: b.p.alt < 0
       })),
       overlaps,
       brightness,
