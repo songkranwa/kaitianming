@@ -18,6 +18,13 @@ export interface PaperInput { ms: number; lat: number; lon: number; tz: string; 
 
 interface Placed { alt: number; az: number; zd: number; x: number; y: number }
 
+/**
+ * Star value (owner's rule, 24 Nov 2026): height above the horizon seen from the birthplace,
+ * horizon 0° … overhead 90°, in 10° steps: 0–10° → 1, 10–20° → 2 … 80–90° → 9.
+ * Below the horizon there is no value yet (0) until the owner decides.
+ */
+export const starValue = (alt: number): number => (alt < 0 ? 0 : Math.min(9, Math.floor(alt / 10) + 1))
+
 export interface StarInfo {
   name: string; designation: string; constellation: string | null; constellation_name: string
   mag: number; distance_from_zenith_deg: number; bearing: string
@@ -203,7 +210,9 @@ export function paperCompute(cat: SkyCatalog, inp: PaperInput, L: Labels, lang: 
         body: b.key, name: b.name, constellation: b.con, constellation_name: conName(b.con),
         territory_15deg: b.territory.map(conName), sign_sidereal: L.signs[b.sidI], sign_tropical: b.trop,
         paper: { distance_deg: f1(b.p.zd), bearing_deg: f1(b.p.az), bearing: dirOf(b.p.az), x: Math.round(b.p.x * 1000) / 1000, y: Math.round(b.p.y * 1000) / 1000 },
-        above_horizon: b.p.alt >= 0
+        above_horizon: b.p.alt >= 0,
+        altitude_deg: f1(b.p.alt),
+        star_value: starValue(b.p.alt)
       })),
       overlaps,
       brightness,
