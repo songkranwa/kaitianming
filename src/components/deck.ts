@@ -127,7 +127,7 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
     {
       id: 'sky', lock: 'free', title: th ? 'ดวงดาวบนฟากฟ้าตอนเกิด' : 'The sky when you were born',
       cards: pp ? [
-        readingAll(pp.zenName, [...(pp.zenCon ? [`sky.zenith.${pp.zenCon}`] : []), `sky.bright.${pp.brightness.birth_sign.state_index}`]),
+        readingAll(pp.zenOnArea ? pp.zenName : (th ? `ใกล้${pp.zenName}` : `Near ${pp.zenName}`), [...(pp.zenCon ? [`sky.zenith.${pp.zenCon}`] : []), `sky.bright.${pp.brightness.birth_sign.state_index}`]),
         { kicker: th ? 'ดาวประจำตัว (ใกล้จุดเหนือศีรษะที่สุด)' : 'Your personal star (closest to overhead)', value: starText(pp.personal),
           rows: [{ k: th ? 'กลุ่มดาว' : 'Constellation', v: pp.personal.constellation_name }, { k: th ? 'โชติมาตร' : 'Magnitude', v: String(pp.personal.mag) },
             { k: th ? 'ห่างจากจุดเหนือศีรษะ' : 'From overhead', v: `${pp.personal.distance_from_zenith_deg}° · ${pp.personal.bearing}` }] },

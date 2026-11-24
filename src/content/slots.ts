@@ -1,6 +1,7 @@
 // Every prediction text the site can show, grouped by the 13 readings. Used by the admin page.
 // Keys must match the lookups in src/components/deck.ts.
 
+import { isMain } from '../engine/areas'
 import type { Planet } from '../engine/sky'
 
 export interface Slot { key: string; label: string }
@@ -22,9 +23,9 @@ export function slotGroups(cons: Record<string, string>): SlotGroup[] {
     { id: '2', title: '2. ดวงจากเลขวันเกิดเทียบกับปีปัจจุบัน (ใช้กับปีหน้าในหัวข้อ 12 ด้วย)', note: 'ถ้ามีข้อความของคู่เลขนั้นจะใช้ก่อน ถ้าไม่มีจะใช้ข้อความตามผลต่าง',
       slots: [...range(10).map((n) => ({ key: `dayYear.diff.${n}`, label: n === 0 ? 'ผลต่าง 0 (เลขตรงกัน)' : `ผลต่าง ${n}` })),
         ...range(10).flatMap((a) => range(10).map((b) => ({ key: `dayYear.${a}-${b}`, label: `เลขวันเกิด ${a} · กำลังปี ${b}` })))] },
-    { id: '3', title: '3. ดวงดาวบนฟากฟ้าตอนเกิด', note: 'ใช้ข้อความของกลุ่มดาวเหนือศีรษะก่อน ถ้าไม่มีใช้ข้อความสว่าง/มืดของราศีเกิด',
+    { id: '3', title: '3. ดวงดาวบนฟากฟ้าตอนเกิด', note: 'แสดงข้อความกลุ่มดาวเหนือศีรษะ (เฉพาะกลุ่มดาวหลัก 33 กลุ่ม) ต่อด้วยข้อความสว่าง/มืดของราศีเกิด',
       slots: [...BRIGHT.map((b, i) => ({ key: `sky.bright.${i}`, label: `ราศีเกิด: ${b}` })),
-        ...Object.entries(cons).sort((a, b) => a[1].localeCompare(b[1], 'th')).map(([id, name]) => ({ key: `sky.zenith.${id}`, label: `กลุ่มดาวเหนือศีรษะ: ${name} (${id})` }))] },
+        ...Object.entries(cons).filter(([id]) => isMain(id)).sort((a, b) => a[1].localeCompare(b[1], 'th')).map(([id, name]) => ({ key: `sky.zenith.${id}`, label: `กลุ่มดาวเหนือศีรษะ: ${name} (${id})` }))] },
     { id: '4-6', title: '4–6. ผลของดวงดาวจร (วันนี้ · 1 เดือน · 1 ปี)', note: 'ดาวจรมาทับดาวกำเนิด ใช้ข้อความของคู่ดาวก่อน ถ้าไม่มีใช้ข้อความของดาวจรดวงนั้น',
       slots: [{ key: 'transit.none', label: 'ช่วงที่ไม่มีดาวจรมาทับ' },
         ...PLANETS.map((t) => ({ key: `transit.${t}`, label: `${PLANET_TH[t]}จร (ทั่วไป)` })),

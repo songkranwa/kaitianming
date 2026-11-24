@@ -4,6 +4,7 @@
 import type { Labels, OverlapLevel } from '../i18n/labels'
 import type { Lang } from '../i18n/types'
 import { RAD, ayanamsa, dayNum, ecl, rev, type Planet } from './sky'
+import { Areas, MAIN, RADIUS_RULE, isMain } from './areas'
 import { ConstellationFinder, altaz, around, gmst, offset, precess, sep, type Bounds, type RaDec } from './skymap'
 
 export interface SkyCatalog {
@@ -32,7 +33,8 @@ export interface StarInfo {
 
 export interface PaperBody {
   key: Planet; name: string; color: string; weight: number; ra: number; dec: number
-  con: string | null; territory: string[]; sidI: number; trop: string; p: Placed
+  /** con = deepest main-constellation area the body sits on; cons = all of them (owner's area rule). */
+  con: string | null; cons: string[]; territory: string[]; sidI: number; trop: string; p: Placed
 }
 
 export interface Overlap {
@@ -48,6 +50,8 @@ export interface MapMarker { name: string; color: string; left: string; top: str
 
 export interface Paper {
   lst: number; zenRa: number; zenCon: string | null; zenName: string
+  /** false when the zenith lies on no main-constellation area and zenCon is only the nearest one. */
+  zenOnArea: boolean; zenCons: string[]
   personal: StarInfo; bright: StarInfo | null; nearby: StarInfo[]
   surroundings: { bearing: string; at20: string | null; at20Name: string; at45: string | null; at45Name: string }[]
   bodies: PaperBody[]; overlaps: Overlap[]
@@ -70,6 +74,11 @@ function finderFor(bounds: Bounds): ConstellationFinder {
   if (!finderCache || finderCache.bounds !== bounds) finderCache = { bounds, finder: new ConstellationFinder(bounds) }
   return finderCache.finder
 }
+let areasCache: { cat: SkyCatalog; areas: Areas } | null = null
+function areasFor(cat: SkyCatalog): Areas {
+  if (!areasCache || areasCache.cat !== cat) areasCache = { cat, areas: new Areas(cat.lines, cat.stars) }
+  return areasCache.areas
+}
 
 export function paperCompute(cat: SkyCatalog, inp: PaperInput, L: Labels, lang: Lang): Paper {
   const finder = finderFor(cat.bounds)
@@ -85,8 +94,14 @@ export function paperCompute(cat: SkyCatalog, inp: PaperInput, L: Labels, lang: 
   const conName = (id: string | null) => { const c = id ? cat.cons[id] : undefined; return c ? (lang === 'th' ? c.th : c.la) : '—' }
   const conAt = (ra2000: number, dec2000: number) => finder.at(ra2000, dec2000)
 
+  const areas = areasFor(cat)
   const zj = precess(lst, lat, jd, -1)
-  const zenCon = conAt(zj[0], zj[1])
+  const zenHits = areas.at(zj[0], zj[1])
+  /** Zenith constellation by the area rule; if the zenith lies on no area, the nearest main constellation. */
+  const zenOnArea = zenHits.length > 0
+  const zenCon = zenOnArea ? zenHits[0].id : areas.nearest(zj[0], zj[1]).id
+  const zenCons = zenHits.map((h) => h.id)
+  const areaAt = (ra2000: number, dec2000: number): string | null => areas.at(ra2000, dec2000)[0]?.id ?? null
 
   const stars = cat.stars.map((s) => {
     const e = precess(s[0], s[1], jd, 1)
@@ -104,7 +119,7 @@ export function paperCompute(cat: SkyCatalog, inp: PaperInput, L: Labels, lang: 
   const nearby = byZd.filter((s) => s.p.zd <= 12).sort((a, b) => a.mag - b.mag).slice(0, 6).map(label)
 
   const surroundings = L.dirs.map((nm, i) => {
-    const at = (z: number) => { const q = offset(lst, lat, z, i * 45), j = precess(q[0], q[1], jd, -1); return conAt(j[0], j[1]) }
+    const at = (z: number) => { const q = offset(lst, lat, z, i * 45), j = precess(q[0], q[1], jd, -1); return areaAt(j[0], j[1]) }
     const c20 = at(20), c45 = at(45)
     return { bearing: nm, at20: c20, at20Name: conName(c20), at45: c45, at45Name: conName(c45) }
   })
@@ -120,19 +135,20 @@ export function paperCompute(cat: SkyCatalog, inp: PaperInput, L: Labels, lang: 
   const aya = ayanamsa(d)
   const bodies: PaperBody[] = BODIES.map(([key, color, weight]) => {
     const ec = ecl(key, d), eq = toEq(ec[0], ec[1]), p = place(eq[0], eq[1]), j = precess(eq[0], eq[1], jd, -1)
-    const con = conAt(j[0], j[1]), terr = new Set<string>()
+    const cons = areas.at(j[0], j[1]).map((h) => h.id), con = cons[0] ?? null, terr = new Set<string>()
     for (const r of [5, 10, 15]) for (let t = 0; t < 360; t += 30) {
-      const q = around(j[0], j[1], r, t), c = conAt(q[0], q[1])
-      if (c && c !== con) terr.add(c)
+      const q = around(j[0], j[1], r, t)
+      for (const h of areas.at(q[0], q[1])) if (!cons.includes(h.id)) terr.add(h.id)
     }
-    return { key, name: L.bodies[key], color, weight, ra: eq[0], dec: eq[1], con, territory: [...terr], sidI: Math.floor(rev(ec[0] - aya) / 30), trop: L.signs[Math.floor(ec[0] / 30)], p }
+    return { key, name: L.bodies[key], color, weight, ra: eq[0], dec: eq[1], con, cons, territory: [...terr], sidI: Math.floor(rev(ec[0] - aya) / 30), trop: L.signs[Math.floor(ec[0] / 30)], p }
   })
 
   const overlaps: Overlap[] = []
   for (let a = 0; a < bodies.length; a++) for (let b = a + 1; b < bodies.length; b++) {
     const A = bodies[a], B = bodies[b], s = sep(A.ra, A.dec, B.ra, B.dec)
-    const lvl: OverlapLevel | null = s <= THRESHOLDS.overlap_deg ? 'overlap' : s <= THRESHOLDS.touching_deg ? 'touch' : A.con && A.con === B.con ? 'area' : null
-    if (lvl) overlaps.push({ a: A.name, b: B.name, separation_deg: f1(s), level: lvl, level_name: L.levels[lvl], shared_constellation: A.con === B.con ? conName(A.con) : null })
+    const shared = A.cons.find((c) => B.cons.includes(c)) ?? null
+    const lvl: OverlapLevel | null = s <= THRESHOLDS.overlap_deg ? 'overlap' : s <= THRESHOLDS.touching_deg ? 'touch' : shared ? 'area' : null
+    if (lvl) overlaps.push({ a: A.name, b: B.name, separation_deg: f1(s), level: lvl, level_name: L.levels[lvl], shared_constellation: shared ? conName(shared) : null })
   }
   const rank: Record<OverlapLevel, number> = { overlap: 0, touch: 1, area: 2 }
   overlaps.sort((x, y) => rank[x.level] - rank[y.level] || x.separation_deg - y.separation_deg)
@@ -146,7 +162,7 @@ export function paperCompute(cat: SkyCatalog, inp: PaperInput, L: Labels, lang: 
   const sunB = bodies[0]
   const brightness = {
     birth_sign: { sign: L.signs[sunB.sidI], ...result(bodies.filter((x) => x.key !== 'Sun' && x.sidI === sunB.sidI)) },
-    zenith_constellation: { constellation: conName(zenCon), ...result(bodies.filter((x) => x.con && x.con === zenCon)) }
+    zenith_constellation: { constellation: conName(zenCon), ...result(bodies.filter((x) => x.cons.includes(zenCon))) }
   }
 
   // Drawing paths (SVG viewBox 0 0 1000 1000)
@@ -162,6 +178,7 @@ export function paperCompute(cat: SkyCatalog, inp: PaperInput, L: Labels, lang: 
   }
   let linesUp = '', linesDown = ''
   for (const id of Object.keys(cat.lines)) {
+    if (!isMain(id)) continue
     for (const pl of cat.lines[id]) {
       let prev: { p: Placed; q: [number, number] } | null = null
       for (const pt of pl) {
@@ -179,6 +196,7 @@ export function paperCompute(cat: SkyCatalog, inp: PaperInput, L: Labels, lang: 
   }
   const labels: MapLabel[] = []
   for (const id of Object.keys(cat.cons)) {
+    if (!isMain(id)) continue
     const cc = cat.cons[id]
     for (const c of [cc.c, cc.c2]) {
       if (!c) continue
@@ -194,7 +212,7 @@ export function paperCompute(cat: SkyCatalog, inp: PaperInput, L: Labels, lang: 
   }))
 
   return {
-    lst, zenRa: lst, zenCon, zenName: zenCon ? conName(zenCon) : '—',
+    lst, zenRa: lst, zenCon, zenName: zenCon ? conName(zenCon) : '—', zenOnArea, zenCons,
     personal, bright: brightS ? label(brightS) : null, nearby, surroundings,
     bodies, overlaps, brightness,
     draw: { starsUp, starsDown, linesUp, linesDown, labels, markers },
@@ -203,11 +221,12 @@ export function paperCompute(cat: SkyCatalog, inp: PaperInput, L: Labels, lang: 
       observer: { lat, lon: inp.lon, timezone: inp.tz },
       zenith: {
         ra_deg_date: f1(lst), dec_deg: lat, constellation: zenCon, constellation_name: zenCon ? conName(zenCon) : null,
+        on_constellation_area: zenOnArea, constellations_covering: zenCons.map(conName),
         personal_star: personal, nearby_stars: nearby,
         surroundings: surroundings.map((r) => ({ bearing: r.bearing, at_20deg: r.at20Name, at_45deg: r.at45Name }))
       },
       bodies: bodies.map((b) => ({
-        body: b.key, name: b.name, constellation: b.con, constellation_name: conName(b.con),
+        body: b.key, name: b.name, constellation: b.con, constellation_name: conName(b.con), constellations: b.cons.map(conName),
         territory_15deg: b.territory.map(conName), sign_sidereal: L.signs[b.sidI], sign_tropical: b.trop,
         paper: { distance_deg: f1(b.p.zd), bearing_deg: f1(b.p.az), bearing: dirOf(b.p.az), x: Math.round(b.p.x * 1000) / 1000, y: Math.round(b.p.y * 1000) / 1000 },
         above_horizon: b.p.alt >= 0,
@@ -217,6 +236,7 @@ export function paperCompute(cat: SkyCatalog, inp: PaperInput, L: Labels, lang: 
       overlaps,
       brightness,
       thresholds: THRESHOLDS,
+      constellation_areas: { main_constellations: MAIN, rule: 'union of circles around each figure star; ' + RADIUS_RULE },
       paper_projection: 'Lambert azimuthal equal-area, centre = zenith, horizon at r = 0.707, nadir at r = 1; x>0 = west, y>0 = south (as seen looking up)'
     }
   }
