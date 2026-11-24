@@ -5,7 +5,7 @@
 
 import { lookup, type Texts } from '../content/predictions'
 import type { Result } from '../engine/compute'
-import type { AnimalRelation, Contact } from '../engine/forecast'
+import type { AnimalRelation, Contact, Overall } from '../engine/forecast'
 import type { Lang } from '../i18n/types'
 import { starText } from './format'
 
@@ -89,7 +89,18 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
         body: th ? 'เทียบตำแหน่งดาวบนท้องฟ้าจริงในช่วงเวลานั้นกับตำแหน่งดาวตอนคุณเกิด: ห่างไม่เกิน 1° = ซ้อน, ไม่เกิน 5° = เริ่มทับ, อยู่ราศีเดียวกัน = ร่วมพื้นที่ (ดูเฉพาะวันนี้)' : 'Planets in the real sky for that period are compared with where they were at your birth: within 1° = overlapping, within 5° = touching, same sign = same area (today only).' }
     ]
   })
-  const nextAnimalRel = fc.animal.relNext
+  const overallCard = (o: Overall): DeckCard => ({
+    kicker: th ? 'วิธีคิด' : 'How it is worked out', value: String(o.value),
+    rows: [
+      { k: th ? 'อายุ' : 'Age', v: th ? `${o.age} ปี` : `${o.age}` },
+      { k: th ? 'ส่วนต่างอายุจาก 60' : 'Age gap from 60', v: String(o.ageGap) },
+      { k: th ? 'ความสว่างดวงจันทร์คืนเกิด' : 'Birth-night Moon brightness', v: `${o.illum}% → ${o.moon}/15` },
+      { k: th ? 'ส่วนต่างจาก 9' : 'Gap from 9', v: String(o.moonGap) },
+      { k: th ? 'นำไปหาร' : 'Divide by', v: o.divisor === 1 ? (th ? 'ไม่หาร' : 'none') : String(o.divisor) },
+      { k: th ? 'ผลหาร (ปัดขึ้น)' : 'Result (rounded up)', v: String(o.quotient) }
+    ],
+    body: o.working
+  })
 
   return [
     // 1 — character from the day power
@@ -169,32 +180,15 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
           rows: [{ k: th ? 'ปีเกิด' : 'Birth year', v: animal(fc.animal.birth) }, { k: th ? `ปี ค.ศ. ${fc.dayVsYear.yearCE}` : String(fc.dayVsYear.yearCE), v: animal(fc.animal.current) }] }
       ]
     },
-    // 11 — overall, now
+    // 11 — overall, now (owner's formula: age gap from 60, shaped by the birth-night Moon)
     {
       id: 'overallNow', lock: 'premium', title: th ? 'ดวงชะตารวมช่วงนี้' : 'Your overall fortune now',
-      cards: [
-        reading(th ? 'ภาพรวมช่วงนี้' : 'The picture now', ['overall.now']),
-        { kicker: th ? 'สิ่งที่นำมารวมกัน' : 'What goes into it', value: '',
-          rows: [
-            { k: th ? 'เลขวันเกิด / กำลังปี' : 'Birth number / year', v: `${fc.dayVsYear.day} · ${fc.dayVsYear.year}` },
-            { k: th ? 'ดาวจรวันนี้' : 'Contacts today', v: String(fc.today.filter((c) => c.level !== 'area').length) },
-            { k: th ? 'ราศีช่วงนี้' : 'Zodiac now', v: `${sign(fc.sign.birth)} → ${sign(fc.sign.current)}` },
-            { k: th ? 'ปีนักษัตร' : 'Animal year', v: relText[fc.animal.relNow] }
-          ] }
-      ]
+      cards: [reading(th ? `เลขดวงชะตารวม ${fc.overallNow.value}` : `Overall number ${fc.overallNow.value}`, [`overall.now.${fc.overallNow.value}`, `overall.${fc.overallNow.value}`, 'overall.now']), overallCard(fc.overallNow)]
     },
-    // 12 — overall, next year
+    // 12 — overall, next year (same formula with next year's age)
     {
       id: 'overallNext', lock: 'premium', title: th ? `ดวงชะตารวมปีหน้า (ค.ศ. ${fc.dayVsNext.yearCE})` : `Your overall fortune for ${fc.dayVsNext.yearCE}`,
-      cards: [
-        reading(th ? 'ภาพรวมปีหน้า' : 'The year ahead', ['overall.next', `dayYear.${fc.dayVsNext.day}-${fc.dayVsNext.year}`, `animalNow.${fc.animal.birth}-${fc.animal.next}`]),
-        { kicker: th ? 'สิ่งที่นำมารวมกัน' : 'What goes into it', value: '',
-          rows: [
-            { k: th ? 'เลขวันเกิด / กำลังปีหน้า' : 'Birth number / next year', v: `${fc.dayVsNext.day} · ${fc.dayVsNext.year}` },
-            { k: th ? 'ดาวจรใน 12 เดือน' : 'Contacts in 12 months', v: String(fc.year.length) },
-            { k: th ? `ปีนักษัตรปีหน้า (ปี${animal(fc.animal.next)})` : `Next year’s animal (${animal(fc.animal.next)})`, v: relText[nextAnimalRel] }
-          ] }
-      ]
+      cards: [reading(th ? `เลขดวงชะตารวม ${fc.overallNext.value}` : `Overall number ${fc.overallNext.value}`, [`overall.next.${fc.overallNext.value}`, `overall.${fc.overallNext.value}`, 'overall.next']), overallCard(fc.overallNext)]
     },
     // 13 — personal number (to be defined)
     {

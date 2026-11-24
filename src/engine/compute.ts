@@ -21,7 +21,7 @@ export function computeResult(y: number, m: number, d: number, city: City, lang:
   const ch = chart({ y, m, d, city }, L)
   const np = numberPowers(d, m, y, now, lang)
   const animal = L.animals[(((y - 4) % 12) + 12) % 12]
-  const fc = forecast(ch.ms, y, np, now)
+  const fc = forecast(ch.ms, { y, m, d }, ch.illum, np, now)
   const pp = catalog ? paperCompute(catalog, { ms: ch.ms, lat: city.lat, lon: city.lon, tz: city.tz, offsetMin: ch.offsetMin }, L, lang) : null
   const json: Record<string, unknown> = {
     engine_version: ENGINE_VERSION,
@@ -41,7 +41,8 @@ export function computeResult(y: number, m: number, d: number, city: City, lang:
       computed_at: new Date(fc.now).toISOString(), natal_tropical_lon: fc.natal,
       day_vs_year: fc.dayVsYear, day_vs_next_year: fc.dayVsNext,
       transits_today: fc.today, transits_next_30_days: fc.month, transits_next_365_days: fc.year,
-      sign_tropical: fc.sign, chinese_zodiac: fc.animal
+      sign_tropical: fc.sign, chinese_zodiac: fc.animal,
+      overall_now: fc.overallNow, overall_next_year: fc.overallNext
     },
     caveats: ch.notes
   }
