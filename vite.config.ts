@@ -28,7 +28,9 @@ export default defineConfig({
         // The city list (about 2.3 MB) is precached so the app works offline after the first visit.
         globPatterns: ['**/*.{js,css,html,svg,png,json,webmanifest}'],
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
-        navigateFallback: '/index.html'
+        navigateFallback: '/index.html',
+        // These must always reach the network: /admin and /api/admin sit behind Cloudflare Access sign-in.
+        navigateFallbackDenylist: [/^\/admin/, /^\/api\//, /^\/cdn-cgi\//]
       }
     })
   ]

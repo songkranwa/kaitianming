@@ -76,7 +76,7 @@ export function AdminView({ cons }: { cons: Record<string, string> }) {
       <div className="card">
         <p>ต้องเข้าสู่ระบบในฐานะผู้ดูแลก่อน</p>
         <p className="muted small">หน้านี้ป้องกันด้วย Cloudflare Access ถ้าเห็นข้อความนี้ แปลว่ายังไม่ได้เข้าสู่ระบบ หรือยังไม่ได้ตั้งค่า Access</p>
-        <button type="button" className="btn-primary" onClick={() => location.reload()}>ลองอีกครั้ง</button>
+        <button type="button" className="btn-primary" onClick={() => { location.href = '/admin?signin=' + Date.now() }}>เข้าสู่ระบบ</button>
       </div>
     </section>
   )
