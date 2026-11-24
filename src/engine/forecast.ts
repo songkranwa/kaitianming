@@ -56,7 +56,47 @@ export function animalRelation(a: number, b: number): AnimalRelation {
 }
 export const animalOf = (yearCE: number) => (((yearCE - 4) % 12) + 12) % 12
 
+/**
+ * Overall-fortune number (owner's formula, 24 Nov 2026):
+ *  1. age gap  = |60 − age|                                   (0–60)
+ *  2. moon     = birth-night Moon brightness in fifteenths: new = 1 … full = 15
+ *  3. moon gap = |9 − moon|                                   (0–8) — how strongly the sky acts on the age
+ *  4. divide the age gap by: gap 0 → 1, 1 → 10, 2 → 2, 3 → 3, 4 → 4, 5 → 4, 6 → 3, 7 → 2, 8 → 1
+ *  5. round up to the next whole number; if more than one digit, add the digits until one remains (0–9)
+ */
+export const MOON_DIVISOR = [1, 10, 2, 3, 4, 4, 3, 2, 1]
+export interface Overall { age: number; ageGap: number; illum: number; moon: number; moonGap: number; divisor: number; quotient: number; value: number; working: string }
+
+export function moonFifteenths(illumPct: number): number {
+  return Math.min(15, Math.max(1, Math.round((illumPct / 100) * 15)))
+}
+
+export function overall(age: number, illumPct: number): Overall {
+  const ageGap = Math.abs(60 - age)
+  const moon = moonFifteenths(illumPct)
+  const moonGap = Math.abs(9 - moon)
+  const divisor = MOON_DIVISOR[moonGap]
+  const quotient = Math.ceil(Math.round((ageGap / divisor) * 1e6) / 1e6) + 0
+  let value = quotient
+  let working = `|60 − ${age}| = ${ageGap} · |9 − ${moon}| = ${moonGap} → ${ageGap} ÷ ${divisor} = ${Math.round((ageGap / divisor) * 100) / 100} → ${quotient}`
+  while (value > 9) {
+    const ds = String(value).split('')
+    const t = ds.reduce((a, c) => a + Number(c), 0)
+    working += ` → ${ds.join(' + ')} = ${t}`
+    value = t
+  }
+  return { age, ageGap, illum: illumPct, moon, moonGap, divisor, quotient, value, working }
+}
+
+/** Completed years between the birth date and the given date (local calendar). */
+export function ageOn(by: number, bm: number, bd: number, on: Date): number {
+  const y = on.getFullYear(), m = on.getMonth() + 1, d = on.getDate()
+  return y - by - (m < bm || (m === bm && d < bd) ? 1 : 0)
+}
+
 export interface Forecast {
+  /** 11 and 12: overall-fortune number now and one year from now. */
+  overallNow: Overall; overallNext: Overall
   now: number
   natal: Record<Planet, number>
   /** 2: day power vs this year's power. */
@@ -70,7 +110,9 @@ export interface Forecast {
   animal: { birth: number; current: number; next: number; relNow: AnimalRelation; relNext: AnimalRelation }
 }
 
-export function forecast(birthMs: number, birthYear: number, np: NumberPowers, now = new Date()): Forecast {
+export function forecast(birthMs: number, birth: { y: number; m: number; d: number }, illumPct: number, np: NumberPowers, now = new Date()): Forecast {
+  const birthYear = birth.y
+  const ageNow = Math.max(0, ageOn(birth.y, birth.m, birth.d, now))
   const dB = dayNum(birthMs)
   const natal = Object.fromEntries(PLANETS.map((p) => [p, lon(p, dB)])) as Record<Planet, number>
   const nowMs = now.getTime(), cur = now.getFullYear()
@@ -79,6 +121,7 @@ export function forecast(birthMs: number, birthYear: number, np: NumberPowers, n
   const aB = animalOf(birthYear), aC = animalOf(cur), aN = animalOf(cur + 1)
   return {
     now: nowMs, natal,
+    overallNow: overall(ageNow, illumPct), overallNext: overall(ageNow + 1, illumPct),
     dayVsYear: { day: np.day.value, year: np.curYear.value, yearCE: cur, diff: Math.abs(np.day.value - np.curYear.value) },
     dayVsNext: { day: np.day.value, year: nextP.value, yearCE: cur + 1, diff: Math.abs(np.day.value - nextP.value) },
     today: transits(natal, nowMs, 0, PLANETS),

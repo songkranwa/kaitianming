@@ -48,6 +48,7 @@ export function credits(lang: Lang): CreditGroup[] {
       { name: t('Life number', 'เลขชีวิต'), detail: t('Pythagorean numerology', 'เลขศาสตร์แบบพีทาโกรัส'), links: [] },
       { name: t('Lunar day and retrograde motion', 'ดิถีและการโคจรพักร์'), detail: t('Lunar day from the Moon–Sun angle in 12° steps; retrograde by comparing longitude 12 hours before and after', 'ดิถีจากมุมห่างจันทร์–อาทิตย์ช่วงละ 12° · พักร์ เทียบลองจิจูดก่อนและหลัง 12 ชั่วโมง'), links: [] },
       { name: t('Chinese zodiac', 'ปีนักษัตร'), detail: t('12-year cycle counted by calendar year', 'วัฏจักร 12 ปี นับตามปีปฏิทิน'), links: [] },
+      { name: t('Overall-fortune number', 'เลขดวงชะตารวม'), detail: t('Site owner’s formula: |60 − age|, divided according to the birth-night Moon (brightness in fifteenths, gap from 9), rounded up, digits added to one digit', 'ตามสูตรที่เจ้าของเว็บไซต์กำหนด: |60 − อายุ| หารตามค่าดวงจันทร์คืนเกิด (ความสว่างเป็น 15 ส่วน ส่วนต่างจาก 9) ปัดขึ้น แล้วรวมหลักให้เหลือหลักเดียว'), links: [] },
       { name: t('Planets passing over birth planets', 'ดาวจรทับดาวกำเนิด'), detail: t('Moving planets compared with birth positions by ecliptic longitude: within 1° overlapping, within 5° touching, same sign same area', 'เทียบลองจิจูดสุริยวิถีของดาวจรกับดาวกำเนิด: ห่างไม่เกิน 1° ซ้อน ไม่เกิน 5° เริ่มทับ ราศีเดียวกันร่วมพื้นที่'), links: [] }
     ] },
     { group: t('Prediction texts', 'ข้อความคำทำนาย'), items: [
