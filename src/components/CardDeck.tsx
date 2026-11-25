@@ -22,7 +22,11 @@ export function CardDeck({ topic, index, total, tier, t, lang, paper, onUnlock }
   const track = useRef<HTMLDivElement | null>(null)
   const [at, setAt] = useState(0)
   const open = canRead(topic.lock, tier)
-  const n = topic.cards.length
+  /** Locked with scope 'details': the first (reading) card stays open, the rest sit behind one locked card. */
+  const preview = !open && topic.scope === 'details' && topic.cards.length > 1
+  const cards = open ? topic.cards : preview ? topic.cards.slice(0, 1) : []
+  const lockedCount = topic.cards.length - cards.length
+  const n = cards.length + (preview ? 1 : 0)
   const headingId = `topic-${topic.id}`
 
   const go = (i: number) => {
@@ -38,6 +42,18 @@ export function CardDeck({ topic, index, total, tier, t, lang, paper, onUnlock }
     setAt(Math.max(0, Math.min(n - 1, Math.round(el.scrollLeft / w))))
   }
 
+  const lockedCard = (
+    <div className="deck-card deck-locked" role="group" aria-label={topic.lock === 'member' ? d.lockedMember : d.lockedPremium}>
+      <svg className="deck-cross" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0L100 100M100 0L0 100" /></svg>
+      <span className="lock-badge"><Icon d={LOCK} size={34} stroke="var(--accent)" width={1.8} /></span>
+      <p className="deck-kicker">{topic.lock === 'member' ? d.lockedMember : d.lockedPremium}</p>
+      <p className="muted" style={{ textAlign: 'center', maxWidth: 360 }}>{topic.lock === 'member' ? d.lockedBodyMember(lockedCount) : d.lockedBodyPremium(lockedCount)}</p>
+      <button type="button" className="btn-primary" style={{ padding: '0 24px' }} onClick={() => onUnlock(topic.lock === 'member' ? 'member' : 'premium')}>
+        {topic.lock === 'member' ? d.unlockMember : d.unlockPremium}
+      </button>
+    </div>
+  )
+
   return (
     <section className="topic" aria-labelledby={headingId}>
       <div className="topic-head">
@@ -45,11 +61,11 @@ export function CardDeck({ topic, index, total, tier, t, lang, paper, onUnlock }
         <h2 id={headingId} className="topic-title">{topic.title}</h2>
       </div>
 
-      {open ? (
+      {open || preview ? (
         <>
           <div className={'deck' + (n > 1 ? ' deck-stack' : '')}>
             <div className="deck-track" ref={track} onScroll={onScroll} tabIndex={0} aria-label={topic.title}>
-              {topic.cards.map((c, i) => (
+              {cards.map((c, i) => (
                 <article key={i} className="deck-card" role="group" aria-roledescription={lang === 'th' ? 'บัตร' : 'card'} aria-label={d.cardOf(i + 1, n)}>
                   {c.kicker && <p className="deck-kicker">{c.kicker}</p>}
                   {c.value && <p className="deck-value">{c.value}</p>}
@@ -63,13 +79,14 @@ export function CardDeck({ topic, index, total, tier, t, lang, paper, onUnlock }
                   <span className="deck-count muted-2 small">{i + 1} / {n}</span>
                 </article>
               ))}
+              {preview && lockedCard}
             </div>
           </div>
           {n > 1 && (
             <div className="deck-nav">
               <button type="button" className="deck-arrow" aria-label={d.prev} disabled={at === 0} onClick={() => go(at - 1)}><Icon d={LEFT} size={20} width={2} /></button>
               <div className="deck-dots" aria-hidden="true">
-                {topic.cards.map((_, i) => <span key={i} className={i === at ? 'on' : ''} />)}
+                {Array.from({ length: n }, (_, i) => <span key={i} className={i === at ? 'on' : ''} />)}
               </div>
               <button type="button" className="deck-arrow" aria-label={d.next} disabled={at === n - 1} onClick={() => go(at + 1)}><Icon d={RIGHT} size={20} width={2} /></button>
             </div>
@@ -77,15 +94,7 @@ export function CardDeck({ topic, index, total, tier, t, lang, paper, onUnlock }
         </>
       ) : (
         <div className={'deck' + (n > 1 ? ' deck-stack' : '')}>
-          <div className="deck-card deck-locked">
-            <svg className="deck-cross" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0L100 100M100 0L0 100" /></svg>
-            <span className="lock-badge"><Icon d={LOCK} size={34} stroke="var(--accent)" width={1.8} /></span>
-            <p className="deck-kicker">{topic.lock === 'member' ? d.lockedMember : d.lockedPremium}</p>
-            <p className="muted" style={{ textAlign: 'center', maxWidth: 360 }}>{topic.lock === 'member' ? d.lockedBodyMember(n) : d.lockedBodyPremium(n)}</p>
-            <button type="button" className="btn-primary" style={{ padding: '0 24px' }} onClick={() => onUnlock(topic.lock === 'member' ? 'member' : 'premium')}>
-              {topic.lock === 'member' ? d.unlockMember : d.unlockPremium}
-            </button>
-          </div>
+          {lockedCard}
         </div>
       )}
     </section>

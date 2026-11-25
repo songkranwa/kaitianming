@@ -1,7 +1,7 @@
 // The 13 readings on the result page, as topics of swipeable cards.
 // Swipe left/right = more cards in the same topic; scroll down = next topic.
 // Card 1 of each topic is the reading (text from src/content/predictions.ts); the rest show the facts behind it.
-// Lock levels: 'free' (everyone), 'member' (free sign-up), 'premium' (paid). Change a topic's level here.
+// Lock levels: 'free' (everyone), 'member' (free sign-up), 'premium' (paid), chosen per topic in the admin (/admin/locks).
 
 import { lookup, type Texts } from '../content/predictions'
 import type { Result } from '../engine/compute'
@@ -24,7 +24,9 @@ export interface DeckCard {
   /** The reading text has not been written yet. */
   pending?: boolean
 }
-export interface Topic { id: string; title: string; lock: LockLevel; cards: DeckCard[] }
+/** 'all' locks the whole topic; 'details' keeps the first (reading) card open and locks the rest. */
+export type LockScope = 'all' | 'details'
+export interface Topic { id: string; title: string; lock: LockLevel; scope: LockScope; cards: DeckCard[] }
 
 export const canRead = (lock: LockLevel, tier: Tier): boolean =>
   lock === 'free' || (lock === 'member' && tier !== 'guest') || (lock === 'premium' && tier === 'premium')
@@ -51,7 +53,13 @@ export function deckText(lang: Lang) {
 const SIGN_EN = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces']
 const SIGN_TH = ['เมษ', 'พฤษภ', 'เมถุน', 'กรกฎ', 'สิงห์', 'กันย์', 'ตุลย์', 'พิจิก', 'ธนู', 'มังกร', 'กุมภ์', 'มีน']
 
-export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
+/** Topic ids, in page order. Lock levels are set per topic in the admin (default: open to everyone). */
+export const TOPIC_IDS = ['day', 'dayYear', 'sky', 'today', 'month', 'year', 'sign', 'signNow', 'animal', 'animalNow', 'overallNow', 'overallNext', 'personal'] as const
+export interface LockSetting { level: LockLevel; scope: LockScope }
+export type Locks = Partial<Record<string, LockSetting>>
+
+export function buildTopics(res: Result, lang: Lang, texts: Texts, locks: Locks = {}): Topic[] {
+  const lockOf = (id: string): LockLevel => locks[id]?.level ?? 'free'
   const th = lang === 'th'
   const d = deckText(lang)
   const { ch, np, pp, L, fc } = res
@@ -80,7 +88,7 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
   const contactKeys = (list: Contact[]) => list.length
     ? [...list.map((c) => `transit.${c.transit}-${c.natal}`), ...list.map((c) => `transit.${c.transit}`)]
     : ['transit.none']
-  const transitTopic = (id: string, lock: LockLevel, title: string, list: Contact[], span: string, withDate: boolean): Topic => ({
+  const transitTopic = (id: string, lock: LockLevel, title: string, list: Contact[], span: string, withDate: boolean): Omit<Topic, 'scope'> => ({
     id, lock, title,
     cards: [
       reading(list.length ? (th ? `${list.length} จุดที่ดาวจรมาทับ` : `${list.length} contact${list.length > 1 ? 's' : ''}`) : (th ? 'ไม่มีดาวจรมาทับ' : 'No contacts'), contactKeys(list)),
@@ -103,10 +111,10 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
     body: o.working
   })
 
-  return [
+  const topics: Omit<Topic, 'scope'>[] = [
     // 1 — character from the day power
     {
-      id: 'day', lock: 'free', title: th ? 'ลักษณะเจ้าของวันเกิด' : 'Your character from your birth number',
+      id: 'day', lock: lockOf('day'), title: th ? 'ลักษณะเจ้าของวันเกิด' : 'Your character from your birth number',
       cards: [
         reading(th ? `เลขประจำวันเกิด ${np.day.value}` : `Birth number ${np.day.value}`, [`day.${np.day.value}`]),
         { kicker: th ? 'วิธีคิด (วันที่ + เดือน)' : 'How it is worked out (day + month)', value: String(np.day.value), body: np.day.working }
@@ -114,7 +122,7 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
     },
     // 2 — day power vs this year
     {
-      id: 'dayYear', lock: 'member', title: th ? `ดวงปีนี้จากเลขวันเกิด (ค.ศ. ${fc.dayVsYear.yearCE})` : `Your ${fc.dayVsYear.yearCE} from your birth number`,
+      id: 'dayYear', lock: lockOf('dayYear'), title: th ? `ดวงปีนี้จากเลขวันเกิด (ค.ศ. ${fc.dayVsYear.yearCE})` : `Your ${fc.dayVsYear.yearCE} from your birth number`,
       cards: [
         reading(`${fc.dayVsYear.day} · ${fc.dayVsYear.year}`, [`dayYear.${fc.dayVsYear.day}-${fc.dayVsYear.year}`, `dayYear.diff.${fc.dayVsYear.diff}`]),
         { kicker: th ? 'เลขที่นำมาเทียบ' : 'The two numbers', value: '',
@@ -125,7 +133,7 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
     },
     // 3 — the sky at birth
     {
-      id: 'sky', lock: 'free', title: th ? 'ดวงดาวบนฟากฟ้าตอนเกิด' : 'The sky when you were born',
+      id: 'sky', lock: lockOf('sky'), title: th ? 'ดวงดาวบนฟากฟ้าตอนเกิด' : 'The sky when you were born',
       cards: pp ? [
         readingAll(pp.zenOnArea ? pp.zenName : (th ? `ใกล้${pp.zenName}` : `Near ${pp.zenName}`), [...(pp.zenCon ? [`sky.zenith.${pp.zenCon}`] : []), `sky.bright.${pp.brightness.birth_sign.state_index}`]),
         { kicker: th ? 'ดาวประจำตัว (ใกล้จุดเหนือศีรษะที่สุด)' : 'Your personal star (closest to overhead)', value: starText(pp.personal),
@@ -144,12 +152,12 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
       ] : [wait]
     },
     // 4–6 — transits
-    transitTopic('today', 'member', th ? 'ดวงดาววันนี้ที่มีผลต่อคุณ' : 'How today’s sky affects you', fc.today, when(0), false),
-    transitTopic('month', 'premium', th ? 'ดวงดาวที่กำลังมาถึงในอีก 1 เดือน' : 'The sky over the next month', fc.month, th ? '30 วันข้างหน้า' : 'next 30 days', true),
-    transitTopic('year', 'premium', th ? 'ดวงดาวที่กำลังมาถึงในอีก 1 ปี' : 'The sky over the next year', fc.year, th ? '12 เดือนข้างหน้า' : 'next 12 months', true),
+    transitTopic('today', lockOf('today'), th ? 'ดวงดาววันนี้ที่มีผลต่อคุณ' : 'How today’s sky affects you', fc.today, when(0), false),
+    transitTopic('month', lockOf('month'), th ? 'ดวงดาวที่กำลังมาถึงในอีก 1 เดือน' : 'The sky over the next month', fc.month, th ? '30 วันข้างหน้า' : 'next 30 days', true),
+    transitTopic('year', lockOf('year'), th ? 'ดวงดาวที่กำลังมาถึงในอีก 1 ปี' : 'The sky over the next year', fc.year, th ? '12 เดือนข้างหน้า' : 'next 12 months', true),
     // 7 — birth sign (Western)
     {
-      id: 'sign', lock: 'free', title: th ? 'ลักษณะตามราศีเกิด' : 'Your zodiac sign',
+      id: 'sign', lock: lockOf('sign'), title: th ? 'ลักษณะตามราศีเกิด' : 'Your zodiac sign',
       cards: [
         reading(sign(fc.sign.birth), [`sign.${fc.sign.birth}`]),
         { kicker: th ? 'ราศีแบบสากล (ตามตำแหน่งดวงอาทิตย์)' : 'Western zodiac (from the Sun’s position)', value: sign(fc.sign.birth),
@@ -158,7 +166,7 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
     },
     // 8 — the zodiac now
     {
-      id: 'signNow', lock: 'member', title: th ? 'ผลของจักรราศีช่วงนี้' : 'The zodiac right now',
+      id: 'signNow', lock: lockOf('signNow'), title: th ? 'ผลของจักรราศีช่วงนี้' : 'The zodiac right now',
       cards: [
         reading(`${sign(fc.sign.birth)} → ${sign(fc.sign.current)}`, [`signNow.${fc.sign.birth}-${fc.sign.current}`, `signNow.dist.${fc.sign.distance}`]),
         { kicker: th ? 'ราศีที่ดวงอาทิตย์อยู่ตอนนี้ เทียบราศีเกิด' : 'Where the Sun is now, compared with your sign', value: '',
@@ -168,7 +176,7 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
     },
     // 9 — birth animal
     {
-      id: 'animal', lock: 'free', title: th ? 'ปีนักษัตรที่เกิด' : 'Your Chinese zodiac animal',
+      id: 'animal', lock: lockOf('animal'), title: th ? 'ปีนักษัตรที่เกิด' : 'Your Chinese zodiac animal',
       cards: [
         reading(th ? `ปี${animal(fc.animal.birth)}` : animal(fc.animal.birth), [`animal.${fc.animal.birth}`]),
         { kicker: th ? 'ปีนักษัตรเปลี่ยนวันตรุษจีน' : 'The zodiac year starts at Chinese New Year', value: new Date(Date.UTC(fc.animal.birthCny.y, fc.animal.birthCny.m - 1, fc.animal.birthCny.d)).toLocaleDateString(th ? 'th-TH' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }),
@@ -177,7 +185,7 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
     },
     // 10 — this year's animal
     {
-      id: 'animalNow', lock: 'member', title: th ? `ผลของปีนักษัตรปัจจุบัน (ปี${animal(fc.animal.current)})` : `This year’s animal: ${animal(fc.animal.current)}`,
+      id: 'animalNow', lock: lockOf('animalNow'), title: th ? `ผลของปีนักษัตรปัจจุบัน (ปี${animal(fc.animal.current)})` : `This year’s animal: ${animal(fc.animal.current)}`,
       cards: [
         reading(relText[fc.animal.relNow], [`animalNow.${fc.animal.birth}-${fc.animal.current}`, `animalNow.${fc.animal.relNow}`]),
         { kicker: th ? 'ปีนักษัตรที่นำมาเทียบ' : 'The two animals', value: '',
@@ -186,18 +194,19 @@ export function buildTopics(res: Result, lang: Lang, texts: Texts): Topic[] {
     },
     // 11 — overall, now (owner's formula: age gap from 60, shaped by the birth-night Moon)
     {
-      id: 'overallNow', lock: 'premium', title: th ? 'ดวงชะตารวมช่วงนี้' : 'Your overall fortune now',
+      id: 'overallNow', lock: lockOf('overallNow'), title: th ? 'ดวงชะตารวมช่วงนี้' : 'Your overall fortune now',
       cards: [reading(th ? `เลขดวงชะตารวม ${fc.overallNow.value}` : `Overall number ${fc.overallNow.value}`, [`overall.now.${fc.overallNow.value}`, `overall.${fc.overallNow.value}`, 'overall.now']), overallCard(fc.overallNow)]
     },
     // 12 — overall, next year (same formula with next year's age)
     {
-      id: 'overallNext', lock: 'premium', title: th ? `ดวงชะตารวมปีหน้า (ค.ศ. ${fc.dayVsNext.yearCE})` : `Your overall fortune for ${fc.dayVsNext.yearCE}`,
+      id: 'overallNext', lock: lockOf('overallNext'), title: th ? `ดวงชะตารวมปีหน้า (ค.ศ. ${fc.dayVsNext.yearCE})` : `Your overall fortune for ${fc.dayVsNext.yearCE}`,
       cards: [reading(th ? `เลขดวงชะตารวม ${fc.overallNext.value}` : `Overall number ${fc.overallNext.value}`, [`overall.next.${fc.overallNext.value}`, `overall.${fc.overallNext.value}`, 'overall.next']), overallCard(fc.overallNext)]
     },
     // 13 — personal number (to be defined)
     {
-      id: 'personal', lock: 'free', title: th ? 'ความหมายเลขเฉพาะตัว' : 'Your personal number',
+      id: 'personal', lock: lockOf('personal'), title: th ? 'ความหมายเลขเฉพาะตัว' : 'Your personal number',
       cards: [reading(th ? 'เลขเฉพาะตัว' : 'Personal number', ['personal'])]
     }
   ]
+  return topics.map((tp) => ({ ...tp, scope: locks[tp.id]?.scope ?? 'all' }))
 }

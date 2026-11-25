@@ -7,20 +7,20 @@ import type { Dict } from '../i18n/dict'
 import type { Lang } from '../i18n/types'
 import { AdSlot } from './AdSlot'
 import { CardDeck } from './CardDeck'
-import { buildTopics, deckText, type Tier } from './deck'
+import { buildTopics, deckText, type Locks, type Tier } from './deck'
 import { dateText } from './format'
 import { ICON, Icon } from './Icons'
 
 interface Props {
-  t: Dict; lang: Lang; res: Result; texts: Texts; catalogError: boolean; tier: Tier
+  t: Dict; lang: Lang; res: Result; texts: Texts; locks: Locks; catalogError: boolean; tier: Tier
   onBack: () => void; onCalc: () => void; onUnlock: (level: 'member' | 'premium') => void
 }
 
 /** Result page: one topic per deck of cards. Swipe sideways within a topic, scroll down for the next. */
-export function ResultView({ t, lang, res, texts, catalogError, tier, onBack, onCalc, onUnlock }: Props) {
+export function ResultView({ t, lang, res, texts, locks, catalogError, tier, onBack, onCalc, onUnlock }: Props) {
   const { ch, city } = res
   const cityName = lang === 'th' ? city.nameTh || city.name : city.name
-  const topics = useMemo(() => buildTopics(res, lang, texts), [res, lang, texts])
+  const topics = useMemo(() => buildTopics(res, lang, texts, locks), [res, lang, texts, locks])
   const d = deckText(lang)
   return (
     <section className="container page result" aria-labelledby="result-title">

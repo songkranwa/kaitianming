@@ -21,6 +21,21 @@ export function lookup(texts: Texts, keys: string[], lang: Lang): string | null 
   return null
 }
 
+/** Loads the lock level of each topic once (set in the admin). Until it arrives, every topic is open. */
+export type TopicLocks = Record<string, { level: 'free' | 'member' | 'premium'; scope: 'all' | 'details' }>
+export function useTopicLocks(): TopicLocks {
+  const [locks, setLocks] = useState<TopicLocks>({})
+  useEffect(() => {
+    let alive = true
+    fetch('/api/locks')
+      .then((r) => (r.ok ? (r.json() as Promise<TopicLocks>) : {}))
+      .then((l) => { if (alive) setLocks(l) })
+      .catch(() => { /* offline: everything stays open */ })
+    return () => { alive = false }
+  }, [])
+  return locks
+}
+
 /** Loads all texts once. Falls back to none (the page then shows "being written"). */
 export function usePredictionTexts(): Texts {
   const [texts, setTexts] = useState<Texts>({})
