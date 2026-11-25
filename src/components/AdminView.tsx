@@ -110,6 +110,7 @@ export function AdminView({ cons }: { cons: Record<string, string> }) {
             <button type="button" className={'cl-pill' + (section === 'texts' ? ' on' : '')} aria-current={section === 'texts' ? 'page' : undefined} onClick={() => goSection('texts')}>ข้อความคำทำนาย</button>
             <button type="button" className={'cl-pill' + (section === 'checklist' ? ' on' : '')} aria-current={section === 'checklist' ? 'page' : undefined} onClick={() => goSection('checklist')}>รายการตรวจก่อนเปิดตัว</button>
           </nav>
+          <a className="btn-ghost" href="/api/admin/export" download>ดาวน์โหลดไฟล์สำรอง</a>
           <a className="btn-ghost" href="/cdn-cgi/access/logout">ออกจากระบบ</a>
         </div>
       </div>

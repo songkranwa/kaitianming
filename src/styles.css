@@ -189,6 +189,11 @@ legend { padding: 0; margin-bottom: 8px; font-weight: 600; font-size: 16px; }
 .admin-hist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
 .admin-hist p { white-space: pre-line; }
 
+/* Privacy policy and terms */
+.legal { gap: 18px; }
+.legal-h { font-family: var(--serif); font-size: 20px; font-weight: 700; }
+.legal-p { line-height: 1.8; max-width: 68ch; }
+
 /* Admin: launch checklist */
 .admin-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
 .cl-pill { background: transparent; border: 1px solid var(--line-3); color: inherit; border-radius: 999px; padding: 6px 14px; font: inherit; font-size: 14px; cursor: pointer; }
@@ -207,6 +212,9 @@ legend { padding: 0; margin-bottom: 8px; font-weight: 600; font-size: 16px; }
 .cl-item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: start; background: var(--card); border: 1px solid var(--line-3); border-radius: 12px; padding: 12px 14px; }
 .cl-item.done .cl-title { text-decoration: line-through; color: var(--muted); }
 .cl-title { font-weight: 500; }
+.cl-rank { display: inline-block; min-width: 2.2em; color: var(--muted-2); font-variant-numeric: tabular-nums; }
+.cl-eta { color: var(--accent); margin-top: 2px; }
+.cl-band-now .cl-group-head h2 { color: #F0A35A; }
 .cl-check { width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--muted-2); background: none; display: grid; place-items: center; padding: 0; cursor: pointer; }
 .cl-check svg { width: 16px; height: 16px; fill: none; stroke: var(--bg); stroke-width: 3; opacity: 0; }
 .cl-check[data-s="doing"] { border-color: #F0A35A; background: linear-gradient(90deg, #F0A35A 50%, transparent 50%); }

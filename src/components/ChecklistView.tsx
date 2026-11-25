@@ -4,10 +4,19 @@ import { useEffect, useState } from 'react'
 
 type Status = 'todo' | 'doing' | 'done'
 interface Item {
-  id: string; group: string; order: number; who: 'owner' | 'claude' | 'both'; stage: 'web' | 'ios' | 'both'; status: Status
+  id: string; group: string; order: number; rank: number; priority: Band; eta_th: string; eta_en: string; who: 'owner' | 'claude' | 'both'; stage: 'web' | 'ios' | 'both'; status: Status
   title_en: string; title_th: string; note_en: string; note_th: string; updated_at: string; updated_by: string
 }
 type Filter = 'all' | 'owner' | 'claude' | 'open'
+type Band = 'now' | 'soon' | 'ios' | 'later' | 'done'
+type Sort = 'rank' | 'group'
+const BANDS: { id: Band; th: string; en: string; sub_th: string; sub_en: string }[] = [
+  { id: 'now', th: 'ด่วน — ทำก่อน', en: 'Urgent — do first', sub_th: 'งานที่งานอื่นรออยู่ และสิ่งที่ต้องมีก่อนสมัครโฆษณาและเปิดตัว', sub_en: 'Things other work waits on, and what ads and launch need first' },
+  { id: 'soon', th: 'สำคัญ — ภายใน 2–4 สัปดาห์', en: 'Important — next 2–4 weeks', sub_th: 'สมาชิก รายได้ และความพร้อมของเว็บก่อนเปิดตัว', sub_en: 'Membership, income and launch readiness for the website' },
+  { id: 'ios', th: 'ก่อนส่งแอป iOS', en: 'Before the iOS submission', sub_th: 'เรียงตามลำดับที่ต้องทำจนถึงส่งให้ Apple ตรวจ', sub_en: 'In the order they need doing, through to App Review' },
+  { id: 'later', th: 'ไม่รีบ', en: 'Not urgent', sub_th: '', sub_en: '' },
+  { id: 'done', th: 'เสร็จแล้ว', en: 'Done', sub_th: '', sub_en: '' }
+]
 type L = 'th' | 'en'
 
 const GROUPS: { id: string; th: string; en: string }[] = [
@@ -30,12 +39,13 @@ const TXT = {
     hint: 'Tap the box to move an item: to do → in progress → done', loading: 'Loading checklist…', failed: 'Couldn’t save. Try again.', loadFailed: 'Couldn’t load the checklist.', none: 'Nothing matches this filter.' }
 }
 const NEXT: Record<Status, Status> = { todo: 'doing', doing: 'done', done: 'todo' }
+const bandOf = (i: Item): Band => (i.status === 'done' ? 'done' : i.priority === 'done' ? 'later' : i.priority)
 const HEAD = { 'content-type': 'application/json', 'x-kaitianming-admin': '1' }
 
 function Gauge({ title, list, t, l }: { title: string; list: Item[]; t: typeof TXT.th; l: L }) {
   const done = list.filter((i) => i.status === 'done').length, pct = list.length ? Math.round((done / list.length) * 100) : 0
   const C = 2 * Math.PI * 34
-  const next = list.filter((i) => i.status !== 'done').sort((a, b) => (a.status === 'doing' ? -1 : 0) - (b.status === 'doing' ? -1 : 0) || a.order - b.order)[0]
+  const next = list.filter((i) => i.status !== 'done').sort((a, b) => (a.status === 'doing' ? -1 : 0) - (b.status === 'doing' ? -1 : 0) || a.rank - b.rank)[0]
   return (
     <div className="cl-gauge">
       <svg viewBox="0 0 84 84" aria-hidden="true">
@@ -58,6 +68,7 @@ export function ChecklistView() {
   const [lang, setLang] = useState<L>(() => { try { return localStorage.getItem('ktm.cl.lang') === 'en' ? 'en' : 'th' } catch { return 'th' } })
   const [filter, setFilter] = useState<Filter>('all')
   const [busy, setBusy] = useState('')
+  const [sort, setSort] = useState<Sort>('rank')
   const t = TXT[lang]
 
   useEffect(() => {
@@ -82,6 +93,28 @@ export function ChecklistView() {
     setBusy('')
   }
 
+  const row = (it: Item, numbered: boolean) => {
+    const eta = lang === 'th' ? it.eta_th : it.eta_en
+    const title = lang === 'th' ? it.title_th : it.title_en, note = lang === 'th' ? it.note_th : it.note_en
+    return (
+      <li key={it.id} className={'cl-item' + (it.status === 'done' ? ' done' : '')}>
+        <button type="button" className="cl-check" data-s={it.status} disabled={busy === it.id} aria-label={`${title}: ${t[it.status]}`} onClick={() => advance(it)}>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" /></svg>
+        </button>
+        <div style={{ minWidth: 0 }}>
+          <p className="cl-title">{numbered && <span className="cl-rank">{it.rank}.</span>}{title}</p>
+          {note && <p className="muted small">{note}</p>}
+          {eta && it.status !== 'done' && <p className="cl-eta small">{(lang === 'th' ? 'ใช้เวลา: ' : 'Time: ') + eta}</p>}
+        </div>
+        <div className="cl-tags">
+          <span className={'cl-chip' + (it.who !== 'claude' ? ' owner' : '')}>{t.who[it.who]}</span>
+          <span className="cl-chip">{t.stage[it.stage]}</span>
+          {it.status === 'doing' && <span className="cl-chip doing">{t.doing}</span>}
+        </div>
+      </li>
+    )
+  }
+
   if (!items) return <p className="muted" role="status">{err || t.loading}</p>
   const shown = items.filter((i) => filter === 'all' || (filter === 'open' ? i.status !== 'done' : i.who === filter || i.who === 'both'))
 
@@ -98,6 +131,10 @@ export function ChecklistView() {
             <button key={f} type="button" className={'cl-pill' + (filter === f ? ' on' : '')} aria-pressed={filter === f} onClick={() => setFilter(f)}>{t[f]}</button>
           ))}
         </div>
+        <div className="row-wrap" style={{ gap: 4 }} role="group" aria-label={lang === 'th' ? 'การเรียง' : 'Sort'}>
+          <button type="button" className={'cl-pill' + (sort === 'rank' ? ' on' : '')} aria-pressed={sort === 'rank'} onClick={() => setSort('rank')}>{lang === 'th' ? 'ตามลำดับ' : 'By order'}</button>
+          <button type="button" className={'cl-pill' + (sort === 'group' ? ' on' : '')} aria-pressed={sort === 'group'} onClick={() => setSort('group')}>{lang === 'th' ? 'ตามหมวด' : 'By category'}</button>
+        </div>
         <div className="row-wrap" style={{ gap: 4 }} role="group" aria-label="ภาษา / Language">
           <button type="button" className={'cl-pill' + (lang === 'th' ? ' on' : '')} aria-pressed={lang === 'th'} onClick={() => pickLang('th')}>ไทย</button>
           <button type="button" className={'cl-pill' + (lang === 'en' ? ' on' : '')} aria-pressed={lang === 'en'} onClick={() => pickLang('en')}>EN</button>
@@ -107,7 +144,24 @@ export function ChecklistView() {
       {err && <p role="alert" style={{ color: 'var(--warn)' }}>{err}</p>}
 
       {!shown.length && <p className="muted">{t.none}</p>}
-      {GROUPS.map((g) => {
+      {sort === 'rank' && BANDS.map((band) => {
+        const rows = shown.filter((i) => bandOf(i) === band.id).sort((a, b) => a.rank - b.rank)
+        if (!rows.length) return null
+        const sub = lang === 'th' ? band.sub_th : band.sub_en
+        return (
+          <section key={band.id} className={'cl-group cl-band-' + band.id} aria-labelledby={'band-' + band.id}>
+            <div className="cl-group-head">
+              <div>
+                <h2 id={'band-' + band.id} className="topic-title" style={{ fontSize: 20 }}>{lang === 'th' ? band.th : band.en}</h2>
+                {sub && <p className="muted small">{sub}</p>}
+              </div>
+              <span className="muted-2 small">{rows.length}</span>
+            </div>
+            <ul className="cl-items">{rows.map((it) => row(it, true))}</ul>
+          </section>
+        )
+      })}
+      {sort === 'group' && GROUPS.map((g) => {
         const all = items.filter((i) => i.group === g.id), rows = shown.filter((i) => i.group === g.id).sort((a, b) => a.order - b.order)
         if (!rows.length) return null
         return (
@@ -117,25 +171,7 @@ export function ChecklistView() {
               <span className="muted-2 small">{t.of(all.filter((i) => i.status === 'done').length, all.length)}</span>
             </div>
             <ul className="cl-items">
-              {rows.map((it) => {
-                const title = lang === 'th' ? it.title_th : it.title_en, note = lang === 'th' ? it.note_th : it.note_en
-                return (
-                  <li key={it.id} className={'cl-item' + (it.status === 'done' ? ' done' : '')}>
-                    <button type="button" className="cl-check" data-s={it.status} disabled={busy === it.id} aria-label={`${title}: ${t[it.status]}`} onClick={() => advance(it)}>
-                      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" /></svg>
-                    </button>
-                    <div style={{ minWidth: 0 }}>
-                      <p className="cl-title">{title}</p>
-                      {note && <p className="muted small">{note}</p>}
-                    </div>
-                    <div className="cl-tags">
-                      <span className={'cl-chip' + (it.who !== 'claude' ? ' owner' : '')}>{t.who[it.who]}</span>
-                      <span className="cl-chip">{t.stage[it.stage]}</span>
-                      {it.status === 'doing' && <span className="cl-chip doing">{t.doing}</span>}
-                    </div>
-                  </li>
-                )
-              })}
+              {rows.map((it) => row(it, false))}
             </ul>
           </section>
         )

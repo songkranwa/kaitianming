@@ -31,21 +31,36 @@ function ensureSchema(db: D1) {
     db.prepare('CREATE TABLE IF NOT EXISTS prediction_history (id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL, th TEXT, en TEXT, action TEXT NOT NULL, at TEXT NOT NULL, by TEXT NOT NULL)'),
     db.prepare('CREATE INDEX IF NOT EXISTS prediction_history_key ON prediction_history (key, id)'),
     db.prepare('CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT NOT NULL)'),
-    db.prepare('CREATE TABLE IF NOT EXISTS checklist (id TEXT PRIMARY KEY, grp TEXT NOT NULL, ord INTEGER NOT NULL, who TEXT NOT NULL, stage TEXT NOT NULL, status TEXT NOT NULL, title_en TEXT NOT NULL, title_th TEXT NOT NULL, note_en TEXT NOT NULL DEFAULT \'\', note_th TEXT NOT NULL DEFAULT \'\', updated_at TEXT NOT NULL, updated_by TEXT NOT NULL)')
+    db.prepare('CREATE TABLE IF NOT EXISTS checklist (id TEXT PRIMARY KEY, grp TEXT NOT NULL, ord INTEGER NOT NULL, who TEXT NOT NULL, stage TEXT NOT NULL, status TEXT NOT NULL, title_en TEXT NOT NULL, title_th TEXT NOT NULL, note_en TEXT NOT NULL DEFAULT \'\', note_th TEXT NOT NULL DEFAULT \'\', updated_at TEXT NOT NULL, updated_by TEXT NOT NULL, rank INTEGER NOT NULL DEFAULT 0, priority TEXT NOT NULL DEFAULT \'soon\', eta_th TEXT NOT NULL DEFAULT \'\', eta_en TEXT NOT NULL DEFAULT \'\')')
   ]).then(() => seedTexts(db)).then(() => seedChecklist(db)).catch((e) => { schemaReady = null; throw e })
   return schemaReady
 }
 
-/** Launch checklist (admin only): loads its items once per seed version; ticks made in the admin are kept. */
+/**
+ * Launch checklist (admin only). Each seed version: add any missing columns, insert new items, then
+ * refresh order, urgency, time estimates and wording from the seed. Ticks made in the admin are kept;
+ * a seed only moves an item forward (to "done", or from "to do" to "in progress"), never back.
+ */
 async function seedChecklist(db: D1) {
   const { results } = await db.prepare("SELECT v FROM meta WHERE k = 'checklist_seed_version'").all<{ v: string }>()
   if (Number(results[0]?.v ?? 0) >= checklistSeed.version) return
+  for (const col of ['rank INTEGER NOT NULL DEFAULT 0', "priority TEXT NOT NULL DEFAULT 'soon'", "eta_th TEXT NOT NULL DEFAULT ''", "eta_en TEXT NOT NULL DEFAULT ''"]) {
+    try { await db.prepare('ALTER TABLE checklist ADD COLUMN ' + col).run() } catch { /* column already there */ }
+  }
   const now = new Date().toISOString()
-  const rows = checklistSeed.items
-  for (let i = 0; i < rows.length; i += 50) {
-    await db.batch(rows.slice(i, i + 50).map((x) =>
-      db.prepare('INSERT OR IGNORE INTO checklist (id, grp, ord, who, stage, status, title_en, title_th, note_en, note_th, updated_at, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
-        .bind(x.id, x.group, x.order, x.who, x.stage, x.status, x.title_en, x.title_th, x.note_en, x.note_th, now, 'seed')))
+  const rows = checklistSeed.items as (typeof checklistSeed.items[number] & { set_status?: string })[]
+  for (let i = 0; i < rows.length; i += 25) {
+    const chunk = rows.slice(i, i + 25)
+    await db.batch([
+      ...chunk.map((x) => db.prepare('INSERT OR IGNORE INTO checklist (id, grp, ord, who, stage, status, title_en, title_th, note_en, note_th, updated_at, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
+        .bind(x.id, x.group, x.order, x.who, x.stage, x.status, x.title_en, x.title_th, x.note_en, x.note_th, now, 'seed')),
+      ...chunk.map((x) => {
+        const st = x.set_status ?? null
+        return db.prepare(`UPDATE checklist SET grp = ?, ord = ?, who = ?, stage = ?, title_en = ?, title_th = ?, note_en = ?, note_th = ?, rank = ?, priority = ?, eta_th = ?, eta_en = ?,
+            status = CASE WHEN ? IS NULL THEN status WHEN ? = 'done' THEN 'done' WHEN status = 'todo' THEN ? ELSE status END WHERE id = ?`)
+          .bind(x.group, x.order, x.who, x.stage, x.title_en, x.title_th, x.note_en, x.note_th, x.rank, x.priority, x.eta_th, x.eta_en, st, st, st, x.id)
+      })
+    ])
   }
   await db.prepare("INSERT INTO meta (k, v) VALUES ('checklist_seed_version', ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v").bind(String(checklistSeed.version)).run()
 }
@@ -123,8 +138,19 @@ async function api(req: Request, env: Env, url: URL): Promise<Response> {
 
     if (path === '/api/admin/me') return json({ email: who })
 
+    if (path === '/api/admin/export' && req.method === 'GET') {
+      const [p, h, c] = await Promise.all([
+        env.DB.prepare('SELECT key, th, en, updated_at, updated_by FROM predictions ORDER BY key').all(),
+        env.DB.prepare('SELECT id, key, th, en, action, at, by FROM prediction_history ORDER BY id').all(),
+        env.DB.prepare('SELECT * FROM checklist ORDER BY grp, ord').all()
+      ])
+      const day = now.slice(0, 10)
+      return json({ exported_at: now, exported_by: who, predictions: p.results, prediction_history: h.results, checklist: c.results }, 200,
+        { 'content-disposition': `attachment; filename="kaitianming-backup-${day}.json"` })
+    }
+
     if (path === '/api/admin/checklist' && req.method === 'GET') {
-      const { results } = await env.DB.prepare('SELECT id, grp AS "group", ord AS "order", who, stage, status, title_en, title_th, note_en, note_th, updated_at, updated_by FROM checklist ORDER BY grp, ord').all()
+      const { results } = await env.DB.prepare('SELECT id, grp AS "group", ord AS "order", rank, priority, eta_th, eta_en, who, stage, status, title_en, title_th, note_en, note_th, updated_at, updated_by FROM checklist ORDER BY rank').all()
       return json(results)
     }
     const cm = path.match(/^\/api\/admin\/checklist\/([A-Za-z0-9_-]{1,40})$/)
