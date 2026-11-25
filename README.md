@@ -22,6 +22,7 @@ src/engine/                   Calculation engine (no UI code)
   paper.ts      sky paper: zenith, personal star, overlaps, bright/dark
   numbers.ts    day power / year power (site owner's rules), life number
   compute.ts    one full result + the JSON for the reading module
+  events.ts     key sky moments across a lifetime (returns, contacts, lunar eclipses) for the time-travel dial
 src/i18n/                     English/Thai text, credits
 src/components/               Screens: Home, Result, Calculations (5 tabs), Premium, Settings
 wrangler.jsonc                Cloudflare Workers config (static assets, SPA fallback)

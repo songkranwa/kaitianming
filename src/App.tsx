@@ -10,6 +10,7 @@ import { PremiumView } from './components/PremiumView'
 import { PwaToast } from './components/PwaToast'
 import { ResultView } from './components/ResultView'
 import { SettingsView } from './components/SettingsView'
+import { TravelView } from './components/TravelView'
 import { usePredictionTexts, useTopicLocks } from './content/predictions'
 import { cityLabel } from './engine/cities'
 import { computeResult } from './engine/compute'
@@ -17,7 +18,7 @@ import { useCatalog, useCities } from './hooks/useData'
 import { dict } from './i18n/dict'
 import { detectLang, type Lang } from './i18n/types'
 
-export type View = 'home' | 'result' | 'calc' | 'premium' | 'settings' | 'login' | 'admin' | 'privacy' | 'terms'
+export type View = 'home' | 'result' | 'calc' | 'travel' | 'premium' | 'settings' | 'login' | 'admin' | 'privacy' | 'terms'
 
 /** Birth details live only in memory: never in the URL, storage, or any request. */
 export interface BirthForm { day: string; month: string; year: string; cityQuery: string; cityIdx: number }
@@ -76,7 +77,7 @@ export default function App() {
   }
 
   const ready = !!(form.day && form.month && form.year) && form.cityIdx >= 0 && cities.status === 'ready'
-  const showResult = (view === 'result' || view === 'calc') && ready
+  const showResult = (view === 'result' || view === 'calc' || view === 'travel') && ready
   const shown: View = showResult ? view : view === 'premium' || view === 'settings' || view === 'login' || view === 'admin' || view === 'privacy' || view === 'terms' ? view : 'home'
 
   const cat = catalog.status === 'ready' ? catalog.data : null
@@ -87,11 +88,11 @@ export default function App() {
   }, [showResult, cities, form.year, form.month, form.day, form.cityIdx, lang, cat])
 
   useEffect(() => {
-    const titles: Record<View, string> = { home: '', result: t.resultTitle, calc: t.calcTitle, premium: t.premiumTitle, settings: t.settingsTitle, login: t.loginTitle, admin: 'Admin', privacy: lang === 'th' ? 'นโยบายความเป็นส่วนตัว' : 'Privacy policy', terms: lang === 'th' ? 'ข้อกำหนดการใช้งาน' : 'Terms of use' }
+    const titles: Record<View, string> = { home: '', result: t.resultTitle, calc: t.calcTitle, travel: lang === 'th' ? 'เดินทางข้ามช่วงเวลา' : 'Travel through time', premium: t.premiumTitle, settings: t.settingsTitle, login: t.loginTitle, admin: 'Admin', privacy: lang === 'th' ? 'นโยบายความเป็นส่วนตัว' : 'Privacy policy', terms: lang === 'th' ? 'ข้อกำหนดการใช้งาน' : 'Terms of use' }
     document.title = (titles[shown] ? titles[shown] + ' · ' : '') + 'Kaitianming 开天命'
   }, [shown, t])
 
-  const navTo = (v: View) => go(v === 'home' && ready && (view === 'result' || view === 'calc') ? 'result' : v)
+  const navTo = (v: View) => go(v === 'home' && ready && (view === 'result' || view === 'calc' || view === 'travel') ? 'result' : v)
 
   return (
     <>
@@ -101,8 +102,9 @@ export default function App() {
         {shown === 'home' && <HomeView t={t} lang={lang} form={form} setForm={setForm} cities={cities} ready={ready} onSubmit={() => { setCalcTab('time'); go('result') }} />}
         {shown === 'result' && res && (
           <ResultView t={t} lang={lang} res={res} texts={texts} locks={locks} catalogError={catalog.status === 'error'} tier="guest"
-            onBack={() => go('home')} onCalc={() => go('calc')} onUnlock={(level) => go(level === 'member' ? 'login' : 'premium')} />
+            onBack={() => go('home')} onCalc={() => go('calc')} onTravel={() => go('travel')} onUnlock={(level) => go(level === 'member' ? 'login' : 'premium')} />
         )}
+        {shown === 'travel' && res && <TravelView t={t} lang={lang} res={res} cat={cat} texts={texts} onBack={() => go('result')} />}
         {shown === 'calc' && res && <CalcView t={t} lang={lang} res={res} catalogError={catalog.status === 'error'} tab={calcTab} setTab={setCalcTab} onBack={() => go('result')} />}
         {shown === 'premium' && <PremiumView t={t} />}
         {shown === 'admin' && <AdminView cons={cons} />}
