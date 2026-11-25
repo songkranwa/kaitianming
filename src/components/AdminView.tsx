@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { slotGroups, type Slot } from '../content/slots'
+import { ChecklistView } from './ChecklistView'
 
 // Admin page for prediction texts (Thai UI: it is for the site owner).
 // Sign-in is handled by Cloudflare Access in front of /admin and /api/admin; this page never sees a password.
@@ -11,7 +12,22 @@ type Filter = 'all' | 'empty' | 'filled'
 const HEAD = { 'content-type': 'application/json', 'x-kaitianming-admin': '1' }
 const when = (iso: string) => new Date(iso).toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' })
 
+type Section = 'texts' | 'checklist'
+const sectionFromPath = (): Section => (location.pathname.startsWith('/admin/checklist') ? 'checklist' : 'texts')
+
 export function AdminView({ cons }: { cons: Record<string, string> }) {
+  const [section, setSection] = useState<Section>(sectionFromPath)
+  useEffect(() => {
+    const onPop = () => setSection(sectionFromPath())
+    addEventListener('popstate', onPop)
+    return () => removeEventListener('popstate', onPop)
+  }, [])
+  const goSection = (s: Section) => {
+    if (s === section) return
+    history.pushState({ view: 'admin' }, '', s === 'checklist' ? '/admin/checklist' : '/admin')
+    setSection(s)
+    scrollTo(0, 0)
+  }
   const [me, setMe] = useState<string | null | 'loading'>('loading')
   const [rows, setRows] = useState<Record<string, Row>>({})
   const groups = useMemo(() => slotGroups(cons), [cons])
@@ -86,11 +102,19 @@ export function AdminView({ cons }: { cons: Record<string, string> }) {
     <section className="container page admin" aria-labelledby="admin-title">
       <div className="admin-top">
         <div>
-          <h1 id="admin-title" className="page-title">ระบบจัดการคำทำนาย</h1>
-          <p className="muted small">เข้าสู่ระบบเป็น {me} · มีข้อความแล้ว {done} จาก {total} ช่อง</p>
+          <h1 id="admin-title" className="page-title">{section === 'checklist' ? 'รายการตรวจก่อนเปิดตัว' : 'ระบบจัดการคำทำนาย'}</h1>
+          <p className="muted small">เข้าสู่ระบบเป็น {me}{section === 'texts' && <> · มีข้อความแล้ว {done} จาก {total} ช่อง</>}</p>
         </div>
-        <a className="btn-ghost" href="/cdn-cgi/access/logout">ออกจากระบบ</a>
+        <div className="row-wrap" style={{ gap: 8 }}>
+          <nav className="admin-tabs" aria-label="หลังบ้าน">
+            <button type="button" className={'cl-pill' + (section === 'texts' ? ' on' : '')} aria-current={section === 'texts' ? 'page' : undefined} onClick={() => goSection('texts')}>ข้อความคำทำนาย</button>
+            <button type="button" className={'cl-pill' + (section === 'checklist' ? ' on' : '')} aria-current={section === 'checklist' ? 'page' : undefined} onClick={() => goSection('checklist')}>รายการตรวจก่อนเปิดตัว</button>
+          </nav>
+          <a className="btn-ghost" href="/cdn-cgi/access/logout">ออกจากระบบ</a>
+        </div>
       </div>
+
+      {section === 'checklist' ? <ChecklistView /> : (
 
       <div className="admin-grid">
         <div className="card admin-list">
@@ -159,6 +183,7 @@ export function AdminView({ cons }: { cons: Record<string, string> }) {
           )}
         </div>
       </div>
+      )}
     </section>
   )
 }
