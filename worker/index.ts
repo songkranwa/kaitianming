@@ -18,6 +18,9 @@ interface Env {
 import seed from './seed.json'
 import checklistSeed from './checklist-seed.json'
 
+/** Result-page topics that can be locked (same ids as src/components/deck.ts). */
+const TOPICS = ['day', 'dayYear', 'sky', 'today', 'month', 'year', 'sign', 'signNow', 'animal', 'animalNow', 'overallNow', 'overallNext', 'personal']
+
 const KEY_RE = /^[A-Za-z0-9.\-]{1,64}$/
 const MAX_TEXT = 20000
 
@@ -32,7 +35,8 @@ function ensureSchema(db: D1) {
     db.prepare('CREATE INDEX IF NOT EXISTS prediction_history_key ON prediction_history (key, id)'),
     db.prepare('CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT NOT NULL)'),
     db.prepare('CREATE TABLE IF NOT EXISTS checklist (id TEXT PRIMARY KEY, grp TEXT NOT NULL, ord INTEGER NOT NULL, who TEXT NOT NULL, stage TEXT NOT NULL, status TEXT NOT NULL, title_en TEXT NOT NULL, title_th TEXT NOT NULL, note_en TEXT NOT NULL DEFAULT \'\', note_th TEXT NOT NULL DEFAULT \'\', updated_at TEXT NOT NULL, updated_by TEXT NOT NULL, rank INTEGER NOT NULL DEFAULT 0, priority TEXT NOT NULL DEFAULT \'soon\', eta_th TEXT NOT NULL DEFAULT \'\', eta_en TEXT NOT NULL DEFAULT \'\')')
-  ]).then(() => seedTexts(db)).then(() => seedChecklist(db)).catch((e) => { schemaReady = null; throw e })
+  ]).then(() => db.prepare('CREATE TABLE IF NOT EXISTS topic_locks (topic TEXT PRIMARY KEY, level TEXT NOT NULL, scope TEXT NOT NULL, updated_at TEXT NOT NULL, updated_by TEXT NOT NULL)').run())
+    .then(() => seedTexts(db)).then(() => seedChecklist(db)).catch((e) => { schemaReady = null; throw e })
   return schemaReady
 }
 
@@ -130,6 +134,14 @@ async function api(req: Request, env: Env, url: URL): Promise<Response> {
     return json(out, 200, { 'cache-control': 'public, max-age=60' })
   }
 
+  // Which topics are locked, and how (set in the admin). Topics not listed are open to everyone.
+  if (path === '/api/locks' && req.method === 'GET') {
+    const { results } = await env.DB.prepare("SELECT topic, level, scope FROM topic_locks WHERE level != 'free'").all<{ topic: string; level: string; scope: string }>()
+    const out: Record<string, { level: string; scope: string }> = {}
+    for (const r of results) out[r.topic] = { level: r.level, scope: r.scope }
+    return json(out, 200, { 'cache-control': 'public, max-age=60' })
+  }
+
   if (path.startsWith('/api/admin/')) {
     const who = await adminEmail(req, env)
     if (!who) return json({ error: 'not_signed_in' }, 401)
@@ -138,14 +150,31 @@ async function api(req: Request, env: Env, url: URL): Promise<Response> {
 
     if (path === '/api/admin/me') return json({ email: who })
 
+    if (path === '/api/admin/locks' && req.method === 'GET') {
+      const { results } = await env.DB.prepare('SELECT topic, level, scope, updated_at, updated_by FROM topic_locks').all()
+      return json(results)
+    }
+    const lm = path.match(/^\/api\/admin\/locks\/([A-Za-z]{1,30})$/)
+    if (lm && req.method === 'PUT') {
+      const body = (await req.json().catch(() => null)) as { level?: unknown; scope?: unknown } | null
+      const level = body?.level, scope = body?.scope ?? 'all'
+      if (level !== 'free' && level !== 'member' && level !== 'premium') return json({ error: 'bad_level' }, 400)
+      if (scope !== 'all' && scope !== 'details') return json({ error: 'bad_scope' }, 400)
+      if (!TOPICS.includes(lm[1])) return json({ error: 'bad_topic' }, 400)
+      await env.DB.prepare('INSERT INTO topic_locks (topic, level, scope, updated_at, updated_by) VALUES (?, ?, ?, ?, ?) ON CONFLICT(topic) DO UPDATE SET level = excluded.level, scope = excluded.scope, updated_at = excluded.updated_at, updated_by = excluded.updated_by')
+        .bind(lm[1], level, scope, now, who).run()
+      return json({ topic: lm[1], level, scope, updated_at: now, updated_by: who })
+    }
+
     if (path === '/api/admin/export' && req.method === 'GET') {
-      const [p, h, c] = await Promise.all([
+      const [p, h, c, lk] = await Promise.all([
         env.DB.prepare('SELECT key, th, en, updated_at, updated_by FROM predictions ORDER BY key').all(),
         env.DB.prepare('SELECT id, key, th, en, action, at, by FROM prediction_history ORDER BY id').all(),
-        env.DB.prepare('SELECT * FROM checklist ORDER BY grp, ord').all()
+        env.DB.prepare('SELECT * FROM checklist ORDER BY grp, ord').all(),
+        env.DB.prepare('SELECT * FROM topic_locks').all()
       ])
       const day = now.slice(0, 10)
-      return json({ exported_at: now, exported_by: who, predictions: p.results, prediction_history: h.results, checklist: c.results }, 200,
+      return json({ exported_at: now, exported_by: who, predictions: p.results, prediction_history: h.results, checklist: c.results, topic_locks: lk.results }, 200,
         { 'content-disposition': `attachment; filename="kaitianming-backup-${day}.json"` })
     }
 

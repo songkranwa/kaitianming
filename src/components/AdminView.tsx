@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { slotGroups, type Slot } from '../content/slots'
 import { ChecklistView } from './ChecklistView'
+import { LocksView } from './LocksView'
 
 // Admin page for prediction texts (Thai UI: it is for the site owner).
 // Sign-in is handled by Cloudflare Access in front of /admin and /api/admin; this page never sees a password.
@@ -12,8 +13,8 @@ type Filter = 'all' | 'empty' | 'filled'
 const HEAD = { 'content-type': 'application/json', 'x-kaitianming-admin': '1' }
 const when = (iso: string) => new Date(iso).toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' })
 
-type Section = 'texts' | 'checklist'
-const sectionFromPath = (): Section => (location.pathname.startsWith('/admin/checklist') ? 'checklist' : 'texts')
+type Section = 'texts' | 'checklist' | 'locks'
+const sectionFromPath = (): Section => (location.pathname.startsWith('/admin/checklist') ? 'checklist' : location.pathname.startsWith('/admin/locks') ? 'locks' : 'texts')
 
 export function AdminView({ cons }: { cons: Record<string, string> }) {
   const [section, setSection] = useState<Section>(sectionFromPath)
@@ -24,7 +25,7 @@ export function AdminView({ cons }: { cons: Record<string, string> }) {
   }, [])
   const goSection = (s: Section) => {
     if (s === section) return
-    history.pushState({ view: 'admin' }, '', s === 'checklist' ? '/admin/checklist' : '/admin')
+    history.pushState({ view: 'admin' }, '', s === 'texts' ? '/admin' : '/admin/' + s)
     setSection(s)
     scrollTo(0, 0)
   }
@@ -102,20 +103,21 @@ export function AdminView({ cons }: { cons: Record<string, string> }) {
     <section className="container page admin" aria-labelledby="admin-title">
       <div className="admin-top">
         <div>
-          <h1 id="admin-title" className="page-title">{section === 'checklist' ? 'รายการตรวจก่อนเปิดตัว' : 'ระบบจัดการคำทำนาย'}</h1>
+          <h1 id="admin-title" className="page-title">{section === 'checklist' ? 'รายการตรวจก่อนเปิดตัว' : section === 'locks' ? 'ล็อกหัวข้อ' : 'ระบบจัดการคำทำนาย'}</h1>
           <p className="muted small">เข้าสู่ระบบเป็น {me}{section === 'texts' && <> · มีข้อความแล้ว {done} จาก {total} ช่อง</>}</p>
         </div>
         <div className="row-wrap" style={{ gap: 8 }}>
           <nav className="admin-tabs" aria-label="หลังบ้าน">
             <button type="button" className={'cl-pill' + (section === 'texts' ? ' on' : '')} aria-current={section === 'texts' ? 'page' : undefined} onClick={() => goSection('texts')}>ข้อความคำทำนาย</button>
             <button type="button" className={'cl-pill' + (section === 'checklist' ? ' on' : '')} aria-current={section === 'checklist' ? 'page' : undefined} onClick={() => goSection('checklist')}>รายการตรวจก่อนเปิดตัว</button>
+            <button type="button" className={'cl-pill' + (section === 'locks' ? ' on' : '')} aria-current={section === 'locks' ? 'page' : undefined} onClick={() => goSection('locks')}>ล็อกหัวข้อ</button>
           </nav>
           <a className="btn-ghost" href="/api/admin/export" download>ดาวน์โหลดไฟล์สำรอง</a>
           <a className="btn-ghost" href="/cdn-cgi/access/logout">ออกจากระบบ</a>
         </div>
       </div>
 
-      {section === 'checklist' ? <ChecklistView /> : (
+      {section === 'checklist' ? <ChecklistView /> : section === 'locks' ? <LocksView /> : (
 
       <div className="admin-grid">
         <div className="card admin-list">

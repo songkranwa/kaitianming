@@ -227,6 +227,13 @@ legend { padding: 0; margin-bottom: 8px; font-weight: 600; font-size: 16px; }
 @media (max-width: 560px) { .cl-item { grid-template-columns: auto minmax(0, 1fr); } .cl-tags { grid-column: 2; justify-content: flex-start; } }
 @media (prefers-reduced-motion: reduce) { .cl-ring { transition: none; } }
 
+/* Admin: topic locks */
+.lock-row { grid-template-columns: minmax(0, 1fr) minmax(0, 300px); align-items: center; }
+.lock-controls select { width: 100%; }
+.lock-scope { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.lock-scope label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+@media (max-width: 560px) { .lock-row { grid-template-columns: minmax(0, 1fr); } }
+
 /* Calculations */
 .tabs { display: flex; flex-wrap: wrap; gap: 8px; }
 .tabs button { height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line-3); background: transparent; font-size: 15px; font-weight: 600; }

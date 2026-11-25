@@ -10,7 +10,7 @@ import { PremiumView } from './components/PremiumView'
 import { PwaToast } from './components/PwaToast'
 import { ResultView } from './components/ResultView'
 import { SettingsView } from './components/SettingsView'
-import { usePredictionTexts } from './content/predictions'
+import { usePredictionTexts, useTopicLocks } from './content/predictions'
 import { cityLabel } from './engine/cities'
 import { computeResult } from './engine/compute'
 import { useCatalog, useCities } from './hooks/useData'
@@ -47,6 +47,7 @@ export default function App() {
   const cities = useCities()
   const catalog = useCatalog()
   const texts = usePredictionTexts()
+  const locks = useTopicLocks()
   const t = dict(lang)
 
   const setForm = useCallback((f: Partial<BirthForm>) => setFormState((s) => ({ ...s, ...f })), [])
@@ -99,7 +100,7 @@ export default function App() {
       <main id="main">
         {shown === 'home' && <HomeView t={t} lang={lang} form={form} setForm={setForm} cities={cities} ready={ready} onSubmit={() => { setCalcTab('time'); go('result') }} />}
         {shown === 'result' && res && (
-          <ResultView t={t} lang={lang} res={res} texts={texts} catalogError={catalog.status === 'error'} tier="guest"
+          <ResultView t={t} lang={lang} res={res} texts={texts} locks={locks} catalogError={catalog.status === 'error'} tier="guest"
             onBack={() => go('home')} onCalc={() => go('calc')} onUnlock={(level) => go(level === 'member' ? 'login' : 'premium')} />
         )}
         {shown === 'calc' && res && <CalcView t={t} lang={lang} res={res} catalogError={catalog.status === 'error'} tab={calcTab} setTab={setCalcTab} onBack={() => go('result')} />}
