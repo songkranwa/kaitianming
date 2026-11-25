@@ -214,8 +214,8 @@ export function TravelView({ t, lang, res, cat, texts, onBack }: Props) {
       {sheet > 0 && reading && (
         <div className="travel-backdrop" onClick={(e) => { if (e.target === e.currentTarget) setSheet(0) }}>
           <section className="travel-sheet" role="dialog" aria-modal="true" aria-labelledby="travel-sheet-title">
-            <div className="row-wrap between gap-12">
-              <div className="stack gap-2">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
+              <div className="stack gap-2" style={{ flex: 1 }}>
                 <span className="muted-2 small">{fmt(day)} · {tt.age(reading.age)}</span>
                 <h2 id="travel-sheet-title" className="deck-value" style={{ fontSize: 26 }}>{reading.title}</h2>
               </div>
