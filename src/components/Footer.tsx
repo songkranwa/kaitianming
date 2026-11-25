@@ -20,7 +20,8 @@ export function Footer({ t, lang, onNav, onLang }: Props) {
           </div>
           <div className="stack gap-8">
             <h2 className="foot-h">{t.footInfo}</h2>
-            <button type="button" className="link-btn" onClick={() => onNav('settings')}>{t.privacyLink}</button>
+            <button type="button" className="link-btn" onClick={() => onNav('privacy')}>{t.privacyLink}</button>
+            <button type="button" className="link-btn" onClick={() => onNav('terms')}>{t.termsLink}</button>
             <button type="button" className="link-btn" aria-expanded={open} aria-controls="credits" onClick={() => setOpen(!open)}>{open ? t.creditsHide : t.creditsShow}</button>
           </div>
           <div className="stack gap-8">

@@ -4,6 +4,7 @@ import { CalcView, type CalcTab } from './components/CalcView'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { HomeView } from './components/HomeView'
+import { LegalView } from './components/LegalView'
 import { LoginView } from './components/LoginView'
 import { PremiumView } from './components/PremiumView'
 import { PwaToast } from './components/PwaToast'
@@ -16,15 +17,15 @@ import { useCatalog, useCities } from './hooks/useData'
 import { dict } from './i18n/dict'
 import { detectLang, type Lang } from './i18n/types'
 
-export type View = 'home' | 'result' | 'calc' | 'premium' | 'settings' | 'login' | 'admin'
+export type View = 'home' | 'result' | 'calc' | 'premium' | 'settings' | 'login' | 'admin' | 'privacy' | 'terms'
 
 /** Birth details live only in memory: never in the URL, storage, or any request. */
 export interface BirthForm { day: string; month: string; year: string; cityQuery: string; cityIdx: number }
 
-const PATHS: Partial<Record<View, string>> = { premium: '/premium', settings: '/settings', login: '/login', admin: '/admin' }
+const PATHS: Partial<Record<View, string>> = { premium: '/premium', settings: '/settings', login: '/login', admin: '/admin', privacy: '/privacy', terms: '/terms' }
 const viewFromPath = (): View => {
   const p = location.pathname
-  return p.startsWith('/premium') ? 'premium' : p.startsWith('/settings') ? 'settings' : p.startsWith('/login') ? 'login' : p.startsWith('/admin') ? 'admin' : 'home'
+  return p.startsWith('/premium') ? 'premium' : p.startsWith('/settings') ? 'settings' : p.startsWith('/login') ? 'login' : p.startsWith('/admin') ? 'admin' : p.startsWith('/privacy') ? 'privacy' : p.startsWith('/terms') ? 'terms' : 'home'
 }
 
 interface InstallEvent extends Event { prompt: () => Promise<void> }
@@ -75,7 +76,7 @@ export default function App() {
 
   const ready = !!(form.day && form.month && form.year) && form.cityIdx >= 0 && cities.status === 'ready'
   const showResult = (view === 'result' || view === 'calc') && ready
-  const shown: View = showResult ? view : view === 'premium' || view === 'settings' || view === 'login' || view === 'admin' ? view : 'home'
+  const shown: View = showResult ? view : view === 'premium' || view === 'settings' || view === 'login' || view === 'admin' || view === 'privacy' || view === 'terms' ? view : 'home'
 
   const cat = catalog.status === 'ready' ? catalog.data : null
   const cons = useMemo(() => (cat ? Object.fromEntries(Object.entries(cat.cons).map(([id, c]) => [id, c.th || c.la])) : {}), [cat])
@@ -85,7 +86,7 @@ export default function App() {
   }, [showResult, cities, form.year, form.month, form.day, form.cityIdx, lang, cat])
 
   useEffect(() => {
-    const titles: Record<View, string> = { home: '', result: t.resultTitle, calc: t.calcTitle, premium: t.premiumTitle, settings: t.settingsTitle, login: t.loginTitle, admin: 'Admin' }
+    const titles: Record<View, string> = { home: '', result: t.resultTitle, calc: t.calcTitle, premium: t.premiumTitle, settings: t.settingsTitle, login: t.loginTitle, admin: 'Admin', privacy: lang === 'th' ? 'นโยบายความเป็นส่วนตัว' : 'Privacy policy', terms: lang === 'th' ? 'ข้อกำหนดการใช้งาน' : 'Terms of use' }
     document.title = (titles[shown] ? titles[shown] + ' · ' : '') + 'Kaitianming 开天命'
   }, [shown, t])
 
@@ -104,6 +105,7 @@ export default function App() {
         {shown === 'calc' && res && <CalcView t={t} lang={lang} res={res} catalogError={catalog.status === 'error'} tab={calcTab} setTab={setCalcTab} onBack={() => go('result')} />}
         {shown === 'premium' && <PremiumView t={t} />}
         {shown === 'admin' && <AdminView cons={cons} />}
+        {(shown === 'privacy' || shown === 'terms') && <LegalView kind={shown} lang={lang} onBack={() => navTo('home')} backLabel={t.backHome} />}
         {shown === 'login' && <LoginView t={t} onHome={() => navTo('home')} onPremium={() => go('premium')} />}
         {shown === 'settings' && (
           <SettingsView t={t} lang={lang} onLang={setLang}

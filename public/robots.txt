@@ -1,2 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /login
+Disallow: /settings
+
+Sitemap: https://kaitianming.com/sitemap.xml
