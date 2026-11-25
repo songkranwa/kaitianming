@@ -189,6 +189,36 @@ legend { padding: 0; margin-bottom: 8px; font-weight: 600; font-size: 16px; }
 .admin-hist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
 .admin-hist p { white-space: pre-line; }
 
+/* Admin: launch checklist */
+.admin-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.cl-pill { background: transparent; border: 1px solid var(--line-3); color: inherit; border-radius: 999px; padding: 6px 14px; font: inherit; font-size: 14px; cursor: pointer; }
+.cl-pill.on { border-color: var(--accent); background: var(--card-alt); color: var(--accent); }
+.cl-pill:focus-visible, .cl-check:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.cl-gauges { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.cl-gauge { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 16px; align-items: center; background: var(--card); border: 1px solid var(--line-3); border-radius: 16px; padding: 16px 18px; }
+.cl-gauge svg { width: 84px; height: 84px; }
+.cl-gauge-title { font-family: var(--serif); font-size: 18px; font-weight: 700; }
+.cl-ring-bg { stroke: var(--line-3); }
+.cl-ring { stroke: var(--accent); transition: stroke-dashoffset .5s ease; }
+.cl-ring-text { fill: currentColor; font-size: 19px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.cl-group { display: flex; flex-direction: column; gap: 10px; }
+.cl-group-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+.cl-items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.cl-item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: start; background: var(--card); border: 1px solid var(--line-3); border-radius: 12px; padding: 12px 14px; }
+.cl-item.done .cl-title { text-decoration: line-through; color: var(--muted); }
+.cl-title { font-weight: 500; }
+.cl-check { width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--muted-2); background: none; display: grid; place-items: center; padding: 0; cursor: pointer; }
+.cl-check svg { width: 16px; height: 16px; fill: none; stroke: var(--bg); stroke-width: 3; opacity: 0; }
+.cl-check[data-s="doing"] { border-color: #F0A35A; background: linear-gradient(90deg, #F0A35A 50%, transparent 50%); }
+.cl-check[data-s="done"] { border-color: #6CC79C; background: #6CC79C; }
+.cl-check[data-s="done"] svg { opacity: 1; }
+.cl-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.cl-chip { font-size: 12px; border: 1px solid var(--line-3); border-radius: 999px; padding: 1px 8px; color: var(--muted); white-space: nowrap; }
+.cl-chip.owner { border-color: var(--accent); color: var(--accent); }
+.cl-chip.doing { border-color: #F0A35A; color: #F0A35A; }
+@media (max-width: 560px) { .cl-item { grid-template-columns: auto minmax(0, 1fr); } .cl-tags { grid-column: 2; justify-content: flex-start; } }
+@media (prefers-reduced-motion: reduce) { .cl-ring { transition: none; } }
+
 /* Calculations */
 .tabs { display: flex; flex-wrap: wrap; gap: 8px; }
 .tabs button { height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line-3); background: transparent; font-size: 15px; font-weight: 600; }

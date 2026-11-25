@@ -16,6 +16,7 @@ interface Env {
 }
 
 import seed from './seed.json'
+import checklistSeed from './checklist-seed.json'
 
 const KEY_RE = /^[A-Za-z0-9.\-]{1,64}$/
 const MAX_TEXT = 20000
@@ -29,9 +30,24 @@ function ensureSchema(db: D1) {
     db.prepare('CREATE TABLE IF NOT EXISTS predictions (key TEXT PRIMARY KEY, th TEXT NOT NULL DEFAULT \'\', en TEXT NOT NULL DEFAULT \'\', updated_at TEXT NOT NULL, updated_by TEXT NOT NULL)'),
     db.prepare('CREATE TABLE IF NOT EXISTS prediction_history (id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL, th TEXT, en TEXT, action TEXT NOT NULL, at TEXT NOT NULL, by TEXT NOT NULL)'),
     db.prepare('CREATE INDEX IF NOT EXISTS prediction_history_key ON prediction_history (key, id)'),
-    db.prepare('CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT NOT NULL)')
-  ]).then(() => seedTexts(db)).catch((e) => { schemaReady = null; throw e })
+    db.prepare('CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT NOT NULL)'),
+    db.prepare('CREATE TABLE IF NOT EXISTS checklist (id TEXT PRIMARY KEY, grp TEXT NOT NULL, ord INTEGER NOT NULL, who TEXT NOT NULL, stage TEXT NOT NULL, status TEXT NOT NULL, title_en TEXT NOT NULL, title_th TEXT NOT NULL, note_en TEXT NOT NULL DEFAULT \'\', note_th TEXT NOT NULL DEFAULT \'\', updated_at TEXT NOT NULL, updated_by TEXT NOT NULL)')
+  ]).then(() => seedTexts(db)).then(() => seedChecklist(db)).catch((e) => { schemaReady = null; throw e })
   return schemaReady
+}
+
+/** Launch checklist (admin only): loads its items once per seed version; ticks made in the admin are kept. */
+async function seedChecklist(db: D1) {
+  const { results } = await db.prepare("SELECT v FROM meta WHERE k = 'checklist_seed_version'").all<{ v: string }>()
+  if (Number(results[0]?.v ?? 0) >= checklistSeed.version) return
+  const now = new Date().toISOString()
+  const rows = checklistSeed.items
+  for (let i = 0; i < rows.length; i += 50) {
+    await db.batch(rows.slice(i, i + 50).map((x) =>
+      db.prepare('INSERT OR IGNORE INTO checklist (id, grp, ord, who, stage, status, title_en, title_th, note_en, note_th, updated_at, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
+        .bind(x.id, x.group, x.order, x.who, x.stage, x.status, x.title_en, x.title_th, x.note_en, x.note_th, now, 'seed')))
+  }
+  await db.prepare("INSERT INTO meta (k, v) VALUES ('checklist_seed_version', ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v").bind(String(checklistSeed.version)).run()
 }
 
 /**
@@ -106,6 +122,19 @@ async function api(req: Request, env: Env, url: URL): Promise<Response> {
     const now = new Date().toISOString()
 
     if (path === '/api/admin/me') return json({ email: who })
+
+    if (path === '/api/admin/checklist' && req.method === 'GET') {
+      const { results } = await env.DB.prepare('SELECT id, grp AS "group", ord AS "order", who, stage, status, title_en, title_th, note_en, note_th, updated_at, updated_by FROM checklist ORDER BY grp, ord').all()
+      return json(results)
+    }
+    const cm = path.match(/^\/api\/admin\/checklist\/([A-Za-z0-9_-]{1,40})$/)
+    if (cm && req.method === 'PUT') {
+      const body = (await req.json().catch(() => null)) as { status?: unknown } | null
+      const status = body?.status
+      if (status !== 'todo' && status !== 'doing' && status !== 'done') return json({ error: 'bad_status' }, 400)
+      await env.DB.prepare('UPDATE checklist SET status = ?, updated_at = ?, updated_by = ? WHERE id = ?').bind(status, now, who, cm[1]).run()
+      return json({ id: cm[1], status, updated_at: now, updated_by: who })
+    }
 
     if (path === '/api/admin/predictions' && req.method === 'GET') {
       const { results } = await env.DB.prepare('SELECT key, th, en, updated_at, updated_by FROM predictions').all()
