@@ -11,7 +11,8 @@ export function credits(lang: Lang): CreditGroup[] {
   return [
     { group: t('Fonts', 'ฟอนต์'), items: [
       { name: 'Noto Serif Thai', detail: t('Headings, by Google · SIL Open Font License 1.1', 'ฟอนต์หัวเรื่อง โดย Google · SIL Open Font License 1.1'), links: [{ label: 'Google Fonts', url: 'https://fonts.google.com/specimen/Noto+Serif+Thai' }, { label: 'OFL', url: 'https://openfontlicense.org' }] },
-      { name: 'IBM Plex Sans Thai', detail: t('Body text, by IBM · SIL Open Font License 1.1', 'ฟอนต์เนื้อความ โดย IBM · SIL Open Font License 1.1'), links: [{ label: 'Google Fonts', url: 'https://fonts.google.com/specimen/IBM+Plex+Sans+Thai' }] }
+      { name: 'IBM Plex Sans Thai', detail: t('Body text, by IBM · SIL Open Font License 1.1', 'ฟอนต์เนื้อความ โดย IBM · SIL Open Font License 1.1'), links: [{ label: 'Google Fonts', url: 'https://fonts.google.com/specimen/IBM+Plex+Sans+Thai' }] },
+      { name: 'Ma Shan Zheng', detail: t('Brush lettering of 开天命 in the logo, by Ma Shan Zheng · SIL Open Font License 1.1', 'ตัวอักษรพู่กัน 开天命 ในโลโก้ โดย Ma Shan Zheng · SIL Open Font License 1.1'), links: [{ label: 'Google Fonts', url: 'https://fonts.google.com/specimen/Ma+Shan+Zheng' }, { label: 'OFL', url: 'https://openfontlicense.org' }] }
     ] },
     { group: t('Services & tools', 'บริการและเครื่องมือ'), items: [
       { name: 'Google Fonts API', detail: t('Font delivery', 'บริการโหลดไฟล์ฟอนต์'), links: [{ label: 'fonts.google.com', url: 'https://fonts.google.com' }] },

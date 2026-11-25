@@ -15,7 +15,11 @@ export interface SkyCatalog {
   stars: [number, number, number, string, string][]
 }
 
-export interface PaperInput { ms: number; lat: number; lon: number; tz: string; offsetMin: number }
+export interface PaperInput {
+  ms: number; lat: number; lon: number; tz: string; offsetMin: number
+  /** The owner of the chart: their personal star (J2000), drawn as "You". Default: this sky's own personal star. */
+  you?: RaDec
+}
 
 interface Placed { alt: number; az: number; zd: number; x: number; y: number }
 
@@ -49,16 +53,19 @@ export interface BrightnessResult {
 
 export interface MapLabel { text: string; left: string; top: string; weight: string; color: string; size: string }
 export interface MapMarker { name: string; color: string; left: string; top: string; opacity: string; ring: string }
+export interface YouMarker { left: string; top: string; above: boolean; name: string }
 
 export interface Paper {
   lst: number; zenRa: number; zenCon: string | null; zenName: string
   /** false when the zenith lies on no main-constellation area and zenCon is only the nearest one. */
   zenOnArea: boolean; zenCons: string[]
   personal: StarInfo; bright: StarInfo | null; nearby: StarInfo[]
+  /** J2000 position of the personal star, to follow it on other days. */
+  personalRaDec: RaDec
   surroundings: { bearing: string; at20: string | null; at20Name: string; at45: string | null; at45Name: string }[]
   bodies: PaperBody[]; overlaps: Overlap[]
   brightness: { birth_sign: BrightnessResult & { sign: string }; zenith_constellation: BrightnessResult & { constellation: string } }
-  draw: { starsUp: string[]; starsDown: string; linesUp: string; linesDown: string; labels: MapLabel[]; markers: MapMarker[] }
+  draw: { starsUp: string[]; starsDown: string; linesUp: string; linesDown: string; labels: MapLabel[]; markers: MapMarker[]; you: YouMarker }
   json: Record<string, unknown>
 }
 
@@ -213,11 +220,17 @@ export function paperCompute(cat: SkyCatalog, inp: PaperInput, L: Labels, lang: 
     opacity: b.p.alt >= 0 ? '1' : '0.55', ring: b.p.alt >= 0 ? 'none' : '1px dashed ' + b.color
   }))
 
+  const youRD: RaDec = inp.you ?? [byZd[0].ra, byZd[0].dec]
+  const youStar = inp.you ? stars.find((s) => Math.abs(s.ra - youRD[0]) < 1e-6 && Math.abs(s.dec - youRD[1]) < 1e-6) : byZd[0]
+  const youName = youStar ? youStar.name || youStar.desig : ''
+  const youE = precess(youRD[0], youRD[1], jd, 1), youP = place(youE[0], youE[1])
+  const you: YouMarker = { left: f1(50 + youP.x * 48) + '%', top: f1(50 + youP.y * 48) + '%', above: youP.alt >= 0, name: youName }
+
   return {
     lst, zenRa: lst, zenCon, zenName: zenCon ? conName(zenCon) : '—', zenOnArea, zenCons,
-    personal, bright: brightS ? label(brightS) : null, nearby, surroundings,
+    personal, personalRaDec: [byZd[0].ra, byZd[0].dec], bright: brightS ? label(brightS) : null, nearby, surroundings,
     bodies, overlaps, brightness,
-    draw: { starsUp, starsDown, linesUp, linesDown, labels, markers },
+    draw: { starsUp, starsDown, linesUp, linesDown, labels, markers, you },
     json: {
       moment: { local: '00:00', utc_offset_min: inp.offsetMin, jd_ut: Math.round(jd * 100000) / 100000, lst_deg: f1(lst) },
       observer: { lat, lon: inp.lon, timezone: inp.tz },

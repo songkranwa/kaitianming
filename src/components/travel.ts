@@ -16,6 +16,7 @@ export function travelText(lang: Lang) {
       : 'Go back to the night you were born, or forward to your next eclipse. See the sky over your birthplace on any day of your life, and what it means for you.',
     start: th ? 'เริ่มเดินทาง' : 'Start travelling',
     back: th ? 'กลับไปหน้าคำทำนาย' : 'Back to your reading',
+    youBelow: (star: string) => (th ? `ดาวของคุณ (${star}) อยู่ใต้ขอบฟ้าในคืนนี้` : `your star (${star}) is below the horizon this night`),
     skyNote: (city: string) => (th ? `ท้องฟ้าเหนือ${city} เวลา 00:00 น. ของวันที่เลือก` : `The sky over ${city} at 00:00 on the chosen day`),
     dialLabel: th ? 'เลือกวัน: เลื่อนซ้าย–ขวา' : 'Choose a day: slide left or right',
     dialHint: th ? 'เลื่อนแถบเหมือนหมุนวงแหวนโฟกัส · ★ = ช่วงเวลาสำคัญบนท้องฟ้า' : 'Slide the dial like a focus ring · ★ = a key moment in the sky',

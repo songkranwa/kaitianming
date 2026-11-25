@@ -1,4 +1,4 @@
-import { useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
+import { useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
 import { lookup, type Texts } from '../content/predictions'
 import type { Result } from '../engine/compute'
 import { lifeEvents, type SkyEvent } from '../engine/events'
@@ -11,7 +11,8 @@ import type { Dict } from '../i18n/dict'
 import type { Lang } from '../i18n/types'
 import { AdSlot } from './AdSlot'
 import { ICON, Icon } from './Icons'
-import { SkyMap } from './SkyMap'
+import { resultText } from './ResultView'
+import { SkyHero } from './SkyHero'
 import { eventLabel, eventReading, travelText } from './travel'
 
 const DAY = 86400000
@@ -47,6 +48,8 @@ export function TravelView({ t, lang, res, cat, texts, onBack }: Props) {
   const dial = useRef<HTMLDivElement | null>(null)
   const lockUntil = useRef(0)
   const closeBtn = useRef<HTMLButtonElement | null>(null)
+  const drag = useRef<{ x: number; left: number; moved: boolean; id: number; v: number; t: number } | null>(null)
+  const justDragged = useRef(false)
 
   // Key sky moments: computed once, just after the first paint so the dial appears at once.
   useEffect(() => {
@@ -94,6 +97,33 @@ export function TravelView({ t, lang, res, cat, texts, onBack }: Props) {
     const d = clamp(dial.current.scrollLeft / PX)
     if (d !== day) setDay(d)
   }
+  // Mouse and pen: drag the dial like a focus ring (touch screens scroll it natively), with a little glide on release.
+  const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === 'touch' || e.button !== 0 || !dial.current) return
+    drag.current = { x: e.clientX, left: dial.current.scrollLeft, moved: false, id: e.pointerId, v: 0, t: performance.now() }
+  }
+  const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
+    const g = drag.current, el = dial.current
+    if (!g || !el) return
+    const dx = e.clientX - g.x
+    if (!g.moved && Math.abs(dx) > 4) { g.moved = true; el.setPointerCapture(g.id); el.classList.add('dragging') }
+    if (!g.moved) return
+    const now = performance.now(), next = g.left - dx
+    g.v = (next - el.scrollLeft) / Math.max(1, now - g.t); g.t = now
+    lockUntil.current = 0
+    el.scrollLeft = next
+  }
+  const onPointerUp = () => {
+    const g = drag.current, el = dial.current
+    drag.current = null
+    if (!g || !el || !g.moved) return
+    el.classList.remove('dragging')
+    justDragged.current = true
+    setTimeout(() => { justDragged.current = false }, 0)
+    let v = g.v * 16
+    const glide = () => { if (Math.abs(v) < 0.5 || !dial.current) return; dial.current.scrollLeft += v; v *= 0.92; requestAnimationFrame(glide) }
+    requestAnimationFrame(glide)
+  }
   const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
     const step = e.key === 'ArrowLeft' ? -1 : e.key === 'ArrowRight' ? 1 : e.key === 'PageUp' ? -30 : e.key === 'PageDown' ? 30 : 0
     if (e.key === 'Home') { e.preventDefault(); goTo(0) } else if (e.key === 'End') { e.preventDefault(); goTo(maxDay) } else if (step) { e.preventDefault(); goTo(day + step) }
@@ -109,8 +139,8 @@ export function TravelView({ t, lang, res, cat, texts, onBack }: Props) {
     if (!cat) return null
     const c = dateOf(skyDay)
     const { ms, offsetMin } = localToUTC(c.y, c.m, c.d, 0, 0, city.tz)
-    return paperCompute(cat, { ms, lat: city.lat, lon: city.lon, tz: city.tz, offsetMin }, L, lang)
-  }, [cat, skyDay, city, L, lang])
+    return paperCompute(cat, { ms, lat: city.lat, lon: city.lon, tz: city.tz, offsetMin, you: res.pp?.personalRaDec }, L, lang)
+  }, [cat, skyDay, city, L, lang, res.pp])
 
   const here = events?.filter((e) => e.day === day) ?? []
   const near = here.length ? null : events?.find((e) => Math.abs(e.day - day) <= 10 && e.kind !== 'birth') ?? null
@@ -157,16 +187,11 @@ export function TravelView({ t, lang, res, cat, texts, onBack }: Props) {
 
   return (
     <section className="travel" aria-labelledby="travel-title">
-      <div className="travel-sky">
-        <div className="container travel-top">
-          <button type="button" className="btn-ghost" onClick={onBack}><Icon d={ICON.back} size={16} width={1.8} />{tt.back}</button>
-          <h1 id="travel-title" className="travel-title">{tt.title}</h1>
-        </div>
-        <div className="travel-map">
-          {paper ? <SkyMap paper={paper} t={t} full /> : <p className="muted small travel-wait">{cat ? '' : tt.loadingSky}</p>}
-        </div>
-        <p className="muted-2 small travel-note">{tt.skyNote(cityName)}</p>
-      </div>
+      <SkyHero paper={paper} t={t} youLabel={resultText(lang).you} youBelow={resultText(lang).belowDay}
+        footer={<p className="muted-2 small sky-hero-note">{paper ? tt.skyNote(cityName) + (paper.draw.you.above ? '' : ' · ' + tt.youBelow(paper.draw.you.name)) : cat ? '' : tt.loadingSky}</p>}>
+        <button type="button" className="btn-ghost pill" onClick={onBack}><Icon d={ICON.back} size={16} width={1.8} />{tt.back}</button>
+        <h1 id="travel-title" className="hero-title">{tt.title}</h1>
+      </SkyHero>
 
       <div className="travel-readout" aria-live="polite">
         <div className={`travel-rel ${relClass}`}>{diff < 0 && day === 0 ? eventLabel({ day: 0, kind: 'birth' }, L, lang) : tt.rel(diff)}</div>
@@ -181,6 +206,8 @@ export function TravelView({ t, lang, res, cat, texts, onBack }: Props) {
       <div className="travel-dial-wrap">
         <div
           ref={dial} className="travel-dial" onScroll={onScroll} onKeyDown={onKey} tabIndex={0}
+          onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}
+          onClickCapture={(e) => { if (justDragged.current) { e.stopPropagation(); e.preventDefault() } }}
           role="slider" aria-label={tt.dialLabel} aria-valuemin={0} aria-valuemax={maxDay} aria-valuenow={day} aria-valuetext={fmt(day)}
         >
           <div className="travel-track" style={{ width: maxDay * PX + half * 2, paddingLeft: half }}>

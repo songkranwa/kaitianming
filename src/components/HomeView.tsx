@@ -4,7 +4,7 @@ import type { LoadState } from '../hooks/useData'
 import type { Dict } from '../i18n/dict'
 import type { Lang } from '../i18n/types'
 import type { BirthForm } from '../App'
-import { LogoMark } from './Icons'
+import { NightSky } from './NightSky'
 
 interface Props {
   t: Dict; lang: Lang; form: BirthForm; setForm: (f: Partial<BirthForm>) => void
@@ -14,7 +14,7 @@ interface Props {
 const daysInMonth = (m: string, y: string) => new Date(y ? Number(y) : 2000, Number(m), 0).getDate()
 const clampDay = (day: string, m: string, y: string) => (day && m && Number(day) > daysInMonth(m, y) ? '' : day)
 
-/** Home: only what must be entered — logo, DD / MM / YYYY, place of birth, submit. */
+/** Home: a full night sky, the 开天命 mark read top to bottom, then only what must be entered — DD / MM / YYYY, place of birth, submit. */
 export function HomeView({ t, lang, form, setForm, cities, ready, onSubmit }: Props) {
   const curCE = new Date().getFullYear()
   const months = useMemo(() => {
@@ -35,12 +35,16 @@ export function HomeView({ t, lang, form, setForm, cities, ready, onSubmit }: Pr
   const cityPlaceholder = cities.status === 'ready' ? t.locationPh : cities.status === 'error' ? t.cityError : t.cityLoading
 
   return (
-    <section className="container home" aria-labelledby="home-title">
-      <h1 id="home-title" className="home-logo">
-        <LogoMark size={72} />
-        <span className="home-brand">{t.brand}</span>
-        <span className="home-zh" lang="zh">{t.brandZh}</span>
+    <section className="home" aria-labelledby="home-title">
+      <NightSky />
+      <div className="container home-inner">
+      <h1 id="home-title" className="home-logo" aria-label={`${t.brand} ${t.brandZh}`}>
+        {Array.from(t.brandZh).map((ch, i) => (
+          <span key={ch} className="home-char" aria-hidden="true"><span className="brush" lang="zh">{ch}</span><small>{t.brandRead[i]}</small></span>
+        ))}
       </h1>
+      <p className="home-tag">{t.homeTag}</p>
+      <span className="home-star" aria-hidden="true" />
 
       <form className="home-form" onSubmit={(e) => { e.preventDefault(); if (ready) onSubmit() }} noValidate>
         <fieldset>
@@ -106,7 +110,9 @@ export function HomeView({ t, lang, form, setForm, cities, ready, onSubmit }: Pr
         )}
 
         <button type="submit" className="btn-primary home-submit" disabled={!ready}>{t.analyze}</button>
+        <p className="home-note">{t.homeNote}</p>
       </form>
+      </div>
     </section>
   )
 }
